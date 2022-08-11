@@ -1,0 +1,24 @@
+.title {
+  text-align: center;
+  font-weight: 500!important;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  grid-column-gap: 10px;
+  input {
+    text-align: center;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number]{
+  -moz-appearance: textfield;
+}
