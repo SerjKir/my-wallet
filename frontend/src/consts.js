@@ -1,1 +1,3 @@
-export const baseEnvUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+export const baseEnvUrl = "https://my-wallet-321.herokuapp.com/";
+
+// export const baseEnvUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
