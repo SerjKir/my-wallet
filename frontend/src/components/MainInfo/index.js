@@ -29,9 +29,7 @@ const Index = ({userData, getUserData, itemData}) => {
       </div>
       <div className={styles.block}>
         <p>Мої картки</p>
-        <List>
-          {userData?.cards?.map(elem => <ListItem itemData={itemData} key={elem._id} isButton={true} card={elem} />)}
-        </List>
+        {userData?.cards && <List>{userData?.cards?.map(elem => <ListItem itemData={itemData} key={elem._id} isButton={true} card={elem} />)}</List>}
       </div>
     </Paper>
   );
