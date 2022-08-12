@@ -76,7 +76,7 @@ const Index = () => {
               color={'primary'}
               disabled={!isValid}
             >
-              Регистрация
+              Реєстрація
             </Button>
             <span onClick={() => setIsLogin(true)}>Є обліковий запис? Вхід.</span>
           </div>

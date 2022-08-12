@@ -5,8 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth.middleware')
 const lookup = require('binlookup')()
-const balanceFuncAdd = require('../utils_1');
-const balanceFuncEdit = require('../utils_2')
+const balanceFuncAdd = require('../balanceFuncAdd');
 
 const router = express.Router();
 
@@ -160,7 +159,14 @@ router.patch('/card/:id', auth, async (req, res) => {
     card.name = name;
     await card.save();
     const user = await User.findById(card.owner);
-    balanceFuncEdit(user, 'balance', card.currency, difference)
+    const newBalance = user.balance.map(elem => {
+      if (elem.currency === card.currency) {
+        elem.amount = parseInt(elem.amount) + difference;
+      }
+      return elem;
+    });
+    user.balance = [];
+    user.balance = newBalance;
     await user.save();
     console.log(user);
     res.json({message: 'ok'});
@@ -173,17 +179,30 @@ router.patch('/card/:id', auth, async (req, res) => {
 router.patch('/cash', auth, async (req, res) => {
   try {
     const { newAmount, currency } = req.body;
+    if ( newAmount < 0 ) {
+      return  res.status(400).json({message: 'Значення не може бути меньше 0'});
+    }
     console.log(newAmount, currency)
     const userId = req.decodedId;
     const user = await User.findById(userId);
+    let prevCash = 0;
     const newCash = user.cash.map(elem => {
       if (elem.currency === currency) {
+        prevCash = elem.amount;
         elem.amount = parseInt(newAmount);
       }
       return elem;
     });
     user.cash = [];
     user.cash = newCash;
+    const newBalance = user.balance.map(elem => {
+      if (elem.currency === currency) {
+        elem.amount = parseInt(elem.amount) - parseInt(prevCash) + parseInt(newAmount);
+      }
+      return elem;
+    });
+    user.balance = [];
+    user.balance = newBalance;
     await user.save();
     res.json({message: 'ok'})
   } catch (error) {

@@ -8,6 +8,7 @@ import {baseEnvUrl} from '../../consts';
 
 const Index = ({userData, getUserData, itemData}) => {
   const {isAuthenticated, logout} = useContext(AuthContext);
+  console.log(userData);
 
   return (
     <Paper className={styles.container}>
@@ -27,10 +28,13 @@ const Index = ({userData, getUserData, itemData}) => {
           {userData?.cash.map((elem, index) => <ListItem isCash={true} itemData={itemData} key={index} isButton={true} card={elem}/>)}
         </List>
       </div>
-      <div className={styles.block}>
+      {userData?.cards?.length < 0 && <div className={styles.block}>
         <p>Мої картки</p>
-        {userData?.cards && <List>{userData?.cards?.map(elem => <ListItem itemData={itemData} key={elem._id} isButton={true} card={elem} />)}</List>}
-      </div>
+        <List>
+          {userData?.cards?.map(elem => <ListItem itemData={itemData} key={elem._id} isButton={true} card={elem} />)}
+        </List>
+      </div>}
+
     </Paper>
   );
 };

@@ -11,6 +11,7 @@ const Index = ({isModal, setIsModal, getUserData, isName, isEdit, changeItemData
   const {
     register,
     handleSubmit,
+    reset,
     formState: {errors, isValid},
   } = useForm({
     mode: 'onBlur',
@@ -23,11 +24,15 @@ const Index = ({isModal, setIsModal, getUserData, isName, isEdit, changeItemData
         setIsModal(false);
       }).catch(err => console.log(err));
     } else if (isCash) {
-      await updateCash(changeItemData.amount, changeItemData.currency);
+      await updateCash(changeItemData.amount, changeItemData.currency).then(res => {
+        getUserData();
+        setIsModal(false);
+      }).catch(err => console.log(err))
     } else {
       await addCash({currency: selectedCurrency, ...values})
         .then(data => {
           getUserData();
+          reset();
           setIsModal(false)
         })
         .catch(err => console.log(err));
