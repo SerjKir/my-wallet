@@ -57,11 +57,11 @@ const Index = ({getUserData, setPage}) => {
         Додавання картки
       </Typography>
       <div className={styles.row}>
-        <TextField required={true} fullWidth type={'number'} inputProps={{maxLength: 12}} label="Card number" variant="outlined"
-                   onInput={(e) => maxLength(e, 16)}
+        <TextField required={true} fullWidth type={'number'} label="Card number" variant="outlined"
+                   onInput={(e) => maxLength(e, 19)}
                    error={!!errors.number?.message}
                    helperText={errors.number?.message}
-                   {...register('number', {validate: checkCard, required: 'Вкажіть номер картки', minLength: 16 } )}
+                   {...register('number', {validate: checkCard, required: 'Вкажіть номер картки', minLength: 13 } )}
         />
       </div>
       <div className={styles.row}>

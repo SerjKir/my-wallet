@@ -25,7 +25,6 @@ const Index = ({getUserData, cards, changeItemData, setChangeItemData}) => {
       } else {
         setIsChangeModal(true);
       }
-      console.log(changeItemData)
     }
   }, [changeItemData])
 

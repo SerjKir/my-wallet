@@ -1,12 +1,16 @@
 div.container {
   width: 100%;
-  border-right: 1px solid black;
   min-height: 500px;
   max-height: 500px;
   overflow-y: auto;
   padding: 15px;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
+  @media (max-width: 900px) {
+    min-height: initial;
+    max-height: initial;
+    border-radius: 4px;
+  }
 }
 
 .row {
@@ -26,14 +30,11 @@ div.container {
 }
 
 .block {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  ul {
-    display: flex;
-    flex-direction: column;
-  }
-  li {
-    margin-top: 10px;
-  }
+}
+
+.inner {
+  margin-left: 10px;
 }

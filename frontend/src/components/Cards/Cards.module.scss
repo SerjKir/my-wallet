@@ -7,4 +7,10 @@ div.container {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
   position: relative;
+  @media (max-width: 900px) {
+    min-height: initial;
+    max-height: initial;
+    margin: auto;
+    border-radius: 4px;
+  }
 }

@@ -33,18 +33,18 @@ export const addCash = async (params) => {
 export const removeCard = async (id) => {
   const { data } = await axios.delete(`/card/${id}`);
   return data;
-}
+};
 
 export const updateCard = async (id, newAmount, name) => {
   const { data } = await axios.patch(`/card/${id}`, {
     newAmount, name
   });
   return data;
-}
+};
 
 export const updateCash = async (newAmount, currency) => {
   const { data } = await axios.patch(`/cash`, {
     newAmount, currency
   });
   return data;
-}
+};

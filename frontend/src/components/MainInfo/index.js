@@ -6,7 +6,7 @@ import {AuthContext} from '../../context/AuthContext';
 import ListItem from '../ListItem';
 import {baseEnvUrl} from '../../consts';
 
-const Index = ({userData, getUserData, itemData}) => {
+const Index = ({userData, itemData}) => {
   const {isAuthenticated, logout} = useContext(AuthContext);
 
   return (
@@ -15,19 +15,20 @@ const Index = ({userData, getUserData, itemData}) => {
         <div className={styles.user}><Avatar alt={userData?.name} src={baseEnvUrl + userData?.avatarUrl} /><span className={styles.userName}>{userData?.name}</span></div>
         {isAuthenticated && <Button onClick={logout} >Вийти</Button>}
       </div>
+      <hr style={{marginTop: '10px'}}/>
       <div className={styles.block}>
-        <p>Баланс</p>
+        <p>Загальний баланс</p>
         <List>
-          {userData?.balance?.map((elem, index) => <ListItem key={index} isButton={false} card={elem}/>)}
+          {userData?.balance?.map((elem, index) => elem?.amount > 0 && <ListItem key={index} isButton={false} card={elem}/>)}
         </List>
       </div>
-      <div className={styles.block}>
+      <div className={`${styles.block} ${styles.inner}`}>
         <p>Готівка</p>
         <List>
-          {userData?.cash.map((elem, index) => <ListItem isCash={true} itemData={itemData} key={index} isButton={true} card={elem}/>)}
+          {userData?.cash.map((elem, index) => elem?.amount > 0 && <ListItem isCash={true} itemData={itemData} key={index} isButton={true} card={elem}/>)}
         </List>
       </div>
-      <div className={styles.block}>
+      <div className={`${styles.block} ${styles.inner}`}>
         <p>Мої картки</p>
         <List>
           {userData?.cards?.map(elem => <ListItem itemData={itemData} key={elem._id} isButton={true} card={elem} />)}

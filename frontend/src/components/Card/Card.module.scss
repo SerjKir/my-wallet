@@ -3,14 +3,15 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  grid-column-gap: 20px;
+  grid-column-gap: 10px;
 }
 
 .card {
+  width: 100%;
   padding: 10px;
   border: 2px solid black;
   border-radius: 4px;
-  flex-grow: 1;
+  max-width: 300px;
 }
 
 .number {
@@ -19,17 +20,8 @@
   cursor: pointer;
 }
 
-.name {
-  font-weight: 500;
-}
-
 .amount {
-  font-weight: 500;
   margin-top: 5px;
-}
-
-.exp {
-  font-weight: 500;
 }
 
 .row {
@@ -40,6 +32,10 @@
 .column {
   display: flex;
   flex-direction: column;
+}
+
+.type {
+  font-size: 14px;
 }
 
 .logo {

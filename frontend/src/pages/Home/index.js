@@ -4,6 +4,7 @@ import Main from '../../components/MainInfo';
 import Cards from '../../components/Cards';
 import {getMe} from '../../api/mainApi';
 import {AuthContext} from '../../context/AuthContext';
+import styles from './Home.module.scss';
 
 const Index = () => {
   const {ready, isAuthenticated} = useContext(AuthContext);
@@ -25,10 +26,10 @@ const Index = () => {
 
   return (
     <Grid container spacing={0}>
-      <Grid item xs={5} display={'flex'} justifyContent={'center'}>
+      <Grid item xs={12} md={5} className={styles.item}>
         <Main itemData={setChangeItemData} getUserData={getUserData} userData={userData}/>
       </Grid>
-      <Grid item xs={7} display={'flex'} justifyContent={'center'}>
+      <Grid item xs={12} md={7} className={`${styles.item} `}>
         <Cards setChangeItemData={setChangeItemData} changeItemData={changeItemData} cards={userData?.cards} getUserData={getUserData}/>
       </Grid>
     </Grid>

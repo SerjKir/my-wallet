@@ -114,10 +114,8 @@ router.post('/cash', auth, async (req, res) => {
     const { amount, currency } = req.body;
     const userId = req.decodedId;
     const user = await User.findById(userId);
-    console.log(user);
     balanceFuncAdd(user, 'cash', currency, amount);
     balanceFuncAdd(user, 'balance', currency, amount);
-
     await user.save();
     res.json(user);
   } catch (error) {
@@ -152,6 +150,9 @@ router.delete('/card/:id', auth, async (req, res) => {
 router.patch('/card/:id', auth, async (req, res) => {
   try {
     const { newAmount, name } = req.body;
+    if ( newAmount < 0 ) {
+      return  res.status(400).json({message: 'Значення не може бути меньше 0'});
+    }
     const cardId = req.params.id;
     const card = await Card.findById(cardId);
     const difference = parseInt(newAmount) - parseInt(card.amount);
@@ -168,7 +169,6 @@ router.patch('/card/:id', auth, async (req, res) => {
     user.balance = [];
     user.balance = newBalance;
     await user.save();
-    console.log(user);
     res.json({message: 'ok'});
   } catch (error) {
     res.status(500).json({message: 'Не вдалося оновити картку ', error})
@@ -182,7 +182,6 @@ router.patch('/cash', auth, async (req, res) => {
     if ( newAmount < 0 ) {
       return  res.status(400).json({message: 'Значення не може бути меньше 0'});
     }
-    console.log(newAmount, currency)
     const userId = req.decodedId;
     const user = await User.findById(userId);
     let prevCash = 0;

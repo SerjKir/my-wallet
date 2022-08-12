@@ -24,18 +24,18 @@ const Index = ({card, removeCard}) => {
               :
               card.scheme}
             </span>
-            <span>{card.type}</span>
+            <span className={styles.type}>{card.type}</span>
           </div>
         </div>
         <div className={`${styles.row} ${styles.center}`}>
           <span className={styles.number} onClick={() => setIsHidden(!isHidden)}>{isHidden ? numberWithStars : numberWithSpaces}</span>
-          <span className={styles.copy} onClick={() => navigator.clipboard.writeText(card.number)}>Copy</span>
+          <span className={styles.copy} onClick={() => navigator.clipboard.writeText(card.number)}>copy</span>
         </div>
         <div className={styles.row}>
           <span className={styles.exp}>{card.expDate}</span>
         </div>
       </div>
-      <Button variant={'contained'} color={'error'} onClick={() => removeCard(card._id)}>Видалити</Button>
+      <Button variant={'contained'} color={'error'} className={'small-btn'} onClick={() => removeCard(card._id)}>Видалити</Button>
     </div>
   );
 };
