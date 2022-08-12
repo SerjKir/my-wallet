@@ -63,9 +63,9 @@ const Index = () => {
               color={'primary'}
               disabled={!isValid}
             >
-              Войти
+              Вхід
             </Button>
-            <span onClick={() => setIsLogin(false)}>Немає облікового запису? Реєстрація.</span>
+            <span onClick={() => setIsLogin(false)}>Немає облікового запису? Реєстрація</span>
           </div>
           :
           <div className={styles.buttons} >
@@ -78,7 +78,7 @@ const Index = () => {
             >
               Реєстрація
             </Button>
-            <span onClick={() => setIsLogin(true)}>Є обліковий запис? Вхід.</span>
+            <span onClick={() => setIsLogin(true)}>Є обліковий запис? Вхід</span>
           </div>
         }
       </form>
