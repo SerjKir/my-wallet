@@ -1,3 +1,5 @@
 /.idea
 /node_modules
 .env
+/frontend/.idea
+/frontend/node_modules
