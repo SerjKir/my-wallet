@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styles from './Card.module.scss';
 import {Button} from '@mui/material';
-import {baseEnvUrl} from '../../consts';
+import {baseUrl} from '../../consts';
 
 const Index = ({card, removeCard}) => {
   const [isHidden, setIsHidden] = useState(true);
@@ -20,7 +20,7 @@ const Index = ({card, removeCard}) => {
             <span className={styles.logo} >
               {card.scheme === 'visa' || card.scheme === 'mastercard'
               ?
-              <img alt={card.scheme} src={`${baseEnvUrl}/uploads/${card.scheme}.svg`}/>
+              <img alt={card.scheme} src={`${baseUrl}/uploads/${card.scheme}.svg`}/>
               :
               card.scheme}
             </span>

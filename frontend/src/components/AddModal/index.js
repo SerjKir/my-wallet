@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useContext} from 'react';
 import styles from './AddModal.module.scss'
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui/material';
 import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
-import {useCurrency} from '../../hooks/currency.hook';
+import {MainContext} from '../../context/MainContext';
 
-const Index = ({isModal, setIsModal, getUserData, isName, isEdit, changeItemData, setChangeItemData, isCash}) => {
-  const {currency, selectedCurrency, getAvailableCurrency, handleSelectChange} = useCurrency();
+const Index = ({isModal, setIsModal, isName, isEdit, isCash}) => {
+  const {getUserData, changeItemData, setChangeItemData, availableCurrency, selectedCurrency, handleSelectChange} = useContext(MainContext);
 
   const {
     register,
@@ -14,7 +14,7 @@ const Index = ({isModal, setIsModal, getUserData, isName, isEdit, changeItemData
     reset,
     formState: {errors, isValid},
   } = useForm({
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   const onSubmit = async (values) => {
@@ -41,10 +41,6 @@ const Index = ({isModal, setIsModal, getUserData, isName, isEdit, changeItemData
     }
   };
 
-  useEffect(() => {
-    getAvailableCurrency();
-  }, [getAvailableCurrency]);
-
   return (
     <div style={{display: isModal ? 'flex' : 'none'}} className={styles.background}>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
@@ -65,7 +61,7 @@ const Index = ({isModal, setIsModal, getUserData, isName, isEdit, changeItemData
               value={isEdit && changeItemData?.currency ? changeItemData?.currency : selectedCurrency}
               onChange={handleSelectChange}
             >
-              {currency?.map((elem, index) => <MenuItem key={index} value={elem}>{elem}</MenuItem>)}
+              {availableCurrency?.map((elem, index) => <MenuItem key={index} value={elem}>{elem}</MenuItem>)}
             </Select>
           </FormControl>
           {isName && <TextField value={changeItemData?.name}

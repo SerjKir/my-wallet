@@ -1,8 +1,8 @@
 import axios from "axios";
-import {baseEnvUrl} from '../consts';
+import {baseUrl} from '../consts';
 
 const instance = axios.create({
-  baseURL: baseEnvUrl,
+  baseURL: baseUrl,
 });
 
 instance.interceptors.request.use((config) => {

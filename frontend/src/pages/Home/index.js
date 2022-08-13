@@ -1,36 +1,18 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React from 'react';
 import {Grid} from '@mui/material';
-import Main from '../../components/MainInfo';
+import MainInfo from '../../components/MainInfo';
 import Cards from '../../components/Cards';
-import {getMe} from '../../api/mainApi';
-import {AuthContext} from '../../context/AuthContext';
 import styles from './Home.module.scss';
 
 const Index = () => {
-  const {ready, isAuthenticated} = useContext(AuthContext);
-  const [userData, setUserData] = useState(null);
-  const [changeItemData, setChangeItemData] = useState(null);
-
-  const getUserData = useCallback( async () => {
-    const user = await getMe();
-    setUserData(user);
-  }, []);
-
-  useEffect(() => {
-    if (ready) {
-      if (isAuthenticated && window.localStorage.getItem('token')) {
-        getUserData().then();
-      }
-    }
-  }, [ready, isAuthenticated, getUserData])
 
   return (
     <Grid container spacing={0}>
       <Grid item xs={12} md={5} className={styles.item}>
-        <Main itemData={setChangeItemData} getUserData={getUserData} userData={userData}/>
+        <MainInfo />
       </Grid>
       <Grid item xs={12} md={7} className={`${styles.item} `}>
-        <Cards setChangeItemData={setChangeItemData} changeItemData={changeItemData} cards={userData?.cards} getUserData={getUserData}/>
+        <Cards/>
       </Grid>
     </Grid>
   );

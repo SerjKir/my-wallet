@@ -4,7 +4,7 @@ const Index = ({children}) => {
   return (
     <div>
       {children}
-      <hr style={{marginTop: '10px'}}/>
+      <hr style={{marginTop: '8px'}}/>
     </div>
   );
 };

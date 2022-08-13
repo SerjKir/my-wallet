@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Paper} from '@mui/material';
 import styles from './Cards.module.scss'
 import AddCard from '../AddCard';
 import CardsInfo from '../CardsInfo';
 import ChangeModal from '../AddModal';
 import {removeCard} from '../../api/mainApi';
+import {MainContext} from '../../context/MainContext';
 
-const Index = ({getUserData, cards, changeItemData, setChangeItemData}) => {
+const Index = () => {
+  const {getUserData, changeItemData} = useContext(MainContext);
   const [page, setPage] = useState('CardsInfo');
   const [isModal, setIsModal] = useState(false);
   const [isChangeModal, setIsChangeModal] = useState(false);
@@ -21,8 +23,12 @@ const Index = ({getUserData, cards, changeItemData, setChangeItemData}) => {
   useEffect(() => {
     if (changeItemData) {
       if (changeItemData.isCash) {
+        setIsModal(false);
+        setIsChangeModal(false);
         setIsChangeCashModal(true);
       } else {
+        setIsModal(false);
+        setIsChangeCashModal(false);
         setIsChangeModal(true);
       }
     }
@@ -30,10 +36,10 @@ const Index = ({getUserData, cards, changeItemData, setChangeItemData}) => {
 
   return (
     <Paper className={styles.container}>
-      {page === 'CardsInfo' ? <CardsInfo removeCard={handleRemoveCard} cards={cards} setIsModal={setIsModal} setPage={setPage}/> : <AddCard setPage={setPage} getUserData={getUserData}/>}
-      <ChangeModal getUserData={getUserData} isModal={isModal} setIsModal={setIsModal}/>
-      <ChangeModal setChangeItemData={setChangeItemData} isEdit={true} isName={true} changeItemData={changeItemData} getUserData={getUserData} isModal={isChangeModal} setIsModal={setIsChangeModal}/>
-      <ChangeModal setChangeItemData={setChangeItemData} isEdit={true} isCash={true} changeItemData={changeItemData} getUserData={getUserData} isModal={isChangeCashModal} setIsModal={setIsChangeCashModal}/>
+      {page === 'CardsInfo' ? <CardsInfo removeCard={handleRemoveCard} setIsModal={setIsModal} setPage={setPage}/> : <AddCard setPage={setPage}/>}
+      <ChangeModal isModal={isModal} setIsModal={setIsModal}/>
+      <ChangeModal isEdit={true} isName={true} isModal={isChangeModal} setIsModal={setIsChangeModal}/>
+      <ChangeModal isEdit={true} isCash={true} isModal={isChangeCashModal} setIsModal={setIsChangeCashModal}/>
     </Paper>
   );
 };

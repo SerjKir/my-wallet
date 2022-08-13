@@ -1,14 +1,14 @@
 import React, {useContext, useState} from 'react';
 import {Button, Paper, TextField, Typography} from '@mui/material';
-import styles from './Login.module.scss';
+import styles from './Auth.module.scss';
 import {useForm} from 'react-hook-form';
 import {loginApi, registerApi} from '../../api/mainApi';
 import {useNavigate} from 'react-router-dom';
-import {AuthContext} from '../../context/AuthContext';
+import {MainContext} from '../../context/MainContext';
 
 const Index = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const {login} = useContext(AuthContext)
+  const {login} = useContext(MainContext)
   const navigate = useNavigate();
   const {
     register,
@@ -41,6 +41,7 @@ const Index = () => {
         <TextField
           label="Name"
           fullWidth
+          required={true}
           className={styles.field}
           error={!!errors.name?.message}
           helperText={errors.name?.message}
@@ -49,6 +50,7 @@ const Index = () => {
         <TextField
           label="Password"
           fullWidth
+          required={true}
           className={styles.field}
           error={!!errors.password?.message}
           helperText={errors.password?.message}

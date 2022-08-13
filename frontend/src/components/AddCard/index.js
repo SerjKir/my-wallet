@@ -1,14 +1,14 @@
-import React, { useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import styles from './AddCard.module.scss';
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography} from '@mui/material';
 import {useForm} from 'react-hook-form';
 import {addCard} from '../../api/mainApi';
 import DatePicker from '../DatePicker';
-import {useCurrency} from '../../hooks/currency.hook';
+import {MainContext} from '../../context/MainContext';
 
-const Index = ({getUserData, setPage}) => {
+const Index = ({setPage}) => {
+  const {getUserData, availableCurrency, selectedCurrency, handleSelectChange} = useContext(MainContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const {currency, selectedCurrency, getAvailableCurrency, handleSelectChange} = useCurrency();
 
   const checkCard = (value) => {
     const check = !(value.replace(/\D/g, '').split('').reverse().reduce(function(a, d, i) {
@@ -34,22 +34,18 @@ const Index = ({getUserData, setPage}) => {
     formState: {errors, isValid},
   } = useForm({
     defaultValues: {number: '', cvv: '', holder: '', amount: ''},
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   const onSubmit = async (values) => {
     const expDate = selectedDate.toLocaleDateString().slice(-7).replace(".", "/").replace('20', '');
     await addCard({currency: selectedCurrency, expDate, ...values})
       .then(data => {
-        getUserData().then();
+        getUserData();
         setPage('CardsInfo');
       })
       .catch(err => console.log(err));
   };
-
-  useEffect(() => {
-    getAvailableCurrency();
-  }, [getAvailableCurrency]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -93,7 +89,7 @@ const Index = ({getUserData, setPage}) => {
             value={selectedCurrency}
             onChange={handleSelectChange}
           >
-            {currency?.map((elem, index) => <MenuItem key={index} value={elem}>{elem}</MenuItem>)}
+            {availableCurrency?.map((elem, index) => <MenuItem key={index} value={elem}>{elem}</MenuItem>)}
           </Select>
         </FormControl>
       </div>
