@@ -1,5 +1,19 @@
 .row {
   display: flex;
   justify-content: space-between;
-  grid-column-gap: 10px;
+  column-gap: 10px;
+  @media (max-width: 400px) {
+    flex-direction: column;
+    row-gap: 10px;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.checkbox span {
+  font-weight: 500;
 }

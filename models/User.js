@@ -1,4 +1,4 @@
-const { Schema, model, Types} = require('mongoose');
+const {Schema, model, Types} = require('mongoose');
 
 const schema = new Schema({
   name: {type: String, required: true, unique: true},
@@ -7,6 +7,8 @@ const schema = new Schema({
   cash: {type: Array, default: []},
   cards: [{type: Types.ObjectId, ref: 'Card'}],
   avatarUrl: {type: String, default: '/uploads/default_user.jpg'}
+}, {
+  timestamps: true
 })
 
 module.exports = model('User', schema)

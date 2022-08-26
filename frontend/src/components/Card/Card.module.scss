@@ -1,9 +1,12 @@
 .container {
-  margin-top: 10px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  grid-column-gap: 10px;
+  column-gap: 10px;
+  @media (max-width: 400px) {
+    flex-direction: column;
+    row-gap: 5px;
+  }
 }
 
 .card {
@@ -11,7 +14,24 @@
   padding: 10px;
   border: 2px solid black;
   border-radius: 4px;
-  max-width: 300px;
+  max-width: 260px;
+
+  &.skin {
+    background-image: linear-gradient(to bottom, #157cc7,#157cc7 50%,#ff0 50%, #ff0);
+    background-size: cover;
+    .amount {
+      color: yellow;
+    }
+    .copy {
+      color: gray;
+    }
+  }
+}
+
+.visa {
+  padding: 3px;
+  background: #fff;
+  border-radius: 3px;
 }
 
 .number {
@@ -30,6 +50,7 @@
   justify-content: space-between;
   margin-top: 5px;
 }
+
 .column {
   display: flex;
   flex-direction: column;

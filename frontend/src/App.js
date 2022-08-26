@@ -1,54 +1,69 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {CircularProgress, Container} from '@mui/material';
-import Home from './pages/Home';
-import Auth from './pages/Auth';
+import {Container} from '@mui/material';
+import Home from './pages/Home/HomePage';
+import Auth from './pages/Auth/AuthPage';
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import {useAuth} from './hooks/auth.hook';
 import {MainContext} from './context/MainContext';
 import {getMe} from './api/mainApi';
+import Snackbar from './components/Informer/Informer';
+import ProgressMain from './components/ProgressMain/ProgressMain';
 
 const App = () => {
-  const {token, login, logout, ready} = useAuth();
   const [userData, setUserData] = useState(null);
+  const [currency, setCurrency] = useState({availableCurrency: null, selectedCurrency: ''});
   const [changeItemData, setChangeItemData] = useState(null);
-  const [availableCurrency, setAvailableCurrency] = useState(null);
-  const [selectedCurrency, setSelectedCurrency] = useState('');
-  const isAuthenticated = !!token;
+  const [notification, setNotification] = useState({});
+  const {token, login, logout, ready} = useAuth(setUserData, setChangeItemData);
+  const isAuthenticated = !!token && window.localStorage.getItem('token');
+
+  const handleSelectChange = useCallback((event) => {
+    setCurrency({
+      availableCurrency: currency.availableCurrency,
+      selectedCurrency: event.target.value
+    });
+  }, [currency.availableCurrency]);
 
   const getUserData = useCallback(async () => {
-    const data = await getMe();
-    setUserData(data.user);
-    setAvailableCurrency(data.availableCurrency);
-    setSelectedCurrency(data.availableCurrency[0]);
-  }, []);
-
-  const handleSelectChange = (event) => {
-    setSelectedCurrency(event.target.value);
-  };
+    await getMe().then(res => {
+      setUserData(res.data.user);
+      setCurrency({
+        availableCurrency: res.data.availableCurrency,
+        selectedCurrency: res.data.availableCurrency[0]
+      })
+    }).catch(error => {
+      error.response.status === 401 && logout();
+      setNotification({open: true, message: error.response.data.message, style: 'error'});
+    });
+  }, [logout]);
 
   useEffect(() => {
-    if (ready) {
-      if (isAuthenticated && window.localStorage.getItem('token')) {
-        getUserData();
-      }
-    }
-  }, [ready, isAuthenticated, getUserData])
+    ready && isAuthenticated && getUserData();
+  }, [ready, isAuthenticated, getUserData]);
 
   if (!ready) {
-    return <CircularProgress/>
+    return <ProgressMain/>
   }
 
   return (
     <BrowserRouter>
       <MainContext.Provider value={{
-        login, logout, isAuthenticated, ready, userData,
-        setUserData, getUserData, changeItemData, setChangeItemData,
-        availableCurrency, selectedCurrency, setSelectedCurrency, handleSelectChange
+        logout,
+        userData,
+        getUserData,
+        changeItemData,
+        setChangeItemData,
+        currency,
+        handleSelectChange,
+        setNotification: setNotification,
       }}>
         <Container maxWidth={'md'}>
           <Routes>
-            {isAuthenticated ? (<Route path={'/'} element={<Home/>}/>) : <Route path={'/'} element={<Auth/>}/>}
+            {isAuthenticated
+              ? <Route path={'/'} element={<Home userData={userData}/>}/>
+              : <Route path={'/'} element={<Auth login={login} setNotification={setNotification}/>}/>}
           </Routes>
+          <Snackbar snack={notification} handleClose={setNotification}/>
         </Container>
       </MainContext.Provider>
     </BrowserRouter>

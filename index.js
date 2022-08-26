@@ -19,7 +19,7 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
-app.use('/', require('./routes/routes'));
+app.use('/api', require('./routes/routes'));
 
 async function start() {
   try {
@@ -30,7 +30,9 @@ async function start() {
     app.listen(PORT, () => {
       console.log('Server started on port ' + PORT);
     })
-  } catch (err) {console.log(err)}
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 start().then();

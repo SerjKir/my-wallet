@@ -1,0 +1,6 @@
+.progress {
+  margin: 50px auto;
+  @media (max-width: 600px) {
+    margin: 20px auto;
+  }
+}

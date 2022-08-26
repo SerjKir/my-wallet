@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth.middleware')
 const lookup = require('binlookup')()
-const balanceFuncAdd = require('../balanceFuncAdd');
+const balanceFuncAdd = require('../utils/balanceFuncAdd');
 
 const router = express.Router();
 
@@ -16,30 +16,20 @@ router.post('/register', async (req, res) => {
     const {name, password} = req.body;
     const candidate = await User.findOne({name});
     if (candidate) {
-      return res.status(400).json({message: 'Такий користувач все є'});
+      return res.status(400).json({message: 'Такий користувач вже є!'});
     }
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
     const user = new User({name, passwordHash: hash});
-    user.balance.push({
-      amount: 0,
-      currency: 'UAH',
-    });
-    user.cash.push({
-      amount: 0,
-      currency: 'UAH',
-    });
     await user.save();
     const token = jwt.sign({
-        _id: user._id,
-      }, 'secretWord',
-      {
-        expiresIn: '30d'
-      }
-    )
-    res.json({token, id: user._id});
+      _id: user._id,
+    }, 'secretWord', {
+      expiresIn: '24h'
+    })
+    res.json(token);
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося зареєструватися ', error})
+    res.status(500).json({message: 'Не вдалося зареєструватися!'})
   }
 });
 
@@ -48,22 +38,20 @@ router.post('/login', async (req, res) => {
     const {name, password} = req.body;
     const user = await User.findOne({name})
     if (!user) {
-      return res.status(400).json({message: 'Такого користувачв немає'});
+      return res.status(404).json({message: 'Такого користувача не існує!'});
     }
     const isValidPass = await bcrypt.compare(password, user.passwordHash)
     if (!isValidPass) {
-      return res.status(400).json({message: "Им'я та пароль не співпадають"})
+      return res.status(400).json({message: 'Им\'я та пароль не співпадають!'})
     }
     const token = jwt.sign({
-        _id: user._id,
-      }, 'secretWord',
-      {
-        expiresIn: '30d'
-      }
-    )
-    res.json({token, id: user._id})
+      _id: user._id,
+    }, 'secretWord', {
+      expiresIn: '24h'
+    })
+    res.json(token)
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося увійти в аккаунт ', error})
+    res.status(500).json({message: 'Не вдалося увійти в аккаунт!', error})
   }
 });
 
@@ -72,32 +60,37 @@ router.get('/me', auth, async (req, res) => {
     const userId = req.decodedId;
     const user = await User.findById(userId).populate('cards');
     if (!user) {
-      return res.status(404).json({message: 'Користувач не знайден'})
+      return res.status(404).json({message: 'Користувач не знайден!'})
     }
     res.json({user, availableCurrency});
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося отримати данні користувача ', error})
-  }
-});
-
-router.get('/currency', auth, async (req, res) => {
-  try {
-    res.json(availableCurrency);
-  } catch (error) {
-    res.status(500).json({message: 'Не вдалося отримати доступні валюти ', error})
+    res.status(500).json({message: 'Не вдалося отримати данні користувача!', error})
   }
 });
 
 router.post('/card', auth, async (req, res) => {
   try {
-    const { number, expDate, cvv, holder, amount, currency } = req.body;
+    const {number, expDate, cvv, holder, amount, currency} = req.body;
+
+    if (amount < 0) {
+      return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
+    }
     const userId = req.decodedId;
-    const cardData = await lookup(number.slice(0,6));
+    const cardData = await lookup(number.slice(0, 8), function (err, data) {
+      if (!err) {
+        return data
+      }
+    });
+    if (!cardData) {
+      return res.status(404).json({message: 'Номер картки не пройшов перевірку!'});
+    }
     const candidate = await Card.findOne({number});
     if (candidate) {
-      return res.status(400).json({message: 'Така карта вже додана'})
+      return res.status(400).json({message: 'Така картка вже додана!'})
     }
-    const card = new Card({owner: userId, amount, currency, number, expDate, cvv, holder, scheme: cardData.scheme, type: cardData.type});
+    const card = new Card({
+      owner: userId, amount, currency, number, expDate, cvv, holder, scheme: cardData.scheme, type: cardData.type
+    });
     await card.save();
     const user = await User.findById(userId);
     user.cards.push(card);
@@ -105,13 +98,16 @@ router.post('/card', auth, async (req, res) => {
     await user.save();
     res.json(card)
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося додати карту ', error})
+    res.status(500).json({message: 'Не вдалося додати карту!', error})
   }
 });
 
 router.post('/cash', auth, async (req, res) => {
   try {
-    const { amount, currency } = req.body;
+    const {amount, currency} = req.body;
+    if (amount < 1) {
+      return res.status(400).json({message: 'Значення суми не може бути меньше 1!'});
+    }
     const userId = req.decodedId;
     const user = await User.findById(userId);
     balanceFuncAdd(user, 'cash', currency, amount);
@@ -119,7 +115,7 @@ router.post('/cash', auth, async (req, res) => {
     await user.save();
     res.json(user);
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося додати готівку ', error})
+    res.status(500).json({message: 'Не вдалося додати готівку!', error})
   }
 });
 
@@ -137,27 +133,30 @@ router.delete('/card/:id', auth, async (req, res) => {
     await User.updateOne({_id: card.owner}, {
       $pullAll: {
         cards: [{_id: cardId}]
-      },
-      balance: newBalance
+      }, balance: newBalance
     })
     await card.remove();
     res.json({message: 'ok'});
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося выдалити картку ', error})
+    res.status(500).json({message: 'Не вдалося выдалити картку!', error})
   }
 });
 
 router.patch('/card/:id', auth, async (req, res) => {
   try {
-    const { newAmount, name } = req.body;
-    if ( newAmount < 0 ) {
-      return  res.status(400).json({message: 'Значення не може бути меньше 0'});
+    const {newAmount, name} = req.body;
+    if (newAmount < 0) {
+      return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
+    }
+    let newName = name.trim();
+    if (newName === '') {
+      return res.status(400).json({message: 'Назва не може буты пустою'});
     }
     const cardId = req.params.id;
     const card = await Card.findById(cardId);
     const difference = parseInt(newAmount) - parseInt(card.amount);
     card.amount = newAmount;
-    card.name = name;
+    card.name = newName;
     await card.save();
     const user = await User.findById(card.owner);
     const newBalance = user.balance.map(elem => {
@@ -171,16 +170,16 @@ router.patch('/card/:id', auth, async (req, res) => {
     await user.save();
     res.json({message: 'ok'});
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося оновити картку ', error})
+    res.status(500).json({message: 'Не вдалося оновити картку!', error})
   }
 });
 
 
 router.patch('/cash', auth, async (req, res) => {
   try {
-    const { newAmount, currency } = req.body;
-    if ( newAmount < 0 ) {
-      return  res.status(400).json({message: 'Значення не може бути меньше 0'});
+    const {newAmount, currency} = req.body;
+    if (newAmount < 0) {
+      return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     }
     const userId = req.decodedId;
     const user = await User.findById(userId);
@@ -205,7 +204,7 @@ router.patch('/cash', auth, async (req, res) => {
     await user.save();
     res.json({message: 'ok'})
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося оновити готівку ', error})
+    res.status(500).json({message: 'Не вдалося оновити готівку!', error})
   }
 })
 

@@ -1,18 +1,14 @@
-import {createContext} from "react";
+import {createContext} from 'react';
 
 function noop() {}
 
 export const MainContext = createContext({
-  login: noop,
   logout: noop,
-  setUserData: noop,
-  getUserData: noop,
-  isAuthenticated: false,
   userData: null,
+  getUserData: noop,
   changeItemData: null,
-  setChangeItemData: null,
-  availableCurrency: null,
-  selectedCurrency: null,
-  setSelectedCurrency: noop,
+  setChangeItemData: noop,
+  currency: null,
   handleSelectChange: noop,
+  setNotification: noop,
 })
