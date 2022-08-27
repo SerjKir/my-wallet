@@ -5,13 +5,11 @@ import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
 import {MainContext} from '../../context/MainContext';
 
-const AddModal = ({isModal, setIsModal, isEdit, data, setData}) => {
+const AddModal = ({isModal, setIsModal, isEdit, data, setData, catchHandler}) => {
   const {
     getUserData,
     currency,
     handleSelectChange,
-    logout,
-    setNotification,
   } = useContext(MainContext);
 
   const {
@@ -32,20 +30,16 @@ const AddModal = ({isModal, setIsModal, isEdit, data, setData}) => {
       if (data.isCash) {
         await updateCash(data.amount, data.currency).then(() => {
           getUserData();
-          setData(null);
           onClose();
         }).catch(error => {
-          error.response.status === 401 && logout();
-          setNotification({open: true, message: error.response.data.message, style: 'error'});
+          catchHandler(error);
         });
       } else {
         await updateCard(data.id, data.amount, data.name).then(() => {
           getUserData();
-          setData(null);
           onClose();
         }).catch(error => {
-          error.response.status === 401 && logout();
-          setNotification({open: true, message: error.response.data.message, style: 'error'});
+          catchHandler(error);
         });
       }
     } else {
@@ -55,8 +49,7 @@ const AddModal = ({isModal, setIsModal, isEdit, data, setData}) => {
           reset();
           onClose();
         }).catch(error => {
-          error.response.status === 401 && logout();
-          setNotification({open: true, message: error.response.data.message, style: 'error'});
+          catchHandler(error);
         });
     }
   };
@@ -89,12 +82,12 @@ const AddModal = ({isModal, setIsModal, isEdit, data, setData}) => {
               {currency.availableCurrency.map((elem, index) => <MenuItem key={index} value={elem}>{elem}</MenuItem>)}
             </Select>
           </FormControl>
-          {data?.name && <TextField value={data.name}
-                                              onChange={(e) =>
-                                                setData({...data, name: e.target.value})} fullWidth
-                                              label="Назва"
-                                              required={true}
-                                              variant="outlined"/>}
+          {isEdit && !data.isCash && <TextField value={data.name}
+                                                onChange={(e) =>
+                                                  setData({...data, name: e.target.value})} fullWidth
+                                                label="Назва"
+                                                required={true}
+                                                variant="outlined"/>}
         </div>
         <div className={styles.row}>
           <Button type={'submit'} variant={'contained'} color={'primary'} disabled={!isValid}>Зберегти</Button>

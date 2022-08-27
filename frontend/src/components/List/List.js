@@ -1,11 +1,12 @@
 import React from 'react';
+import {Box} from '@mui/material';
 
 const List = ({children}) => {
   return (
-    <div>
+    <Box>
       {children}
       <hr style={{marginTop: '10px'}}/>
-    </div>
+    </Box>
   );
 };
 

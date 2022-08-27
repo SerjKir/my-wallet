@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
+const auth = require('./middleware/auth.middleware');
 
 const app = express();
 
@@ -19,7 +20,8 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
-app.use('/api', require('./routes/routes'));
+app.use('/api', require('./routes/publicRoutes'));
+app.use('/api', auth, require('./routes/privateRoutes'));
 
 async function start() {
   try {

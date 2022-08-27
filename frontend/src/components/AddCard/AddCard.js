@@ -6,13 +6,11 @@ import {addCard} from '../../api/mainApi';
 import ExpireDatePicker from '../ExpireDatePicker/ExpireDatePicker';
 import {MainContext} from '../../context/MainContext';
 
-const AddCard = ({setPage}) => {
+const AddCard = ({setPage, catchHandler}) => {
   const {
     getUserData,
     currency,
     handleSelectChange,
-    logout,
-    setNotification
   } = useContext(MainContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -52,8 +50,7 @@ const AddCard = ({setPage}) => {
         getUserData();
         setPage('CardsInfo');
       }).catch(error => {
-        error.response.status === 401 && logout();
-        setNotification({open: true, message: error.response.data.message, style: 'error'});
+        catchHandler(error);
       });
   };
 

@@ -1,7 +1,7 @@
 import axios from './axios';
 
-export const getMe = async () => {
-  return await axios.get('/api/me');
+export const getData = async () => {
+  return await axios.get('/api/data');
 };
 
 export const loginApi = async (params) => {

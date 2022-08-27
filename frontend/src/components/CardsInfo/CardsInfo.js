@@ -9,7 +9,7 @@ const CardsInfo = ({setPage, setIsModal, removeCard, userData, setNotification})
   const isCards = userData.cards.length !== 0;
 
   return (
-    <div>
+    <>
       <div className={styles.row}>
         <Button variant={'contained'} onClick={() => setPage('AddCard')}>Додати картку</Button>
         <Button variant={'contained'} color={'success'} onClick={() => setIsModal(true)}>Додати готівку</Button>
@@ -21,7 +21,7 @@ const CardsInfo = ({setPage, setIsModal, removeCard, userData, setNotification})
       <div className={styles.column}>
         {userData.cards.map(card => <Card setNotification={setNotification} isSkin={isSkin} removeCard={removeCard} key={card._id} card={card}/>)}
       </div>
-    </div>
+    </>
   );
 };
 

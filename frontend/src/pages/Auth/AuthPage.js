@@ -5,7 +5,7 @@ import {useForm} from 'react-hook-form';
 import {loginApi, registerApi} from '../../api/mainApi';
 import {useNavigate} from 'react-router-dom';
 
-const AuthPage = ({login, setNotification}) => {
+const AuthPage = ({login, catchHandler}) => {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const {
@@ -19,7 +19,7 @@ const AuthPage = ({login, setNotification}) => {
     await (isLogin ? loginApi : registerApi)(values).then(res => {
       token = res.data;
     }).catch(error => {
-      setNotification({open: true, message: error.response.data.message, style: 'error'});
+      catchHandler(error);
     });
     if (token) {
       await login(token);
