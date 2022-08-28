@@ -43,7 +43,6 @@ const AddCard = ({setPage, catchHandler}) => {
   });
 
   const onSubmit = async (values) => {
-
     const expDate = selectedDate.toLocaleDateString().slice(-7).replace('.', '/').replace('20', '');
     await addCard({currency: currency.selectedCurrency, expDate, ...values})
       .then(() => {

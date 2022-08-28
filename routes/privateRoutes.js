@@ -24,22 +24,17 @@ router.get('/data', async (req, res) => {
 
 router.post('/card', async (req, res) => {
   try {
-    const {number, expDate, cvv, holder, amount, currency} = req.body;
-
+    const userId = req.decodedId;
+    let {number, expDate, cvv, holder, amount, currency} = req.body;
     if (amount < 0) {
       return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     }
-    const userId = req.decodedId;
-    const cardData = await lookup(number.slice(0, 8), function (err, data) {
-      if (!err) {
-        return data
-      }
-    });
+    const cardData = await lookup(number.slice(0, 8)).then(data => data).catch(() => false);
     if (!cardData) {
-      return res.status(404).json({message: 'Номер картки не пройшов перевірку!'});
+      return res.status(400).json({message: 'Картка не пройшла валідацію!'});
     }
-    const candidate = await Card.findOne({number});
-    if (candidate) {
+    const isExist = await Card.findOne({number});
+    if (isExist) {
       return res.status(400).json({message: 'Така картка вже додана!'})
     }
     const card = new Card({
