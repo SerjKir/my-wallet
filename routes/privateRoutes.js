@@ -29,6 +29,10 @@ router.post('/card', async (req, res) => {
     if (amount < 0) {
       return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     }
+    const formatDate = date => {
+      const formattedDate = date.slice(2,7).replace('-', '/');
+      return formattedDate[3] + formattedDate[4] + formattedDate[2] + formattedDate[0] + formattedDate[1];
+    }
     const cardData = await lookup(number.slice(0, 8)).then(data => data).catch(() => false);
     if (!cardData) {
       return res.status(400).json({message: 'Картка не пройшла валідацію!'});
@@ -38,7 +42,7 @@ router.post('/card', async (req, res) => {
       return res.status(400).json({message: 'Така картка вже додана!'})
     }
     const card = new Card({
-      owner: userId, amount, currency, number, expDate, cvv, holder, scheme: cardData.scheme, type: cardData.type
+      owner: userId, amount, currency, number, expDate: formatDate(expDate), cvv, holder, scheme: cardData.scheme, type: cardData.type
     });
     await card.save();
     const user = await User.findById(userId);
@@ -85,7 +89,7 @@ router.delete('/card/:id', async (req, res) => {
       }, balance: newBalance
     })
     await card.remove();
-    res.json({message: 'ok'});
+    res.json({message: 'Карта успішно видалена'});
   } catch (error) {
     res.status(500).json({message: 'Не вдалося выдалити картку!', error})
   }
@@ -117,7 +121,7 @@ router.patch('/card/:id', async (req, res) => {
     user.balance = [];
     user.balance = newBalance;
     await user.save();
-    res.json({message: 'ok'});
+    res.json({message: 'Картка успішно оновлена'});
   } catch (error) {
     res.status(500).json({message: 'Не вдалося оновити картку!', error})
   }
@@ -151,7 +155,7 @@ router.patch('/cash', async (req, res) => {
     user.balance = [];
     user.balance = newBalance;
     await user.save();
-    res.json({message: 'ok'})
+    res.json({message: 'Готівка успішно оновлена'})
   } catch (error) {
     res.status(500).json({message: 'Не вдалося оновити готівку!', error})
   }
