@@ -4,7 +4,7 @@ import styles from './Cards.module.scss'
 import AddCard from '../AddCard/AddCard';
 import CardsInfo from '../CardsInfo/CardsInfo';
 import AddModal from '../AddModal/AddModal';
-import {removeCard} from '../../api/mainApi';
+import {removeCard, setIsSkin} from '../../api/mainApi';
 import {MainContext} from '../../context/MainContext';
 
 const Cards = ({setNotification, catchHandler}) => {
@@ -12,6 +12,7 @@ const Cards = ({setNotification, catchHandler}) => {
   const [page, setPage] = useState('CardsInfo');
   const [isModal, setIsModal] = useState(false);
   const [data, setData] = useState(null);
+
   const handleRemoveCard = async (id) => {
     await removeCard(id).then(() => {
       getUserData();
@@ -19,6 +20,12 @@ const Cards = ({setNotification, catchHandler}) => {
       catchHandler(error);
     });
   }
+
+  const handleSetIsSkin = async (isSkin) => {
+    await setIsSkin({isSkin}).then(() => getUserData()).catch(error => {
+      catchHandler(error);
+    });
+  };
 
   useEffect(() => {
     changeItemData && setData(changeItemData);
@@ -28,7 +35,7 @@ const Cards = ({setNotification, catchHandler}) => {
   return (
     <Paper className={styles.container}>
       {page === 'CardsInfo'
-        ? <CardsInfo setNotification={setNotification} userData={userData} removeCard={handleRemoveCard}
+        ? <CardsInfo handleSetIsSkin={handleSetIsSkin} setNotification={setNotification} userData={userData} removeCard={handleRemoveCard}
                      setIsModal={setIsModal} setPage={setPage}/>
         : <AddCard catchHandler={catchHandler} setPage={setPage}/>}
       {isModal && <AddModal catchHandler={catchHandler} isModal={isModal} setIsModal={setIsModal}/>}

@@ -6,7 +6,6 @@ import styles from './Home.module.scss';
 import ProgressMain from '../../components/ProgressMain/ProgressMain';
 
 const HomePage = ({userData, catchHandler, setNotification}) => {
-
   if (!userData) {
     return <ProgressMain/>
   }

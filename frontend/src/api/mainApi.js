@@ -16,6 +16,10 @@ export const addCard = async (params) => {
   return await axios.post('/api/card', params);
 };
 
+export const setIsSkin = async (params) => {
+  return await axios.patch('/api/user', params);
+};
+
 export const addCash = async (params) => {
   return await axios.post('/api/cash', params);
 };

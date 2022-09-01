@@ -22,7 +22,7 @@ const App = () => {
     setNotification({open: true, message: error.response.data.message, style: 'error'});
   }, [logout]);
 
-  const handleSelectChange = (event) => {
+  const handleSelectChange = event => {
     setCurrency({
       availableCurrency: currency.availableCurrency,
       selectedCurrency: event.target.value

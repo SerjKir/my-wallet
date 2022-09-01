@@ -5,6 +5,7 @@ import {useForm} from 'react-hook-form';
 import {addCard} from '../../api/mainApi';
 import ExpireDatePicker from '../ExpireDatePicker/ExpireDatePicker';
 import {MainContext} from '../../context/MainContext';
+import {checkCard, numbersOnly} from '../../helpers';
 
 const AddCard = ({setPage, catchHandler}) => {
   const {
@@ -13,25 +14,6 @@ const AddCard = ({setPage, catchHandler}) => {
     handleSelectChange,
   } = useContext(MainContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-  //Luhn algorithm for card number check
-  const checkCard = (value) => {
-    const check = !(value.replace(/\D/g, '').split('').reverse().reduce(function (a, d, i) {
-      return a + d * (i % 2 ? 2.2 : 1) | 0;
-    }, 0) % 10);
-    if (!check) {
-      return 'Не валідна картка'
-    }
-    return check;
-  };
-
-  const maxLength = (e, maxLength) => {
-    e.target.value = Math.max(parseInt(e.target.value)).toString().slice(0, maxLength)
-  };
-
-  const minLength = (value, min = 3) => {
-    return value.length === min ? true : `Потрібно мінімум ${min} символи`;
-  }
 
   const {
     register,
@@ -58,8 +40,9 @@ const AddCard = ({setPage, catchHandler}) => {
         Додавання картки
       </Typography>
       <div className={styles.row}>
-        <TextField required={true} fullWidth type={'number'} label="Номер картки" variant="outlined"
-                   onInput={(e) => maxLength(e, 19)}
+        <TextField required={true} fullWidth type={'text'} label="Номер картки" variant="outlined"
+                   onInput={event => numbersOnly(event)}
+                   inputProps={{maxLength: 19}}
                    error={!!errors.number?.message}
                    helperText={errors.number?.message}
                    {...register('number', {validate: checkCard, required: 'Вкажіть номер картки', minLength: 13})}
@@ -67,11 +50,12 @@ const AddCard = ({setPage, catchHandler}) => {
       </div>
       <div className={styles.row}>
         <ExpireDatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
-        <TextField required={true} fullWidth type={'number'} label="CVV" variant="outlined"
-                   onInput={(e) => maxLength(e, 3)}
+        <TextField required={true} fullWidth type={'password'} label="CVV" variant="outlined"
+                   onInput={event => numbersOnly(event)}
+                   inputProps={{maxLength: 3}}
                    error={!!errors.cvv?.message}
                    helperText={errors.cvv?.message}
-                   {...register('cvv', {required: 'Вкажіть CVV', validate: minLength})}
+                   {...register('cvv', {required: 'Вкажіть CVV', minLength: 3})}
         />
       </div>
       <div className={styles.row}>

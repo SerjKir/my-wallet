@@ -6,7 +6,8 @@ const schema = new Schema({
   balance: {type: Array, default: []},
   cash: {type: Array, default: []},
   cards: [{type: Types.ObjectId, ref: 'Card'}],
-  avatarUrl: {type: String, default: '/uploads/default_user.jpg'}
+  avatarUrl: {type: String, default: '/uploads/default_user.jpg'},
+  isSkin: {type: Boolean, default: false}
 }, {
   timestamps: true
 })

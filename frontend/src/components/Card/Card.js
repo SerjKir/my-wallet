@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import styles from './Card.module.scss';
 import {Button} from '@mui/material';
 import {baseUrl} from '../../consts';
+import {toCardWithSpaces, toCardWithStars} from '../../helpers';
 
 const Card = ({card, removeCard, isSkin, setNotification}) => {
   const [isNumberHidden, setIsNumberHidden] = useState(true);
@@ -15,8 +16,6 @@ const Card = ({card, removeCard, isSkin, setNotification}) => {
       removeCard(card._id);
     }
   }
-  const numberWithSpaces = card.number.toString().replace(/\s/g, '').replace(/(.{4})/g, '$1 ');
-  const numberWithStars = card.number.toString().replace(/^(\d{4})\d+(\d{4})$/, '$1 **** **** $2');
   const system = card.scheme;
 
   return (
@@ -40,7 +39,7 @@ const Card = ({card, removeCard, isSkin, setNotification}) => {
         </div>
         <div className={`${styles.row} ${styles.center}`}>
           <span className={styles.number}
-                onClick={() => setIsNumberHidden(!isNumberHidden)}>{isNumberHidden ? numberWithStars : numberWithSpaces}</span>
+                onClick={() => setIsNumberHidden(!isNumberHidden)}>{isNumberHidden ? toCardWithStars(card.number) : toCardWithSpaces(card.number)}</span>
           <span className={styles.copy} onClick={handleCopy}>copy</span>
         </div>
         <div className={styles.row}>

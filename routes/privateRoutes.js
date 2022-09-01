@@ -25,7 +25,8 @@ router.get('/data', async (req, res) => {
 router.post('/card', async (req, res) => {
   try {
     const userId = req.decodedId;
-    let {number, expDate, cvv, holder, amount, currency} = req.body;
+    const {number, expDate, cvv, holder, amount, currency} = req.body;
+    const formattedNumber = number.replace(/ /g,'');
     if (amount < 0) {
       return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     }
@@ -33,16 +34,16 @@ router.post('/card', async (req, res) => {
       const formattedDate = date.slice(2,7).replace('-', '/');
       return formattedDate[3] + formattedDate[4] + formattedDate[2] + formattedDate[0] + formattedDate[1];
     }
-    const cardData = await lookup(number.slice(0, 8)).then(data => data).catch(() => false);
+    const cardData = await lookup(formattedNumber.slice(0, 8)).then(data => data).catch(() => false);
     if (!cardData) {
       return res.status(400).json({message: 'Картка не пройшла валідацію!'});
     }
-    const isExist = await Card.findOne({number});
+    const isExist = await Card.findOne({formattedNumber});
     if (isExist) {
       return res.status(400).json({message: 'Така картка вже додана!'})
     }
     const card = new Card({
-      owner: userId, amount, currency, number, expDate: formatDate(expDate), cvv, holder, scheme: cardData.scheme, type: cardData.type
+      owner: userId, amount, currency, formattedNumber, expDate: formatDate(expDate), cvv, holder, scheme: cardData.scheme, type: cardData.type
     });
     await card.save();
     const user = await User.findById(userId);
@@ -52,6 +53,17 @@ router.post('/card', async (req, res) => {
     res.json(card)
   } catch (error) {
     res.status(500).json({message: 'Не вдалося додати карту!', error})
+  }
+});
+
+router.patch('/user', async (req, res) => {
+  try {
+    const {isSkin} = req.body;
+    const userId = req.decodedId;
+    await User.findByIdAndUpdate(userId, {isSkin}, {new: true});
+    res.json({message: 'Дані успішно оновлені'});
+  } catch (error) {
+    res.status(500).json({message: 'Не вдалося оновити дані!', error})
   }
 });
 
