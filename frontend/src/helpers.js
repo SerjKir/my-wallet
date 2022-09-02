@@ -15,9 +15,9 @@ export const numbersOnly = event => {
 };
 
 export const toCardWithSpaces = number => {
-  return number.toString().replace(/\s/g, '').replace(/(.{4})/g, '$1 ');
+  return number.replace(/\s/g, '').replace(/(.{4})/g, '$1 ');
 };
 
 export const toCardWithStars = number => {
-  return number.toString().replace(/^(\d{4})\d+(\d{4})$/, '$1 **** **** $2');
+  return number.replace(/^(\d{4})\d+(\d{4})$/, '$1 **** **** $2');
 };
