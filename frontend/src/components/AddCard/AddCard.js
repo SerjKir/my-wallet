@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import styles from './AddCard.module.scss';
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography} from '@mui/material';
 import {useForm} from 'react-hook-form';
@@ -34,8 +34,13 @@ const AddCard = ({setPage, catchHandler}) => {
       });
   };
 
+  const ref = useRef(null);
+  useEffect(() => {
+    ref.current.scrollIntoView({block: "center", behavior: "smooth"});
+  }, [])
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form ref={ref} onSubmit={handleSubmit(onSubmit)}>
       <Typography variant="h5" className={styles.title}>
         Додавання картки
       </Typography>

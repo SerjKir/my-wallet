@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import styles from './AddModal.module.scss'
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui/material';
 import {addCash, updateCard, updateCash} from '../../api/mainApi';
@@ -54,9 +54,16 @@ const AddModal = ({isModal, setIsModal, isEdit, data, setData, catchHandler}) =>
     }
   };
 
+  console.log('render')
+
+  const ref = useRef(null);
+  useEffect(() => {
+    ref.current.scrollIntoView({block: "center", behavior: "smooth"});
+  }, [isModal, data?.isOpen])
+
   return (
     <div style={{display: isModal || data.isOpen ? 'flex' : 'none'}} className={styles.background}>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
+      <form ref={ref} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
         <div className={`${styles.row} ${styles.inputs}`}>
           {isEdit
             ? <TextField value={data.amount}
