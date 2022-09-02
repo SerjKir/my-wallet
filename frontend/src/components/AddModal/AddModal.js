@@ -54,8 +54,6 @@ const AddModal = ({isModal, setIsModal, isEdit, data, setData, catchHandler}) =>
     }
   };
 
-  console.log('render')
-
   const ref = useRef(null);
   useEffect(() => {
     ref.current.scrollIntoView({block: "center", behavior: "smooth"});
