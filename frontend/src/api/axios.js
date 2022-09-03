@@ -1,13 +1,13 @@
 import axios from 'axios';
 import {baseUrl} from '../consts';
+import {getToken} from '../helpers';
 
 const instance = axios.create({
   baseURL: baseUrl,
 });
 
 instance.interceptors.request.use((config) => {
-  const token = window.localStorage.getItem('token');
-  config.headers.Authorization = `Bearer ${token}`;
+  config.headers.Authorization = `Bearer ${getToken()}`;
   return config;
 });
 

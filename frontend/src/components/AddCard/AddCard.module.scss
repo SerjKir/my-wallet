@@ -12,6 +12,14 @@
   }
 }
 
+.buttons {
+  @media (max-width: 400px) {
+    flex-direction: column;
+    row-gap: 10px;
+  }
+}
+
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

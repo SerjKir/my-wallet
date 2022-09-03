@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styles from './AddCard.module.scss';
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography} from '@mui/material';
 import {useForm} from 'react-hook-form';
@@ -7,7 +7,7 @@ import ExpireDatePicker from '../ExpireDatePicker/ExpireDatePicker';
 import {MainContext} from '../../context/MainContext';
 import {checkCard, numbersOnly} from '../../helpers';
 
-const AddCard = ({setPage, catchHandler}) => {
+const AddCard = ({setPage, catchHandler, formRef}) => {
   const {
     getUserData,
     currency,
@@ -20,27 +20,25 @@ const AddCard = ({setPage, catchHandler}) => {
     handleSubmit,
     formState: {errors, isValid},
   } = useForm({
-    defaultValues: {number: '', cvv: '', holder: '', amount: ''},
-    mode: 'onChange',
+    mode: 'onBlur',
   });
 
   const onSubmit = async (values) => {
     await addCard({currency: currency.selectedCurrency, expDate: selectedDate, ...values})
       .then(() => {
         getUserData();
-        setPage('CardsInfo');
+        setPage('Cards');
       }).catch(error => {
         catchHandler(error);
       });
   };
 
-  const ref = useRef(null);
   useEffect(() => {
-    ref.current.scrollIntoView({block: "center", behavior: "smooth"});
-  }, [])
+    formRef.current.scrollIntoView({block: 'center', behavior: 'smooth'});
+  }, [formRef]);
 
   return (
-    <form ref={ref} onSubmit={handleSubmit(onSubmit)}>
+    <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
       <Typography variant="h5" className={styles.title}>
         Додавання картки
       </Typography>
@@ -50,7 +48,11 @@ const AddCard = ({setPage, catchHandler}) => {
                    inputProps={{maxLength: 19}}
                    error={!!errors.number?.message}
                    helperText={errors.number?.message}
-                   {...register('number', {validate: checkCard, required: 'Вкажіть номер картки', minLength: 13})}
+                   {...register('number', {
+                     validate: checkCard,
+                     required: 'Вкажіть номер картки',
+                     minLength: {value: 16, message: 'Мінімум 16 символів'}
+                   })}
         />
       </div>
       <div className={styles.row}>
@@ -60,7 +62,9 @@ const AddCard = ({setPage, catchHandler}) => {
                    inputProps={{maxLength: 3}}
                    error={!!errors.cvv?.message}
                    helperText={errors.cvv?.message}
-                   {...register('cvv', {required: 'Вкажіть CVV', minLength: 3})}
+                   {...register('cvv', {
+                     required: 'Вкажіть CVV',
+                     minLength: {value: 3, message: 'Вкажіть 3 цифри'}})}
         />
       </div>
       <div className={styles.row}>
@@ -74,7 +78,9 @@ const AddCard = ({setPage, catchHandler}) => {
         <TextField required={true} fullWidth type={'number'} label="Сума" variant="outlined"
                    error={!!errors.amount?.message}
                    helperText={errors.amount?.message}
-                   {...register('amount', {required: 'Вкажіть суму'})}
+                   {...register('amount', {
+                     required: 'Вкажіть суму',
+                     min: {value: 0, message: 'Мінімум 0!'}})}
         />
         <FormControl fullWidth>
           <InputLabel>Валюта</InputLabel>
@@ -87,9 +93,9 @@ const AddCard = ({setPage, catchHandler}) => {
           </Select>
         </FormControl>
       </div>
-      <div className={styles.row}>
+      <div className={`${styles.row} ${styles.buttons}`}>
         <Button variant={'contained'} type={'submit'} color={'primary'} disabled={!isValid}>Додати картку</Button>
-        <Button variant={'contained'} color={'error'} onClick={() => setPage('CardsInfo')}>Скасувати</Button>
+        <Button variant={'contained'} color={'error'} onClick={() => setPage('Cards')}>Скасувати</Button>
       </div>
     </form>
   );

@@ -1,14 +1,12 @@
 import React from 'react';
 import {Grid} from '@mui/material';
 import MainInfo from '../../components/MainInfo/MainInfo';
-import Cards from '../../components/Cards/Cards';
+import CardsInfo from '../../components/CardsInfo/CardsInfo';
 import styles from './Home.module.scss';
 import ProgressMain from '../../components/ProgressMain/ProgressMain';
 
 const HomePage = ({userData, catchHandler, setNotification}) => {
-  if (!userData) {
-    return <ProgressMain/>
-  }
+  if (!userData) return <ProgressMain/>;
 
   return (
     <Grid container spacing={0}>
@@ -16,7 +14,7 @@ const HomePage = ({userData, catchHandler, setNotification}) => {
         <MainInfo/>
       </Grid>
       <Grid item xs={12} md={7} className={`${styles.item} `}>
-        <Cards catchHandler={catchHandler} setNotification={setNotification}/>
+        <CardsInfo catchHandler={catchHandler} setNotification={setNotification}/>
       </Grid>
     </Grid>
   );

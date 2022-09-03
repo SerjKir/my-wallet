@@ -11,7 +11,7 @@ const AuthPage = ({login, catchHandler}) => {
   const {
     register, handleSubmit, formState: {errors, isValid},
   } = useForm({
-    defaultValues: {name: '', password: ''}, mode: 'onChange',
+    mode: 'onChange',
   });
 
   const onSubmit = async (values) => {
@@ -40,7 +40,7 @@ const AuthPage = ({login, catchHandler}) => {
           className={styles.field}
           error={!!errors.name?.message}
           helperText={errors.name?.message}
-          {...register('name', {required: 'Вкажіть им\'я'})}
+          {...register('name', {required: `Вкажіть ім'я`})}
         />
         <TextField
           label="Пароль"

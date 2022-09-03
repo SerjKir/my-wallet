@@ -9,18 +9,16 @@ const Card = ({card, removeCard, isSkin, setNotification}) => {
   const handleCopy = () => {
     navigator.clipboard.writeText(card.number);
     setNotification({open: true, message: 'Номер картки скопійовано!', style: 'success'});
-
   };
   const handleRemove = () => {
-    if (window.confirm("Ви точно хочете видалити картку?")) {
-      removeCard(card._id);
-    }
+    if (window.confirm('Ви точно хочете видалити картку?')) removeCard(card._id);
   }
   const system = card.scheme;
 
   return (
     <div className={styles.container}>
-      <div className={`${styles.card} ${isSkin ? styles.skin : ''}`} style={{background: isSkin && `url(${baseUrl}/uploads/patriot.jpg) no-repeat center center`}}>
+      <div className={`${styles.card} ${isSkin ? styles.skin : ''}`}
+           style={{background: isSkin && `url(${baseUrl}/uploads/patriot.jpg) no-repeat center center`}}>
         <div className={styles.row}>
           <div className={styles.column}>
             <span className={styles.name}>{card.name}</span>
@@ -30,7 +28,8 @@ const Card = ({card, removeCard, isSkin, setNotification}) => {
             <span className={styles.logo}>
               {system === 'visa' || system === 'mastercard'
                 ?
-                <img alt={system} className={system === 'visa' ? styles.visa : ''} src={`${baseUrl}/uploads/${system}.svg`}/>
+                <img alt={system} className={system === 'visa' ? styles.visa : ''}
+                     src={`${baseUrl}/uploads/${system}.svg`}/>
                 :
                 system}
             </span>

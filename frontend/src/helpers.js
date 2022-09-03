@@ -3,9 +3,7 @@ export const checkCard = value => {
   const check = !(value.replace(/\D/g, '').split('').reverse().reduce(function (a, d, i) {
     return a + d * (i % 2 ? 2.2 : 1) | 0;
   }, 0) % 10);
-  if (!check) {
-    return 'Не валідна картка'
-  }
+  if (!check) return 'Не валідний номер картки';
   return check;
 };
 
@@ -20,4 +18,8 @@ export const toCardWithSpaces = number => {
 
 export const toCardWithStars = number => {
   return number.replace(/^(\d{4})\d+(\d{4})$/, '$1 **** **** $2');
+};
+
+export const getToken = () => {
+  return window.localStorage.getItem('token')
 };

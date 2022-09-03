@@ -29,6 +29,10 @@
   &:not(:first-child) {
     margin-top: 20px;
   }
+  @media (max-width: 400px) {
+    flex-direction: column;
+    row-gap: 10px;
+  }
 }
 
 .inputs {

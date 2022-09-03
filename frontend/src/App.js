@@ -8,6 +8,7 @@ import {MainContext} from './context/MainContext';
 import {getData} from './api/mainApi';
 import Informer from './components/Informer/Informer';
 import ProgressMain from './components/ProgressMain/ProgressMain';
+import {getToken} from './helpers';
 
 const App = () => {
   const [userData, setUserData] = useState(null);
@@ -15,7 +16,7 @@ const App = () => {
   const [changeItemData, setChangeItemData] = useState(null);
   const [notification, setNotification] = useState({});
   const {token, login, logout, ready} = useAuth(setUserData, setChangeItemData);
-  const isAuthenticated = !!token && window.localStorage.getItem('token');
+  const isAuthenticated = !!token && getToken();
 
   const catchHandler = useCallback((error) => {
     error.response.status === 401 && logout();
@@ -45,9 +46,7 @@ const App = () => {
     ready && isAuthenticated && getUserData();
   }, [ready, isAuthenticated, getUserData]);
 
-  if (!ready) {
-    return <ProgressMain/>
-  }
+  if (!ready) return <ProgressMain/>;
 
   return (
     <BrowserRouter>

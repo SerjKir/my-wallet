@@ -1,46 +1,26 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Paper} from '@mui/material';
-import styles from './Cards.module.scss'
-import AddCard from '../AddCard/AddCard';
-import CardsInfo from '../CardsInfo/CardsInfo';
-import AddModal from '../AddModal/AddModal';
-import {removeCard, setIsSkin} from '../../api/mainApi';
-import {MainContext} from '../../context/MainContext';
+import React from 'react';
+import styles from './Cards.module.scss';
+import {Button, Checkbox, FormControlLabel} from '@mui/material';
+import Card from '../Card/Card';
+import EmptyDataText from '../EmptyDataText/EmptyDataText';
 
-const Cards = ({setNotification, catchHandler}) => {
-  const {getUserData, changeItemData, userData} = useContext(MainContext);
-  const [page, setPage] = useState('CardsInfo');
-  const [isModal, setIsModal] = useState(false);
-  const [data, setData] = useState(null);
-
-  const handleRemoveCard = async (id) => {
-    await removeCard(id).then(() => {
-      getUserData();
-    }).catch(error => {
-      catchHandler(error);
-    });
-  }
-
-  const handleSetIsSkin = async (isSkin) => {
-    await setIsSkin({isSkin}).then(() => getUserData()).catch(error => {
-      catchHandler(error);
-    });
-  };
-
-  useEffect(() => {
-    changeItemData && setData(changeItemData);
-  }, [changeItemData]);
-
+const Cards = ({setPage, setIsModal, removeCard, userData, setNotification, handleSetIsSkin}) => {
+  const isCards = userData.cards.length !== 0;
 
   return (
-    <Paper className={styles.container}>
-      {page === 'CardsInfo'
-        ? <CardsInfo handleSetIsSkin={handleSetIsSkin} setNotification={setNotification} userData={userData} removeCard={handleRemoveCard}
-                     setIsModal={setIsModal} setPage={setPage}/>
-        : <AddCard catchHandler={catchHandler} setPage={setPage}/>}
-      {isModal && <AddModal catchHandler={catchHandler} isModal={isModal} setIsModal={setIsModal}/>}
-      {data?.isOpen && <AddModal catchHandler={catchHandler} data={data} setData={setData} isEdit={true} />}
-    </Paper>
+    <>
+      <div className={styles.row}>
+        <Button variant={'contained'} onClick={() => setPage('AddCard')}>Додати картку</Button>
+        <Button variant={'contained'} color={'success'} onClick={() => setIsModal(true)}>Додати готівку</Button>
+      </div>
+      {isCards
+        ? <FormControlLabel className={styles.checkbox} control={<Checkbox checked={userData.isSkin}/>} label="Патріотичний скін"
+                            onChange={() => handleSetIsSkin(!userData.isSkin)}/>
+        : <EmptyDataText name={'картками'}/>}
+      <div className={styles.column}>
+        {userData.cards.map(card => <Card setNotification={setNotification} isSkin={userData.isSkin} removeCard={removeCard} key={card._id} card={card}/>)}
+      </div>
+    </>
   );
 };
 

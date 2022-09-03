@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useContext, useEffect} from 'react';
 import styles from './AddModal.module.scss'
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui/material';
 import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
 import {MainContext} from '../../context/MainContext';
 
-const AddModal = ({isModal, setIsModal, isEdit, data, setData, catchHandler}) => {
+const AddModal = ({isModal, setIsModal, isEdit, data, catchHandler, formRef}) => {
   const {
     getUserData,
     currency,
@@ -21,61 +21,52 @@ const AddModal = ({isModal, setIsModal, isEdit, data, setData, catchHandler}) =>
     mode: 'onChange',
   });
 
-  const onClose = () => {
-    isEdit ? setData(null) : setIsModal(false);
-  };
-
   const onSubmit = async (values) => {
     if (isEdit) {
       if (data.isCash) {
-        await updateCash(data.amount, data.currency).then(() => {
+        await updateCash(values.amount, data.currency).then(() => {
           getUserData();
-          onClose();
+          setIsModal(false);
         }).catch(error => {
           catchHandler(error);
         });
       } else {
-        await updateCard(data.id, data.amount, data.name).then(() => {
+        await updateCard(data.id, values.amount, data.name).then(() => {
           getUserData();
-          onClose();
+          setIsModal(false);
         }).catch(error => {
           catchHandler(error);
         });
       }
     } else {
-      await addCash({currency: currency.selectedCurrency, ...values})
+      await addCash({currency: currency.selectedCurrency, amount: values.amount})
         .then(() => {
           getUserData();
           reset();
-          onClose();
+          setIsModal(false);
         }).catch(error => {
           catchHandler(error);
         });
     }
   };
 
-  const ref = useRef(null);
   useEffect(() => {
-    ref.current.scrollIntoView({block: "center", behavior: "smooth"});
-  }, [isModal, data?.isOpen])
+    formRef.current.scrollIntoView({block: 'center', behavior: 'smooth'});
+  }, [isModal, data?.isOpen, formRef]);
 
   return (
     <div style={{display: isModal || data.isOpen ? 'flex' : 'none'}} className={styles.background}>
-      <form ref={ref} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
+      <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
         <div className={`${styles.row} ${styles.inputs}`}>
-          {isEdit
-            ? <TextField value={data.amount}
-                         onChange={(e) => setData({
-                           ...data,
-                           amount: e.target.value
-                         })}
-                         required={true} type={'number'} fullWidth label="Сума"
-                         variant="outlined"/>
-            : <TextField required={true} type={'number'} fullWidth label="Сума" variant="outlined"
-                         error={!!errors.amount?.message}
-                         helperText={errors.amount?.message}
-                         {...register('amount', {required: 'Вкажіть суму'})}
-            />}
+          <TextField required={true} type={'number'} fullWidth label="Сума" variant="outlined"
+                     error={!!errors.amount?.message}
+                     helperText={errors.amount?.message}
+                     {...register('amount', {
+                       required: 'Вкажіть суму',
+                       value: data?.amount,
+                       min: {value: isEdit ? 0 : 1, message: `Мінімум ${isEdit ? 0 : 1}`}
+                     })}
+          />
           <FormControl fullWidth>
             <InputLabel>Currency</InputLabel>
             <Select
@@ -87,16 +78,20 @@ const AddModal = ({isModal, setIsModal, isEdit, data, setData, catchHandler}) =>
               {currency.availableCurrency.map((elem, index) => <MenuItem key={index} value={elem}>{elem}</MenuItem>)}
             </Select>
           </FormControl>
-          {isEdit && !data.isCash && <TextField value={data.name}
-                                                onChange={(e) =>
-                                                  setData({...data, name: e.target.value})} fullWidth
-                                                label="Назва"
-                                                required={true}
-                                                variant="outlined"/>}
+          {isEdit && !data.isCash &&
+            <TextField required={true} type={'text'} fullWidth label="Назва" variant="outlined"
+                       error={!!errors.name?.message}
+                       helperText={errors.name?.message}
+                       {...register('name', {
+                         required: 'Вкажіть назву',
+                         value: data?.name
+                       })}
+            />}
         </div>
         <div className={styles.row}>
-          <Button type={'submit'} variant={'contained'} color={'primary'} disabled={!isValid}>Зберегти</Button>
-          <Button variant={'contained'} color={'error'} onClick={onClose}>Скасувати</Button>
+          <Button type={'submit'} variant={'contained'} color={'primary'}
+                  disabled={!isValid}>{isEdit ? 'Зберегти' : 'Додати'}</Button>
+          <Button variant={'contained'} color={'error'} onClick={() => setIsModal(false)}>Скасувати</Button>
         </div>
       </form>
     </div>
