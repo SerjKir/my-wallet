@@ -31,7 +31,7 @@ const AddModal = ({isModal, setIsModal, isEdit, data, catchHandler, formRef}) =>
           catchHandler(error);
         });
       } else {
-        await updateCard(data.id, values.amount, data.name).then(() => {
+        await updateCard(data.id, values.amount, values.name).then(() => {
           getUserData();
           setIsModal(false);
         }).catch(error => {
