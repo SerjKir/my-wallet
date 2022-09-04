@@ -5,11 +5,13 @@ import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
 import {MainContext} from '../../context/MainContext';
 
-const AddModal = ({isModal, setIsModal, isEdit, data, catchHandler, formRef}) => {
+const AddModal = ({isModal, setIsModal, isEdit, formRef}) => {
   const {
     getUserData,
     currency,
     handleSelectChange,
+    catchHandler,
+    changeItemData
   } = useContext(MainContext);
 
   const {
@@ -23,15 +25,15 @@ const AddModal = ({isModal, setIsModal, isEdit, data, catchHandler, formRef}) =>
 
   const onSubmit = async (values) => {
     if (isEdit) {
-      if (data.isCash) {
-        await updateCash(values.amount, data.currency).then(() => {
+      if (changeItemData.isCash) {
+        await updateCash(values.amount, changeItemData.currency).then(() => {
           getUserData();
           setIsModal(false);
         }).catch(error => {
           catchHandler(error);
         });
       } else {
-        await updateCard(data.id, values.amount, values.name).then(() => {
+        await updateCard(changeItemData.id, values.amount, values.name).then(() => {
           getUserData();
           setIsModal(false);
         }).catch(error => {
@@ -52,18 +54,18 @@ const AddModal = ({isModal, setIsModal, isEdit, data, catchHandler, formRef}) =>
 
   useEffect(() => {
     formRef.current.scrollIntoView({block: 'center', behavior: 'smooth'});
-  }, [isModal, data?.isOpen, formRef]);
+  }, [isModal, changeItemData?.isOpen, formRef]);
 
   return (
-    <div style={{display: isModal || data.isOpen ? 'flex' : 'none'}} className={styles.background}>
+    <div style={{display: isModal || changeItemData.isOpen ? 'flex' : 'none'}} className={styles.background}>
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
         <div className={`${styles.row} ${styles.inputs}`}>
           <TextField required={true} type={'number'} fullWidth label="Сума" variant="outlined"
-                     error={!!errors.amount?.message}
+                     error={!!errors.amount}
                      helperText={errors.amount?.message}
                      {...register('amount', {
                        required: 'Вкажіть суму',
-                       value: data?.amount,
+                       value: changeItemData?.amount,
                        min: {value: isEdit ? 0 : 1, message: `Мінімум ${isEdit ? 0 : 1}`}
                      })}
           />
@@ -72,19 +74,19 @@ const AddModal = ({isModal, setIsModal, isEdit, data, catchHandler, formRef}) =>
             <Select
               disabled={isEdit}
               label="Валюта"
-              value={isEdit ? data.currency : currency.selectedCurrency}
+              value={isEdit ? changeItemData.currency : currency.selectedCurrency}
               onChange={handleSelectChange}
             >
               {currency.availableCurrency.map((elem, index) => <MenuItem key={index} value={elem}>{elem}</MenuItem>)}
             </Select>
           </FormControl>
-          {isEdit && !data.isCash &&
+          {isEdit && !changeItemData.isCash &&
             <TextField required={true} type={'text'} fullWidth label="Назва" variant="outlined"
-                       error={!!errors.name?.message}
+                       error={!!errors.name}
                        helperText={errors.name?.message}
                        {...register('name', {
                          required: 'Вкажіть назву',
-                         value: data?.name
+                         value: changeItemData?.name
                        })}
             />}
         </div>

@@ -1,7 +1,6 @@
 const express = require('express');
 const User = require('../models/User');
 const Card = require('../models/Card');
-const auth = require('../middleware/auth.middleware')
 const lookup = require('binlookup')()
 const balanceFuncAdd = require('../utils/balanceFuncAdd');
 
@@ -26,12 +25,12 @@ router.post('/card', async (req, res) => {
   try {
     const userId = req.decodedId;
     const {number, expDate, cvv, holder, amount, currency} = req.body;
-    const formattedNumber = number.replace(/ /g,'');
+    const formattedNumber = number.replace(/ /g, '');
     if (amount < 0) {
       return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     }
     const formatDate = date => {
-      const formattedDate = date.slice(2,7).replace('-', '/');
+      const formattedDate = date.slice(2, 7).replace('-', '/');
       return formattedDate[3] + formattedDate[4] + formattedDate[2] + formattedDate[0] + formattedDate[1];
     }
     const cardData = await lookup(formattedNumber.slice(0, 8)).then(data => data).catch(() => false);
@@ -43,7 +42,15 @@ router.post('/card', async (req, res) => {
       return res.status(400).json({message: 'Така картка вже додана!'})
     }
     const card = new Card({
-      owner: userId, amount, currency, formattedNumber, expDate: formatDate(expDate), cvv, holder, scheme: cardData.scheme, type: cardData.type
+      owner: userId,
+      amount,
+      currency,
+      formattedNumber,
+      expDate: formatDate(expDate),
+      cvv,
+      holder,
+      scheme: cardData.scheme,
+      type: cardData.type
     });
     await card.save();
     const user = await User.findById(userId);

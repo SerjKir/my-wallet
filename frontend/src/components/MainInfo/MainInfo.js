@@ -8,12 +8,11 @@ import {baseUrl} from '../../consts';
 import EmptyDataText from '../EmptyDataText/EmptyDataText';
 
 const MainInfo = () => {
-  const {logout, userData, setChangeItemData} = useContext(MainContext);
+  const {logout, userData} = useContext(MainContext);
   let cashSum = 0;
   for (let i = 0; i < userData.cash.length; i++) {
     cashSum += parseInt(userData.cash[i].amount);
   }
-
   const isCash = userData.cash.length !== 0 && cashSum !== 0;
   const isCards = userData.cards.length !== 0;
   const isBalance = isCash || isCards;
@@ -35,24 +34,26 @@ const MainInfo = () => {
           <div className={styles.block}>
             <p>Загальний баланс</p>
             <List>{userData.balance.map((elem, index) => elem.amount > 0 &&
-              <ListItem key={index} isButton={false} card={elem}/>)}</List>
+              <ListItem key={index} card={elem}/>)}</List>
           </div>
         </>
-        : <EmptyDataText name={'рахунками'}/>}
-      {isCash && <div className={`${styles.block} ${styles.inner}`}>
-        <p>Готівка</p>
-        <List>
-          {userData.cash.map((elem, index) => elem.amount > 0 &&
-            <ListItem isCash={true} setItemData={setChangeItemData} key={index} isButton={true} card={elem}/>)}
-        </List>
-      </div>}
-      {isCards && <div className={`${styles.block} ${styles.inner}`}>
-        <p>Мої картки</p>
-        <List>
-          {userData.cards.map(elem => <ListItem setItemData={setChangeItemData} key={elem._id} isButton={true}
-                                                 card={elem}/>)}
-        </List>
-      </div>}
+        :
+        <EmptyDataText name={'рахунками'}/>}
+      {isCash &&
+        <div className={`${styles.block} ${styles.inner}`}>
+          <p>Готівка</p>
+          <List>
+            {userData.cash.map((elem, index) => elem.amount > 0 &&
+              <ListItem isCash={true} key={index} isButton={true} card={elem}/>)}
+          </List>
+        </div>}
+      {isCards &&
+        <div className={`${styles.block} ${styles.inner}`}>
+          <p>Мої картки</p>
+          <List>
+            {userData.cards.map(elem => <ListItem key={elem._id} isButton={true} card={elem}/>)}
+          </List>
+        </div>}
     </Paper>
   );
 };

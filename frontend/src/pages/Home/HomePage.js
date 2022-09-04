@@ -5,7 +5,7 @@ import CardsInfo from '../../components/CardsInfo/CardsInfo';
 import styles from './Home.module.scss';
 import ProgressMain from '../../components/ProgressMain/ProgressMain';
 
-const HomePage = ({userData, catchHandler, setNotification}) => {
+const HomePage = ({userData}) => {
   if (!userData) return <ProgressMain/>;
 
   return (
@@ -14,7 +14,7 @@ const HomePage = ({userData, catchHandler, setNotification}) => {
         <MainInfo/>
       </Grid>
       <Grid item xs={12} md={7} className={`${styles.item} `}>
-        <CardsInfo catchHandler={catchHandler} setNotification={setNotification}/>
+        <CardsInfo/>
       </Grid>
     </Grid>
   );

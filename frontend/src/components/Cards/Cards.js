@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styles from './Cards.module.scss';
 import {Button, Checkbox, FormControlLabel} from '@mui/material';
 import Card from '../Card/Card';
 import EmptyDataText from '../EmptyDataText/EmptyDataText';
+import {MainContext} from '../../context/MainContext';
 
-const Cards = ({setPage, setIsModal, removeCard, userData, setNotification, handleSetIsSkin}) => {
+const Cards = ({setPage, setIsModal, removeCard, handleSetIsSkin}) => {
+  const {userData, setNotification} = useContext(MainContext);
   const isCards = userData.cards.length !== 0;
 
   return (

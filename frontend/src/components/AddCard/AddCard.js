@@ -7,11 +7,12 @@ import ExpireDatePicker from '../ExpireDatePicker/ExpireDatePicker';
 import {MainContext} from '../../context/MainContext';
 import {checkCard, numbersOnly} from '../../helpers';
 
-const AddCard = ({setPage, catchHandler, formRef}) => {
+const AddCard = ({setPage, formRef}) => {
   const {
     getUserData,
     currency,
     handleSelectChange,
+    catchHandler,
   } = useContext(MainContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -46,7 +47,7 @@ const AddCard = ({setPage, catchHandler, formRef}) => {
         <TextField required={true} fullWidth type={'text'} label="Номер картки" variant="outlined"
                    onInput={event => numbersOnly(event)}
                    inputProps={{maxLength: 19}}
-                   error={!!errors.number?.message}
+                   error={!!errors.number}
                    helperText={errors.number?.message}
                    {...register('number', {
                      validate: checkCard,
@@ -60,7 +61,7 @@ const AddCard = ({setPage, catchHandler, formRef}) => {
         <TextField required={true} fullWidth type={'password'} label="CVV" variant="outlined"
                    onInput={event => numbersOnly(event)}
                    inputProps={{maxLength: 3}}
-                   error={!!errors.cvv?.message}
+                   error={!!errors.cvv}
                    helperText={errors.cvv?.message}
                    {...register('cvv', {
                      required: 'Вкажіть CVV',
@@ -69,14 +70,14 @@ const AddCard = ({setPage, catchHandler, formRef}) => {
       </div>
       <div className={styles.row}>
         <TextField fullWidth label="Власник картки" variant="outlined"
-                   error={!!errors.holder?.message}
+                   error={!!errors.holder}
                    helperText={errors.holder?.message}
                    {...register('holder')}
         />
       </div>
       <div className={styles.row}>
         <TextField required={true} fullWidth type={'number'} label="Сума" variant="outlined"
-                   error={!!errors.amount?.message}
+                   error={!!errors.amount}
                    helperText={errors.amount?.message}
                    {...register('amount', {
                      required: 'Вкажіть суму',

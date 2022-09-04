@@ -23,12 +23,12 @@ const App = () => {
     setNotification({open: true, message: error.response.data.message, style: 'error'});
   }, [logout]);
 
-  const handleSelectChange = event => {
+  const handleSelectChange = useCallback(event => {
     setCurrency({
       availableCurrency: currency.availableCurrency,
       selectedCurrency: event.target.value
-    })
-  };
+    });
+  }, [currency.availableCurrency]);
 
   const getUserData = useCallback(async () => {
     await getData().then(res => {
@@ -58,11 +58,13 @@ const App = () => {
         setChangeItemData,
         currency,
         handleSelectChange,
+        catchHandler,
+        setNotification,
       }}>
         <Container maxWidth={'md'}>
           <Routes>
             {isAuthenticated
-              ? <Route path={'/'} element={<Home catchHandler={catchHandler} userData={userData} setNotification={setNotification}/>}/>
+              ? <Route path={'/'} element={<Home userData={!!userData}/>}/>
               : <Route path={'/'} element={<Auth login={login} catchHandler={catchHandler}/>}/>}
             <Route path={'*'} element={<Navigate to={'/'} replace/>}/>
           </Routes>

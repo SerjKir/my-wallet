@@ -38,7 +38,7 @@ const AuthPage = ({login, catchHandler}) => {
           fullWidth
           required={true}
           className={styles.field}
-          error={!!errors.name?.message}
+          error={!!errors.name}
           helperText={errors.name?.message}
           {...register('name', {required: `Вкажіть ім'я`})}
         />
@@ -47,7 +47,7 @@ const AuthPage = ({login, catchHandler}) => {
           fullWidth
           required={true}
           className={styles.field}
-          error={!!errors.password?.message}
+          error={!!errors.password}
           helperText={errors.password?.message}
           {...register('password', {required: 'Вкажіть пароль'})}
         />

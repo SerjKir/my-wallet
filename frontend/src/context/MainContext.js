@@ -8,4 +8,6 @@ export const MainContext = createContext({
   setChangeItemData: null,
   currency: null,
   handleSelectChange: null,
+  catchHandler: null,
+  setNotification: null,
 })

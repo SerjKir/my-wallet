@@ -7,8 +7,8 @@ import AddModal from '../AddModal/AddModal';
 import {removeCard, setIsSkin} from '../../api/mainApi';
 import {MainContext} from '../../context/MainContext';
 
-const CardsInfo = ({setNotification, catchHandler}) => {
-  const {getUserData, changeItemData, setChangeItemData, userData} = useContext(MainContext);
+const CardsInfo = () => {
+  const {getUserData, changeItemData, setChangeItemData, catchHandler} = useContext(MainContext);
   const [page, setPage] = useState('Cards');
   const [isModal, setIsModal] = useState(false);
   const formRef = useRef(null);
@@ -30,11 +30,11 @@ const CardsInfo = ({setNotification, catchHandler}) => {
   return (
     <Paper className={styles.container}>
       {page === 'Cards'
-        ? <Cards handleSetIsSkin={handleSetIsSkin} setNotification={setNotification} userData={userData} removeCard={handleRemoveCard}
+        ? <Cards handleSetIsSkin={handleSetIsSkin} removeCard={handleRemoveCard}
                  setIsModal={setIsModal} setPage={setPage}/>
-        : <AddCard formRef={formRef} catchHandler={catchHandler} setPage={setPage}/>}
-      {isModal && <AddModal formRef={formRef} catchHandler={catchHandler} isModal={isModal} setIsModal={setIsModal}/>}
-      {changeItemData?.isOpen && <AddModal formRef={formRef} catchHandler={catchHandler} data={changeItemData} setIsModal={setChangeItemData} isEdit={true} />}
+        : <AddCard formRef={formRef} setPage={setPage}/>}
+      {isModal && <AddModal formRef={formRef} isModal={isModal} setIsModal={setIsModal}/>}
+      {changeItemData?.isOpen && <AddModal formRef={formRef} setIsModal={setChangeItemData} isEdit={true} />}
     </Paper>
   );
 };
