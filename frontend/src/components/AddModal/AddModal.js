@@ -5,7 +5,7 @@ import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
 import {MainContext} from '../../context/MainContext';
 
-const AddModal = ({isModal, setIsModal, isEdit, formRef}) => {
+const AddModal = ({isModal, setIsModal, isEdit, formRef, setChangeItemData}) => {
   const {
     getUserData,
     currency,
@@ -23,19 +23,24 @@ const AddModal = ({isModal, setIsModal, isEdit, formRef}) => {
     mode: 'onChange',
   });
 
+  const handleClose = () => {
+    setIsModal && setIsModal(false);
+    setChangeItemData(false);
+  }
+
   const onSubmit = async (values) => {
     if (isEdit) {
       if (changeItemData.isCash) {
         await updateCash(values.amount, changeItemData.currency).then(() => {
           getUserData();
-          setIsModal(false);
+          handleClose();
         }).catch(error => {
           catchHandler(error);
         });
       } else {
         await updateCard(changeItemData.id, values.amount, values.name).then(() => {
           getUserData();
-          setIsModal(false);
+          handleClose();
         }).catch(error => {
           catchHandler(error);
         });
@@ -45,7 +50,7 @@ const AddModal = ({isModal, setIsModal, isEdit, formRef}) => {
         .then(() => {
           getUserData();
           reset();
-          setIsModal(false);
+          handleClose();
         }).catch(error => {
           catchHandler(error);
         });
@@ -53,12 +58,17 @@ const AddModal = ({isModal, setIsModal, isEdit, formRef}) => {
   };
 
   useEffect(() => {
-    formRef.current.scrollIntoView({block: 'center', behavior: 'smooth'});
-  }, [isModal, changeItemData?.isOpen, formRef]);
+    isModal && setChangeItemData({isButtonsDisabled: true})
+    formRef.current?.scrollIntoView({block: 'center', behavior: 'smooth'});
+  }, [isModal, changeItemData?.isOpen, formRef, setChangeItemData]);
 
   return (
     <div style={{display: isModal || changeItemData.isOpen ? 'flex' : 'none'}} className={styles.background}>
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
+        <h5 className={styles.title}>{isEdit
+          ? `Редагувати ${changeItemData.isCash ? 'готівку' : 'картку'}`
+          : 'Додати готівку'}
+        </h5>
         <div className={`${styles.row} ${styles.inputs}`}>
           <TextField required={true} type={'number'} fullWidth label="Сума" variant="outlined"
                      error={!!errors.amount}
@@ -93,7 +103,7 @@ const AddModal = ({isModal, setIsModal, isEdit, formRef}) => {
         <div className={styles.row}>
           <Button type={'submit'} variant={'contained'} color={'primary'}
                   disabled={!isValid}>{isEdit ? 'Зберегти' : 'Додати'}</Button>
-          <Button variant={'contained'} color={'error'} onClick={() => setIsModal(false)}>Скасувати</Button>
+          <Button variant={'contained'} color={'error'} onClick={handleClose}>Скасувати</Button>
         </div>
       </form>
     </div>

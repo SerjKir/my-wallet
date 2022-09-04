@@ -10,7 +10,7 @@ const ExpireDatePicker = ({selectedDate, setSelectedDate}) => {
       <DatePicker
         inputFormat="MM/yy"
         views={['year', 'month']}
-        label="exp date"
+        label="Термін дії"
         minDate={new Date()}
         value={selectedDate}
         onChange={newValue => setSelectedDate(newValue)}

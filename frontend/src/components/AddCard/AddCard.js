@@ -41,7 +41,7 @@ const AddCard = ({setPage, formRef}) => {
   return (
     <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
       <Typography variant="h5" className={styles.title}>
-        Додавання картки
+        Додати картку
       </Typography>
       <div className={styles.row}>
         <TextField required={true} fullWidth type={'text'} label="Номер картки" variant="outlined"
@@ -95,7 +95,7 @@ const AddCard = ({setPage, formRef}) => {
         </FormControl>
       </div>
       <div className={`${styles.row} ${styles.buttons}`}>
-        <Button variant={'contained'} type={'submit'} color={'primary'} disabled={!isValid}>Додати картку</Button>
+        <Button variant={'contained'} type={'submit'} color={'primary'} disabled={!isValid}>Додати</Button>
         <Button variant={'contained'} color={'error'} onClick={() => setPage('Cards')}>Скасувати</Button>
       </div>
     </form>

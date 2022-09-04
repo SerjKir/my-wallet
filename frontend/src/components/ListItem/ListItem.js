@@ -10,11 +10,21 @@ const ListItem = ({card, isButton, isCash}) => {
       <div><span>- {card.name} </span> <span
         className={styles.amount}>{card.amount.toLocaleString()} {card.currency}</span></div>
       {isButton && !isCash && <Button className={'small-btn'} variant={'contained'} onClick={() => setChangeItemData({
-        id: card._id, amount: card.amount, name: card.name, currency: card.currency, isCash: false, isOpen: true
-      })} disabled={changeItemData?.isOpen}>Редагувати</Button>}
+        id: card._id,
+        amount: card.amount,
+        name: card.name,
+        currency: card.currency,
+        isCash: false,
+        isOpen: true,
+        isButtonsDisabled: true,
+      })} disabled={changeItemData?.isButtonsDisabled}>Редагувати</Button>}
       {isButton && isCash && <Button className={'small-btn'} variant={'contained'} onClick={() => setChangeItemData({
-        amount: card.amount, currency: card.currency, isCash: true, isOpen: true
-      })} disabled={changeItemData?.isOpen}>Редагувати</Button>}
+        amount: card.amount,
+        currency: card.currency,
+        isCash: true,
+        isOpen: true,
+        isButtonsDisabled: true,
+      })} disabled={changeItemData?.isButtonsDisabled}>Редагувати</Button>}
     </div>
   );
 };
