@@ -8,7 +8,7 @@ import {removeCard, setIsSkin} from '../../api/mainApi';
 import {MainContext} from '../../context/MainContext';
 
 const CardsInfo = () => {
-  const {getUserData, changeItemData, setChangeItemData, catchHandler} = useContext(MainContext);
+  const {getUserData, changeItemData, catchHandler} = useContext(MainContext);
   const [page, setPage] = useState('Cards');
   const [isModal, setIsModal] = useState(false);
   const formRef = useRef(null);
@@ -33,8 +33,8 @@ const CardsInfo = () => {
         ? <Cards handleSetIsSkin={handleSetIsSkin} removeCard={handleRemoveCard}
                  setIsModal={setIsModal} setPage={setPage}/>
         : <AddCard formRef={formRef} setPage={setPage}/>}
-      {isModal && <AddModal formRef={formRef} isModal={isModal} setChangeItemData={setChangeItemData} setIsModal={setIsModal}/>}
-      {changeItemData?.isOpen && <AddModal formRef={formRef} setChangeItemData={setChangeItemData} isEdit={true} />}
+      {isModal && <AddModal formRef={formRef} isModal={isModal} setIsModal={setIsModal}/>}
+      {changeItemData?.isOpen && <AddModal formRef={formRef} isEdit={true} />}
     </Paper>
   );
 };

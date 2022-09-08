@@ -81,7 +81,7 @@ const AddCard = ({setPage, formRef}) => {
                    helperText={errors.amount?.message}
                    {...register('amount', {
                      required: 'Вкажіть суму',
-                     min: {value: 0, message: 'Мінімум 0!'}})}
+                     min: {value: 0, message: 'Мінімум 0'}})}
         />
         <FormControl fullWidth>
           <InputLabel>Валюта</InputLabel>

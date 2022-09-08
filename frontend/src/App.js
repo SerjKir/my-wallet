@@ -26,7 +26,7 @@ const App = () => {
   const handleSelectChange = useCallback(event => {
     setCurrency({
       availableCurrency: currency.availableCurrency,
-      selectedCurrency: event.target.value
+      selectedCurrency: event?.target.value || 'UAH',
     });
   }, [currency.availableCurrency]);
 
@@ -36,7 +36,7 @@ const App = () => {
       setCurrency({
         availableCurrency: res.data.availableCurrency,
         selectedCurrency: res.data.availableCurrency[0]
-      })
+      });
     }).catch(error => {
       catchHandler(error);
     });

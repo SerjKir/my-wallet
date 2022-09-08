@@ -3,7 +3,7 @@ module.exports = (user, type, currency, amount) => {
   const newBalance = user[type].map(elem => {
     if (elem.currency === currency) {
       foundCurrency = true;
-      elem.amount = parseInt(elem.amount) + parseInt(amount);
+      elem.amount = +elem.amount + +amount;
     }
     return elem;
   });

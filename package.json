@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:dev": "nodemon index.js"
+    "server:dev": "nodemon index.js",
+    "client": "npm run start --prefix frontend",
+    "client:build": "npm run build --prefix frontend",
+    "dev": "concurrently \"npm run server:dev\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,7 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "concurrently": "^7.3.0",
     "nodemon": "^2.0.19"
   }
 }

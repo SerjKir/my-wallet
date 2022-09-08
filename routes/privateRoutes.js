@@ -98,7 +98,7 @@ router.delete('/card/:id', async (req, res) => {
     const user = await User.findById(card.owner);
     const newBalance = user.balance.map(elem => {
       if (elem.currency === card.currency) {
-        elem.amount = parseInt(elem.amount) - parseInt(card.amount);
+        elem.amount = +elem.amount - +card.amount;
       }
       return elem;
     })
@@ -126,14 +126,14 @@ router.patch('/card/:id', async (req, res) => {
     }
     const cardId = req.params.id;
     const card = await Card.findById(cardId);
-    const difference = parseInt(newAmount) - parseInt(card.amount);
+    const difference = +newAmount - +card.amount;
     card.amount = newAmount;
     card.name = newName;
     await card.save();
     const user = await User.findById(card.owner);
     const newBalance = user.balance.map(elem => {
       if (elem.currency === card.currency) {
-        elem.amount = parseInt(elem.amount) + difference;
+        elem.amount = +elem.amount + difference;
       }
       return elem;
     });
@@ -159,7 +159,7 @@ router.patch('/cash', async (req, res) => {
     const newCash = user.cash.map(elem => {
       if (elem.currency === currency) {
         prevCash = elem.amount;
-        elem.amount = parseInt(newAmount);
+        elem.amount = +newAmount;
       }
       return elem;
     });
@@ -167,7 +167,7 @@ router.patch('/cash', async (req, res) => {
     user.cash = newCash;
     const newBalance = user.balance.map(elem => {
       if (elem.currency === currency) {
-        elem.amount = parseInt(elem.amount) - parseInt(prevCash) + parseInt(newAmount);
+        elem.amount = +elem.amount - +prevCash + +newAmount;
       }
       return elem;
     });

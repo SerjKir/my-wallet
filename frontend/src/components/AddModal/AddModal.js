@@ -5,13 +5,14 @@ import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
 import {MainContext} from '../../context/MainContext';
 
-const AddModal = ({isModal, setIsModal, isEdit, formRef, setChangeItemData}) => {
+const AddModal = ({isModal, setIsModal, isEdit, formRef}) => {
   const {
     getUserData,
     currency,
     handleSelectChange,
     catchHandler,
-    changeItemData
+    changeItemData,
+    setChangeItemData
   } = useContext(MainContext);
 
   const {
@@ -24,6 +25,7 @@ const AddModal = ({isModal, setIsModal, isEdit, formRef, setChangeItemData}) => 
   });
 
   const handleClose = () => {
+    handleSelectChange();
     setIsModal && setIsModal(false);
     setChangeItemData(false);
   }
@@ -63,9 +65,10 @@ const AddModal = ({isModal, setIsModal, isEdit, formRef, setChangeItemData}) => 
   }, [isModal, changeItemData?.isOpen, formRef, setChangeItemData]);
 
   return (
-    <div style={{display: isModal || changeItemData.isOpen ? 'flex' : 'none'}} className={styles.background}>
-      <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
-        <h5 className={styles.title}>{isEdit
+    <div onClick={handleClose} style={{display: isModal || changeItemData.isOpen ? 'flex' : 'none'}} className={styles.background}>
+      <form onClick={e => e.stopPropagation()} ref={formRef} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
+        <h5 className={styles.title}>{
+          isEdit
           ? `Редагувати ${changeItemData.isCash ? 'готівку' : 'картку'}`
           : 'Додати готівку'}
         </h5>
