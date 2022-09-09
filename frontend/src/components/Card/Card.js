@@ -42,7 +42,8 @@ const Card = ({card, removeCard, isSkin, setNotification}) => {
           <span className={styles.copy} onClick={handleCopy}>copy</span>
         </div>
         <div className={styles.row}>
-          <span className={styles.exp}>{card.expDate}</span>
+          <span>{card.holder || 'Mr. Cardholder'}</span>
+          <span>{card.expDate}</span>
         </div>
       </div>
       <Button variant={'contained'} color={'error'} className={'small-btn'}
