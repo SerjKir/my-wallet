@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Paper} from '@mui/material';
 import styles from './CardsInfo.module.scss'
 import AddCard from '../AddCard/AddCard';
@@ -11,7 +11,6 @@ const CardsInfo = () => {
   const {getUserData, changeItemData, catchHandler} = useContext(MainContext);
   const [page, setPage] = useState('Cards');
   const [isModal, setIsModal] = useState(false);
-  const formRef = useRef(null);
 
   const handleRemoveCard = async (id) => {
     await removeCard(id).then(() => {
@@ -32,9 +31,9 @@ const CardsInfo = () => {
       {page === 'Cards'
         ? <Cards handleSetIsSkin={handleSetIsSkin} removeCard={handleRemoveCard}
                  setIsModal={setIsModal} setPage={setPage}/>
-        : <AddCard formRef={formRef} setPage={setPage}/>}
-      {isModal && <AddModal formRef={formRef} isModal={isModal} setIsModal={setIsModal}/>}
-      {changeItemData?.isOpen && <AddModal formRef={formRef} isEdit={true} />}
+        : <AddCard setPage={setPage}/>}
+      {isModal && <AddModal isModal={isModal} setIsModal={setIsModal}/>}
+      {changeItemData?.isOpen && <AddModal isEdit={true} />}
     </Paper>
   );
 };

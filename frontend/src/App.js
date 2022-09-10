@@ -9,6 +9,7 @@ import {getData} from './api/mainApi';
 import Informer from './components/Informer/Informer';
 import ProgressMain from './components/ProgressMain/ProgressMain';
 import {getToken} from './helpers';
+import './index.scss';
 
 const App = () => {
   const [userData, setUserData] = useState(null);

@@ -11,7 +11,7 @@ const availableCurrency = ['UAH', 'USD', 'EUR'];
 router.get('/data', async (req, res) => {
   try {
     const userId = req.decodedId;
-    const user = await User.findById(userId, '-passwordHash -updatedAt -__v -_id').populate('cards', '-__v -_id');
+    const user = await User.findById(userId, '-passwordHash -updatedAt -__v -_id').populate('cards', '-__v');
     if (!user) {
       return res.status(404).json({message: 'Користувач не знайден!'})
     }
@@ -38,7 +38,6 @@ router.post('/card', async (req, res) => {
       return res.status(400).json({message: 'Картка не пройшла валідацію!'});
     }
     const isExist = await Card.findOne({number: formattedNumber});
-    console.log(isExist)
     if (isExist) {
       return res.status(400).json({message: 'Така картка вже додана!'})
     }

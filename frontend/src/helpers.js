@@ -23,3 +23,7 @@ export const toCardWithStars = number => {
 export const getToken = () => {
   return window.localStorage.getItem('token')
 };
+
+export const noScroll = () => {
+  document.body.classList.toggle('no-scroll');
+}

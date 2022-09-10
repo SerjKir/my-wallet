@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "server:dev": "nodemon index.js",
-    "client": "npm run start --prefix frontend",
+    "client:dev": "npm run start --prefix frontend",
     "client:build": "npm run build --prefix frontend",
-    "dev": "concurrently \"npm run server:dev\" \"npm run client\""
+    "full:dev": "concurrently \"npm run server:dev\" \"npm run client:dev\""
   },
   "keywords": [],
   "author": "",

@@ -4,8 +4,9 @@ import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui
 import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
 import {MainContext} from '../../context/MainContext';
+import {noScroll} from '../../helpers';
 
-const AddModal = ({isModal, setIsModal, isEdit, formRef}) => {
+const AddModal = ({isModal, setIsModal, isEdit}) => {
   const {
     getUserData,
     currency,
@@ -60,13 +61,15 @@ const AddModal = ({isModal, setIsModal, isEdit, formRef}) => {
   };
 
   useEffect(() => {
-    isModal && setChangeItemData({isButtonsDisabled: true})
-    formRef.current?.scrollIntoView({block: 'center', behavior: 'smooth'});
-  }, [isModal, changeItemData?.isOpen, formRef, setChangeItemData]);
+    noScroll();
+    return () => {
+      noScroll();
+    }
+  }, []);
 
   return (
     <div onClick={handleClose} style={{display: isModal || changeItemData.isOpen ? 'flex' : 'none'}} className={styles.background}>
-      <form onClick={e => e.stopPropagation()} ref={formRef} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
+      <form onClick={e => e.stopPropagation()} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
         <h5 className={styles.title}>{
           isEdit
           ? `Редагувати ${changeItemData.isCash ? 'готівку' : 'картку'}`

@@ -7,9 +7,14 @@ body {
   font-weight: 500;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
 .MuiGrid-container {
   margin-top: 50px;
   @media (max-width: 900px) {
+    position: relative;
     max-width: 400px;
     margin: 10px auto;
   }
@@ -43,3 +48,4 @@ body {
   margin-left: 0!important;
   margin-right: 0!important;
 }
+

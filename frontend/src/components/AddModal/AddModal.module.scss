@@ -10,7 +10,11 @@
   background-color: rgba(0, 0, 0, .5);
   z-index: 1;
   @media (max-width: 900px) {
-    align-items: baseline;
+    position: fixed;
+    top: -10px;
+    left: -16px;
+    right: -16px;
+    bottom: -10px;
   }
 }
 
