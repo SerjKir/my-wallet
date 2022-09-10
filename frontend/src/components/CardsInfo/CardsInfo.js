@@ -12,7 +12,7 @@ const CardsInfo = () => {
   const [page, setPage] = useState('Cards');
   const [isModal, setIsModal] = useState(false);
 
-  const handleRemoveCard = async (id) => {
+  const handleRemoveCard = async id => {
     await removeCard(id).then(() => {
       getUserData();
     }).catch(error => {
@@ -20,7 +20,7 @@ const CardsInfo = () => {
     });
   }
 
-  const handleSetIsSkin = async (isSkin) => {
+  const handleSetIsSkin = async isSkin => {
     await setIsSkin({isSkin}).then(() => getUserData()).catch(error => {
       catchHandler(error);
     });

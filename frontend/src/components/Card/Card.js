@@ -42,7 +42,7 @@ const Card = ({card, removeCard, isSkin, setNotification}) => {
           <span className={styles.copy} onClick={handleCopy}>copy</span>
         </div>
         <div className={styles.row}>
-          <span>{card.holder || 'Cardholder'}</span>
+          <span>{card.holder}</span>
           <span>{card.expDate}</span>
         </div>
       </div>

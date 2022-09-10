@@ -4,27 +4,27 @@ export const getData = async () => {
   return await axios.get('/api/data');
 };
 
-export const loginApi = async (params) => {
+export const loginApi = async params => {
   return await axios.post('/api/login', params);
 }
 
-export const registerApi = async (params) => {
+export const registerApi = async params => {
   return await axios.post('/api/register', params);
 }
 
-export const addCard = async (params) => {
+export const addCard = async params => {
   return await axios.post('/api/card', params);
 };
 
-export const setIsSkin = async (params) => {
+export const setIsSkin = async params => {
   return await axios.patch('/api/user', params);
 };
 
-export const addCash = async (params) => {
+export const addCash = async params => {
   return await axios.post('/api/cash', params);
 };
 
-export const removeCard = async (id) => {
+export const removeCard = async id => {
   return await axios.delete(`/api/card/${id}`);
 };
 

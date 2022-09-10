@@ -48,7 +48,7 @@ router.post('/card', async (req, res) => {
       number: formattedNumber,
       expDate: formatDate(expDate),
       cvv,
-      holder,
+      holder: holder.trim(),
       scheme: cardData.scheme,
       type: cardData.type
     });
@@ -108,7 +108,7 @@ router.delete('/card/:id', async (req, res) => {
       }, balance: newBalance
     })
     await card.remove();
-    res.json({message: 'Карта успішно видалена'});
+    res.json({message: 'Картка успішно видалена'});
   } catch (error) {
     res.status(500).json({message: 'Не вдалося выдалити картку!', error})
   }

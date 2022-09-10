@@ -36,4 +36,7 @@ div.container {
 
 .inner {
   margin-left: 10px;
+  @media (max-width: 900px) {
+    margin-left: 0;
+  }
 }

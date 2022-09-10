@@ -31,7 +31,7 @@ const AddModal = ({isModal, setIsModal, isEdit}) => {
     setChangeItemData(false);
   }
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     if (isEdit) {
       if (changeItemData.isCash) {
         await updateCash(values.amount, changeItemData.currency).then(() => {

@@ -14,7 +14,7 @@ const AuthPage = ({login, catchHandler}) => {
     mode: 'onChange',
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     let token = null;
     await (isLogin ? loginApi : registerApi)(values).then(res => {
       token = res.data;
@@ -40,7 +40,10 @@ const AuthPage = ({login, catchHandler}) => {
           className={styles.field}
           error={!!errors.name}
           helperText={errors.name?.message}
-          {...register('name', {required: `Вкажіть ім'я`})}
+          {...register('name', {
+            required: `Вкажіть ім'я`,
+            minLength: {value: 3, message: 'Мінімум 3 символи'}
+          })}
         />
         <TextField
           label="Пароль"
@@ -49,27 +52,18 @@ const AuthPage = ({login, catchHandler}) => {
           className={styles.field}
           error={!!errors.password}
           helperText={errors.password?.message}
-          {...register('password', {required: 'Вкажіть пароль'})}
+          {...register('password', {
+            required: 'Вкажіть пароль',
+            minLength: {value: 3, message: 'Мінімум 3 символи'}
+          })}
         />
         {isLogin ? <div className={styles.buttons}>
-          <Button
-            type={'submit'}
-            size="large"
-            variant="contained"
-            color={'primary'}
-            disabled={!isValid}
-          >
+          <Button type={'submit'} size="large" variant="contained" color={'primary'} disabled={!isValid}>
             Вхід
           </Button>
           <span onClick={() => setIsLogin(false)}>Немає облікового запису? Реєстрація</span>
         </div> : <div className={styles.buttons}>
-          <Button
-            type={'submit'}
-            size="large"
-            variant="contained"
-            color={'primary'}
-            disabled={!isValid}
-          >
+          <Button type={'submit'} size="large" variant="contained" color={'primary'} disabled={!isValid}>
             Реєстрація
           </Button>
           <span onClick={() => setIsLogin(true)}>Є обліковий запис? Вхід</span>

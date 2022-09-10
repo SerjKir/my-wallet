@@ -25,7 +25,7 @@ const AddCard = ({setPage}) => {
     mode: 'onBlur',
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     await addCard({currency: currency.selectedCurrency, expDate: selectedDate, ...values})
       .then(() => {
         getUserData();
