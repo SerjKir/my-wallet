@@ -7,21 +7,16 @@ const ListItem = ({card, isButton, isCash}) => {
   const {setChangeItemData, changeItemData} = useContext(MainContext);
   return (
     <div className={styles.item}>
-      <div><span>- {card.name} </span> <span
-        className={styles.amount}>{card.amount.toLocaleString()} {card.currency}</span></div>
-      {isButton && !isCash && <Button className={'small-btn'} variant={'contained'} onClick={() => setChangeItemData({
-        id: card._id,
+      <div>
+        <span>- {card.name} </span>
+        <span className={styles.amount}>{card.amount.toLocaleString()} {card.currency}</span>
+      </div>
+      {isButton && <Button className={'small-btn'} variant={'contained'} onClick={() => setChangeItemData({
+        id: !isCash && card._id,
         amount: card.amount,
-        name: card.name,
+        name: !isCash && card.name,
         currency: card.currency,
-        isCash: false,
-        isOpen: true,
-        isButtonsDisabled: true,
-      })} disabled={changeItemData?.isButtonsDisabled}>Редагувати</Button>}
-      {isButton && isCash && <Button className={'small-btn'} variant={'contained'} onClick={() => setChangeItemData({
-        amount: card.amount,
-        currency: card.currency,
-        isCash: true,
+        isCash: isCash,
         isOpen: true,
         isButtonsDisabled: true,
       })} disabled={changeItemData?.isButtonsDisabled}>Редагувати</Button>}

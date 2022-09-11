@@ -20,7 +20,7 @@ export const useAuth = (setUserData, setChangeItemData) => {
     const token = localStorage.getItem('token')
     token && login(token);
     setReady(true);
-  }, [login])
+  }, [login]);
 
   return {login, logout, token, ready};
 };

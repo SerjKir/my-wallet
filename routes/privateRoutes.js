@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
 const Card = require('../models/Card');
-const lookup = require('binlookup')()
+const lookup = require('binlookup')();
 const balanceFuncAdd = require('../utils/balanceFuncAdd');
 
 const router = express.Router();
@@ -12,12 +12,10 @@ router.get('/data', async (req, res) => {
   try {
     const userId = req.decodedId;
     const user = await User.findById(userId, '-passwordHash -updatedAt -__v -_id').populate('cards', '-__v');
-    if (!user) {
-      return res.status(404).json({message: 'Користувач не знайден!'})
-    }
+    if (!user) return res.status(404).json({message: 'Користувач не знайден!'});
     res.json({user, availableCurrency});
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося отримати дані!', error})
+    res.status(500).json({message: 'Не вдалося отримати дані!', error});
   }
 });
 
@@ -26,21 +24,15 @@ router.post('/card', async (req, res) => {
     const userId = req.decodedId;
     const {number, expDate, cvv, holder, amount, currency} = req.body;
     const formattedNumber = number.replace(/ /g, '');
-    if (amount < 0) {
-      return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
-    }
+    if (amount < 0) return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     const formatDate = date => {
       const formattedDate = date.slice(2, 7).replace('-', '/');
       return formattedDate[3] + formattedDate[4] + formattedDate[2] + formattedDate[0] + formattedDate[1];
     }
     const cardData = await lookup(formattedNumber.slice(0, 8)).then(data => data).catch(() => false);
-    if (!cardData) {
-      return res.status(400).json({message: 'Картка не пройшла валідацію!'});
-    }
+    if (!cardData) return res.status(400).json({message: 'Картка не пройшла валідацію!'});
     const isExist = await Card.findOne({number: formattedNumber});
-    if (isExist) {
-      return res.status(400).json({message: 'Така картка вже додана!'})
-    }
+    if (isExist) return res.status(400).json({message: 'Така картка вже додана!'});
     const card = new Card({
       owner: userId,
       amount,
@@ -57,9 +49,9 @@ router.post('/card', async (req, res) => {
     user.cards.push(card);
     balanceFuncAdd(user, 'balance', currency, amount);
     await user.save();
-    res.json(card)
+    res.json(card);
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося додати карту!', error})
+    res.status(500).json({message: 'Не вдалося додати карту!', error});
   }
 });
 
@@ -70,16 +62,14 @@ router.patch('/user', async (req, res) => {
     await User.findByIdAndUpdate(userId, {isSkin}, {new: true});
     res.json({message: 'Дані успішно оновлені'});
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося оновити дані!', error})
+    res.status(500).json({message: 'Не вдалося оновити дані!', error});
   }
 });
 
 router.post('/cash', async (req, res) => {
   try {
     const {amount, currency} = req.body;
-    if (amount < 1) {
-      return res.status(400).json({message: 'Значення суми не може бути меньше 1!'});
-    }
+    if (amount < 1) return res.status(400).json({message: 'Значення суми не може бути меньше 1!'});
     const userId = req.decodedId;
     const user = await User.findById(userId);
     balanceFuncAdd(user, 'cash', currency, amount);
@@ -87,7 +77,7 @@ router.post('/cash', async (req, res) => {
     await user.save();
     res.json(user);
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося додати готівку!', error})
+    res.status(500).json({message: 'Не вдалося додати готівку!', error});
   }
 });
 
@@ -97,9 +87,7 @@ router.delete('/card/:id', async (req, res) => {
     const card = await Card.findById(cardId);
     const user = await User.findById(card.owner);
     const newBalance = user.balance.map(elem => {
-      if (elem.currency === card.currency) {
-        elem.amount = +elem.amount - +card.amount;
-      }
+      if (elem.currency === card.currency) elem.amount = +elem.amount - +card.amount;
       return elem;
     })
     await User.updateOne({_id: card.owner}, {
@@ -110,20 +98,16 @@ router.delete('/card/:id', async (req, res) => {
     await card.remove();
     res.json({message: 'Картка успішно видалена'});
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося выдалити картку!', error})
+    res.status(500).json({message: 'Не вдалося выдалити картку!', error});
   }
 });
 
 router.patch('/card/:id', async (req, res) => {
   try {
     const {newAmount, name} = req.body;
-    if (newAmount < 0) {
-      return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
-    }
+    if (newAmount < 0) return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     let newName = name.trim();
-    if (newName === '') {
-      return res.status(400).json({message: 'Назва не може буты пустою'});
-    }
+    if (newName === '') return res.status(400).json({message: 'Назва не може буты пустою'});
     const cardId = req.params.id;
     const card = await Card.findById(cardId);
     const difference = +newAmount - +card.amount;
@@ -132,9 +116,7 @@ router.patch('/card/:id', async (req, res) => {
     await card.save();
     const user = await User.findById(card.owner);
     const newBalance = user.balance.map(elem => {
-      if (elem.currency === card.currency) {
-        elem.amount = +elem.amount + difference;
-      }
+      if (elem.currency === card.currency) elem.amount = +elem.amount + difference;
       return elem;
     });
     user.balance = [];
@@ -142,7 +124,7 @@ router.patch('/card/:id', async (req, res) => {
     await user.save();
     res.json({message: 'Картка успішно оновлена'});
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося оновити картку!', error})
+    res.status(500).json({message: 'Не вдалося оновити картку!', error});
   }
 });
 
@@ -150,9 +132,7 @@ router.patch('/card/:id', async (req, res) => {
 router.patch('/cash', async (req, res) => {
   try {
     const {newAmount, currency} = req.body;
-    if (newAmount < 0) {
-      return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
-    }
+    if (newAmount < 0) return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     const userId = req.decodedId;
     const user = await User.findById(userId);
     let prevCash = 0;
@@ -166,17 +146,15 @@ router.patch('/cash', async (req, res) => {
     user.cash = [];
     user.cash = newCash;
     const newBalance = user.balance.map(elem => {
-      if (elem.currency === currency) {
-        elem.amount = +elem.amount - +prevCash + +newAmount;
-      }
+      if (elem.currency === currency) elem.amount = +elem.amount - +prevCash + +newAmount;
       return elem;
     });
     user.balance = [];
     user.balance = newBalance;
     await user.save();
-    res.json({message: 'Готівка успішно оновлена'})
+    res.json({message: 'Готівка успішно оновлена'});
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося оновити готівку!', error})
+    res.status(500).json({message: 'Не вдалося оновити готівку!', error});
   }
 })
 

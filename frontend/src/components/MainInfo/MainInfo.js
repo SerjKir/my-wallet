@@ -10,9 +10,7 @@ import EmptyDataText from '../EmptyDataText/EmptyDataText';
 const MainInfo = () => {
   const {logout, userData} = useContext(MainContext);
   let cashSum = 0;
-  for (let i = 0; i < userData.cash.length; i++) {
-    cashSum += +userData.cash[i].amount;
-  }
+  for (let i = 0; i < userData.cash.length; i++) cashSum += +userData.cash[i].amount;
   const isCash = userData.cash.length !== 0 && cashSum !== 0;
   const isCards = userData.cards.length !== 0;
   const isBalance = isCash || isCards;
