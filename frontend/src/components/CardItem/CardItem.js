@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import styles from './Card.module.scss';
+import styles from './CardItem.module.scss';
 import {Button} from '@mui/material';
 import {baseUrl} from '../../consts';
 import {toCardWithSpaces, toCardWithStars} from '../../helpers';
 
-const Card = ({card, removeCard, isSkin, setNotification}) => {
+const CardItem = ({card, removeCard, isSkin, setNotification}) => {
   const [isNumberHidden, setIsNumberHidden] = useState(true);
   const handleCopy = () => {
     navigator.clipboard.writeText(card.number);
@@ -52,4 +52,4 @@ const Card = ({card, removeCard, isSkin, setNotification}) => {
   );
 };
 
-export default Card;
+export default CardItem;

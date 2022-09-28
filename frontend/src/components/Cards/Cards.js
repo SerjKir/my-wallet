@@ -1,29 +1,34 @@
 import React, {useContext} from 'react';
 import styles from './Cards.module.scss';
 import {Button, Checkbox, FormControlLabel} from '@mui/material';
-import Card from '../Card/Card';
+import CardItem from '../CardItem/CardItem';
 import EmptyDataText from '../EmptyDataText/EmptyDataText';
 import {MainContext} from '../../context/MainContext';
 
 const Cards = ({setPage, setIsModal, removeCard, handleSetIsSkin}) => {
-  const {userData, setNotification} = useContext(MainContext);
-  const isCards = userData.cards.length !== 0;
+    const {userData, setNotification} = useContext(MainContext);
+    const isCards = userData.cards.length !== 0;
 
-  return (
-    <>
-      <div className={styles.row}>
-        <Button variant={'contained'} onClick={() => setPage('AddCard')}>Додати картку</Button>
-        <Button variant={'contained'} color={'success'} onClick={() => setIsModal(true)}>Додати готівку</Button>
-      </div>
-      {isCards
-        ? <FormControlLabel className={styles.checkbox} control={<Checkbox checked={userData.isSkin}/>} label="Патріотичний скін"
-                            onChange={() => handleSetIsSkin(!userData.isSkin)}/>
-        : <EmptyDataText name={'картками'}/>}
-      <div className={styles.column}>
-        {userData.cards.map(card => <Card setNotification={setNotification} isSkin={userData.isSkin} removeCard={removeCard} key={card._id} card={card}/>)}
-      </div>
-    </>
-  );
+    return (
+        <>
+            <div className={styles.row}>
+                <Button variant={'contained'} onClick={() => setPage('AddCard')}>Додати картку</Button>
+                <Button variant={'contained'} color={'success'} onClick={() => setIsModal(true)}>Додати готівку</Button>
+            </div>
+            {isCards
+                ? <>
+                    <FormControlLabel className={styles.checkbox} control={<Checkbox checked={userData.isSkin}/>}
+                                      label="Патріотичний скін"
+                                      onChange={() => handleSetIsSkin(!userData.isSkin)}/>
+                    <div className={styles.column}>
+                        {userData.cards.map(card => <CardItem setNotification={setNotification} isSkin={userData.isSkin}
+                                                              removeCard={removeCard} key={card._id} card={card}/>)}
+                    </div>
+                </>
+                : <EmptyDataText name={'картками'}/>}
+
+        </>
+    );
 };
 
 export default Cards;

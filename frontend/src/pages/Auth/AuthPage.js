@@ -30,7 +30,7 @@ const AuthPage = ({login, catchHandler}) => {
   return (
     <Paper classes={{root: styles.root}}>
       <Typography variant="h5" classes={{root: styles.title}}>
-        {isLogin ? 'Вхід до аккаунта' : 'Реєстрація аккаунта'}
+        {isLogin ? 'Вхід до акаунта' : 'Реєстрація акаунта'}
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
@@ -47,6 +47,7 @@ const AuthPage = ({login, catchHandler}) => {
         />
         <TextField
           label="Пароль"
+          type={"password"}
           fullWidth
           required={true}
           className={styles.field}

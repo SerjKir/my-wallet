@@ -13,6 +13,7 @@ body {
 
 .MuiGrid-container {
   margin-top: 50px;
+  min-height: 226px;
   @media (max-width: 900px) {
     position: relative;
     max-width: 400px;

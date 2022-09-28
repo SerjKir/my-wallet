@@ -18,7 +18,7 @@ router.post('/register', async (req, res) => {
       _id: user._id,
     }, 'secretWord', {
       expiresIn: '24h'
-    })
+    });
     res.json(token);
   } catch (error) {
     res.status(500).json({message: 'Не вдалося зареєструватися!'});
@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
     })
     res.json(token);
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося увійти в аккаунт!', error});
+    res.status(500).json({message: 'Не вдалося увійти в акаунт!', error});
   }
 });
 
