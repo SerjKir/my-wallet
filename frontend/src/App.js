@@ -19,17 +19,17 @@ const App = () => {
   const {token, login, logout, ready} = useAuth(setUserData, setChangeItemData);
   const isAuthenticated = !!token && getToken();
 
-  const catchHandler = useCallback((error) => {
+  const catchHandler = useCallback(error => {
     error.response.status === 401 && logout();
     setNotification({open: true, message: error.response.data.message, style: 'error'});
   }, [logout]);
 
   const handleSelectChange = useCallback(event => {
-    setCurrency({
-      availableCurrency: currency.availableCurrency,
-      selectedCurrency: event?.target.value || 'UAH',
-    });
-  }, [currency.availableCurrency]);
+    setCurrency(prevState => ({
+      availableCurrency: prevState.availableCurrency,
+      selectedCurrency: event?.target.value || 'UAH'
+    }));
+  }, []);
 
   const getUserData = useCallback(async () => {
     await getData().then(res => {

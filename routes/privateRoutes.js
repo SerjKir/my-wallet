@@ -2,11 +2,9 @@ const express = require('express');
 const User = require('../models/User');
 const Card = require('../models/Card');
 const lookup = require('binlookup')();
-const balanceFuncAdd = require('../utils/balanceFuncAdd');
+const {balanceFunc, isNumber, availableCurrency} = require('../utils/helpers');
 
 const router = express.Router();
-
-const availableCurrency = ['UAH', 'USD', 'EUR'];
 
 router.get('/data', async (req, res) => {
   try {
@@ -23,6 +21,7 @@ router.post('/card', async (req, res) => {
   try {
     const userId = req.decodedId;
     const {number, expDate, cvv, holder, amount, currency} = req.body;
+    if (!isNumber(amount)) return res.status(400).json({message: 'Сума повинна бути числом!'});
     const formattedNumber = number.replace(/ /g, '');
     if (amount < 0) return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     const formatDate = date => {
@@ -47,7 +46,7 @@ router.post('/card', async (req, res) => {
     await card.save();
     const user = await User.findById(userId);
     user.cards.push(card);
-    balanceFuncAdd(user, 'balance', currency, amount);
+    balanceFunc(user, 'balance', currency, amount);
     await user.save();
     res.json(card);
   } catch (error) {
@@ -60,7 +59,7 @@ router.patch('/user', async (req, res) => {
     const {isSkin} = req.body;
     const userId = req.decodedId;
     await User.findByIdAndUpdate(userId, {isSkin}, {new: true});
-    res.json({message: 'Дані успішно оновлені'});
+    res.json({message: 'Дані успішно оновлені!'});
   } catch (error) {
     res.status(500).json({message: 'Не вдалося оновити дані!', error});
   }
@@ -69,11 +68,12 @@ router.patch('/user', async (req, res) => {
 router.post('/cash', async (req, res) => {
   try {
     const {amount, currency} = req.body;
+    if (!isNumber(amount)) return res.status(400).json({message: 'Сума повинна бути числом!'});
     if (amount < 1) return res.status(400).json({message: 'Значення суми не може бути меньше 1!'});
     const userId = req.decodedId;
     const user = await User.findById(userId);
-    balanceFuncAdd(user, 'cash', currency, amount);
-    balanceFuncAdd(user, 'balance', currency, amount);
+    balanceFunc(user, 'cash', currency, amount);
+    balanceFunc(user, 'balance', currency, amount);
     await user.save();
     res.json(user);
   } catch (error) {
@@ -98,16 +98,17 @@ router.delete('/card/:id', async (req, res) => {
     await card.remove();
     res.json({message: 'Картка успішно видалена'});
   } catch (error) {
-    res.status(500).json({message: 'Не вдалося выдалити картку!', error});
+    res.status(500).json({message: 'Не вдалося видалити картку!', error});
   }
 });
 
 router.patch('/card/:id', async (req, res) => {
   try {
     const {newAmount, name} = req.body;
+    if (!isNumber(newAmount)) return res.status(400).json({message: 'Сума повинна бути числом!'});
     if (newAmount < 0) return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     let newName = name.trim();
-    if (newName === '') return res.status(400).json({message: 'Назва не може буты пустою'});
+    if (newName === '') return res.status(400).json({message: 'Назва не може буты пустою!'});
     const cardId = req.params.id;
     const card = await Card.findById(cardId);
     const difference = +newAmount - +card.amount;
@@ -132,6 +133,7 @@ router.patch('/card/:id', async (req, res) => {
 router.patch('/cash', async (req, res) => {
   try {
     const {newAmount, currency} = req.body;
+    if (!isNumber(newAmount)) return res.status(400).json({message: 'Сума повинна бути числом!'});
     if (newAmount < 0) return res.status(400).json({message: 'Значення суми не може бути меньше 0!'});
     const userId = req.decodedId;
     const user = await User.findById(userId);
@@ -152,7 +154,7 @@ router.patch('/cash', async (req, res) => {
     user.balance = [];
     user.balance = newBalance;
     await user.save();
-    res.json({message: 'Готівка успішно оновлена'});
+    res.json({message: 'Готівка успішно оновлена!'});
   } catch (error) {
     res.status(500).json({message: 'Не вдалося оновити готівку!', error});
   }
