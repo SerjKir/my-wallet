@@ -68,12 +68,13 @@ const AddModal = ({isModal, setIsModal, isEdit}) => {
   }, []);
 
   return (
-    <div onClick={handleClose} style={{display: isModal || changeItemData.isOpen ? 'flex' : 'none'}} className={styles.background}>
+    <div onClick={handleClose} style={{display: isModal || changeItemData.isOpen ? 'flex' : 'none'}}
+         className={styles.background}>
       <form onClick={e => e.stopPropagation()} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
         <h5 className={styles.title}>{
           isEdit
-          ? `Редагувати ${changeItemData.isCash ? 'готівку' : 'картку'}`
-          : 'Додати готівку'}
+            ? `Редагувати ${changeItemData.isCash ? 'готівку' : 'картку'}`
+            : 'Додати готівку'}
         </h5>
         <div className={`${styles.row} ${styles.inputs}`}>
           <TextField required={true} type={'number'} fullWidth label="Сума" variant="outlined"
@@ -82,7 +83,8 @@ const AddModal = ({isModal, setIsModal, isEdit}) => {
                      {...register('amount', {
                        required: 'Вкажіть суму',
                        value: changeItemData?.amount,
-                       min: {value: isEdit ? 0 : 1, message: `Мінімум ${isEdit ? 0 : 1}`}
+                       min: {value: isEdit ? 0 : 1, message: `Мінімум ${isEdit ? 0 : 1}`},
+                       max: {value: 1000000, message: 'Максимальна сума 1 000 000'}
                      })}
           />
           <FormControl fullWidth>
@@ -96,16 +98,20 @@ const AddModal = ({isModal, setIsModal, isEdit}) => {
               {currency.availableCurrency.map((elem, index) => <MenuItem key={index} value={elem}>{elem}</MenuItem>)}
             </Select>
           </FormControl>
-          {isEdit && !changeItemData.isCash &&
+        </div>
+        {isEdit && !changeItemData.isCash &&
+          <div className={styles.row}>
             <TextField required={true} type={'text'} fullWidth label="Назва" variant="outlined"
                        error={!!errors.name}
                        helperText={errors.name?.message}
                        {...register('name', {
                          required: 'Вкажіть назву',
-                         value: changeItemData?.name
+                         value: changeItemData?.name,
+                         minLength: {value: 3, message: 'Максимум 3 символи'},
+                         maxLength: {value: 16, message: 'Максимум 16 символів'}
                        })}
-            />}
-        </div>
+            />
+          </div>}
         <div className={styles.row}>
           <Button type={'submit'} variant={'contained'} color={'primary'}
                   disabled={!isValid}>{isEdit ? 'Зберегти' : 'Додати'}</Button>

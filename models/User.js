@@ -1,7 +1,9 @@
 const {Schema, model, Types} = require('mongoose');
 
 const schema = new Schema({
-  name: {type: String, required: true, unique: true},
+  name: {type: String},
+  userName: {type: String},
+  username: {type: String, required: true, unique: true},
   passwordHash: {type: String, required: true},
   balance: {type: Array, default: []},
   cash: {type: Array, default: []},

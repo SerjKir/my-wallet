@@ -14,6 +14,9 @@
   row-gap: 15px;
 }
 
-.checkbox span {
-  font-weight: 500;
+.checkbox {
+  width: fit-content;
+  span {
+    font-weight: 500;
+  }
 }

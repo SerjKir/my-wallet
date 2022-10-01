@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
     const decoded = jwt.verify(token, 'secretWord');
     req.decodedId = decoded._id;
     next();
-  } catch (e) {
+  } catch (error) {
     res.status(401).json({message: 'Немає авторизації'});
   }
 }

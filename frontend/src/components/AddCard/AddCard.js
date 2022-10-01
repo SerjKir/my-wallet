@@ -53,7 +53,7 @@ const AddCard = ({setPage}) => {
                    {...register('number', {
                      validate: checkCard,
                      required: 'Вкажіть номер картки',
-                     minLength: {value: 16, message: 'Мінімум 16 символів'}
+                     minLength: {value: 19, message: 'Потрібно 16 цифр'}
                    })}
         />
       </div>
@@ -73,7 +73,9 @@ const AddCard = ({setPage}) => {
         <TextField fullWidth label="Власник картки" variant="outlined"
                    error={!!errors.holder}
                    helperText={errors.holder?.message}
-                   {...register('holder')}
+                   {...register('holder', {
+                     minLength: {value: 3, message: 'Мінімум 3 символи'},
+                     maxLength: {value: 16, message: 'Максимум 16 символів'}})}
         />
       </div>
       <div className={styles.row}>
@@ -82,7 +84,8 @@ const AddCard = ({setPage}) => {
                    helperText={errors.amount?.message}
                    {...register('amount', {
                      required: 'Вкажіть суму',
-                     min: {value: 0, message: 'Мінімум 0'}})}
+                     min: {value: 0, message: 'Мінімальна сума 0'},
+                     max: {value: 1000000, message: 'Максимальна сума 1 000 000'}})}
         />
         <FormControl fullWidth>
           <InputLabel>Валюта</InputLabel>

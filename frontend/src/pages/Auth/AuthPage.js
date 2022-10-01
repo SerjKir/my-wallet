@@ -38,9 +38,9 @@ const AuthPage = ({login, catchHandler}) => {
           fullWidth
           required={true}
           className={styles.field}
-          error={!!errors.name}
-          helperText={errors.name?.message}
-          {...register('name', {
+          error={!!errors.username}
+          helperText={errors.username?.message}
+          {...register('username', {
             required: `Вкажіть ім'я`,
             minLength: {value: 3, message: 'Мінімум 3 символи'}
           })}

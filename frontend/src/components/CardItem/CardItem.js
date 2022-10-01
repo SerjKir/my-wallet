@@ -21,7 +21,7 @@ const CardItem = ({card, removeCard, isSkin, setNotification}) => {
            style={{background: isSkin && `url(${baseUrl}/uploads/patriot.jpg) no-repeat center center`}}>
         <div className={styles.row}>
           <div className={styles.column}>
-            <span className={styles.name}>{card.name}</span>
+            <span className={styles.clip}>{card.name}</span>
             <span className={styles.amount}>{card.amount.toLocaleString()} {card.currency}</span>
           </div>
           <div className={styles.column}>
@@ -42,7 +42,7 @@ const CardItem = ({card, removeCard, isSkin, setNotification}) => {
           <span className={styles.copy} onClick={handleCopy}>copy</span>
         </div>
         <div className={styles.row}>
-          <span>{card.holder}</span>
+          <span className={styles.clip}>{card.holder}</span>
           <span>{card.expDate}</span>
         </div>
       </div>

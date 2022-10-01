@@ -15,12 +15,9 @@ const balanceFunc = (user, type, currency, amount) => {
   }
 };
 
-const isNumber = value => typeof +value === 'number' && !isNaN(+value);
-
 const availableCurrency = ['UAH', 'USD', 'EUR'];
 
 module.exports = {
   balanceFunc,
-  isNumber,
   availableCurrency
 };

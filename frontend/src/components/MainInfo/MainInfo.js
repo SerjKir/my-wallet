@@ -20,7 +20,7 @@ const MainInfo = () => {
       <div className={styles.row}>
         <div className={styles.user}>
           <Avatar alt={userData.name} src={baseUrl + userData.avatarUrl}/>
-          <span className={styles.userName}>{userData.name}</span>
+          <span className={styles.username}>{userData.name}</span>
         </div>
         <Button onClick={logout}>Вийти</Button>
       </div>

@@ -7,7 +7,7 @@ const ListItem = ({card, isButton, isCash}) => {
   const {setChangeItemData, changeItemData} = useContext(MainContext);
   return (
     <div className={styles.item}>
-      <div>
+      <div className={styles.info}>
         <span>- {card.name} </span>
         <span className={styles.amount}>{card.amount.toLocaleString()} {card.currency}</span>
       </div>

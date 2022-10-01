@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const {connect} = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
@@ -21,7 +21,7 @@ app.use('/api', auth, require('./routes/privateRoutes'));
 async function start() {
 
   try {
-    await mongoose.connect(process.env.MONGODB_URI).then(() => {
+    await connect(process.env.MONGODB_URI).then(() => {
       console.log('DB ok');
     });
     app.listen(PORT, () => {
