@@ -1,6 +1,7 @@
 import {createContext} from 'react';
 
 export const MainContext = createContext({
+  login: null,
   logout: null,
   userData: null,
   getUserData: null,

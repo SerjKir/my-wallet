@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Container} from '@mui/material';
-import Home from './pages/Home/HomePage';
-import Auth from './pages/Auth/AuthPage';
+import HomePage from './pages/HomePage/HomePage';
+import AuthPage from './pages/AuthPage/AuthPage';
 import {Routes, Route, BrowserRouter, Navigate} from 'react-router-dom';
 import {useAuth} from './hooks/auth.hook';
 import {MainContext} from './context/MainContext';
@@ -52,6 +52,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <MainContext.Provider value={{
+        login,
         logout,
         userData,
         getUserData,
@@ -65,8 +66,8 @@ const App = () => {
         <Container maxWidth={'md'}>
           <Routes>
             {isAuthenticated
-              ? <Route path={'/'} element={<Home userData={!!userData}/>}/>
-              : <Route path={'/'} element={<Auth login={login} catchHandler={catchHandler}/>}/>}
+              ? <Route path={'/'} element={<HomePage userData={!!userData}/>}/>
+              : <Route path={'/'} element={<AuthPage/>}/>}
             <Route path={'*'} element={<Navigate to={'/'} replace/>}/>
           </Routes>
           <Informer snack={notification} setNotification={setNotification}/>

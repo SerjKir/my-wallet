@@ -2,7 +2,7 @@ import React from 'react';
 import {Grid} from '@mui/material';
 import MainInfo from '../../components/MainInfo/MainInfo';
 import CardsInfo from '../../components/CardsInfo/CardsInfo';
-import styles from './Home.module.scss';
+import styles from './HomePage.module.scss';
 import ProgressMain from '../../components/ProgressMain/ProgressMain';
 
 const HomePage = ({userData}) => {

@@ -1,13 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Paper, TextField, Typography} from '@mui/material';
 import styles from './Auth.module.scss';
 import {useForm} from 'react-hook-form';
 import {loginApi, registerApi} from '../../api/mainApi';
 import {useNavigate} from 'react-router-dom';
+import {MainContext} from "../../context/MainContext";
+import {removeSpaces} from "../../helpers";
 
-const AuthPage = ({login, catchHandler}) => {
+const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
+  const {login, catchHandler} = useContext(MainContext);
   const {
     register, handleSubmit, formState: {errors, isValid},
   } = useForm({
@@ -38,11 +41,13 @@ const AuthPage = ({login, catchHandler}) => {
           fullWidth
           required={true}
           className={styles.field}
+          onInput={event => removeSpaces(event)}
           error={!!errors.username}
           helperText={errors.username?.message}
           {...register('username', {
             required: `Вкажіть ім'я`,
-            minLength: {value: 3, message: 'Мінімум 3 символи'}
+            minLength: {value: 3, message: 'Мінімум 3 символи'},
+            maxLength: {value: 16, message: 'Максимум 16 символів'}
           })}
         />
         <TextField
@@ -51,11 +56,13 @@ const AuthPage = ({login, catchHandler}) => {
           fullWidth
           required={true}
           className={styles.field}
+          onInput={event => removeSpaces(event)}
           error={!!errors.password}
           helperText={errors.password?.message}
           {...register('password', {
             required: 'Вкажіть пароль',
-            minLength: {value: 3, message: 'Мінімум 3 символи'}
+            minLength: {value: 3, message: 'Мінімум 3 символи'},
+            maxLength: {value: 16, message: 'Максимум 16 символів'}
           })}
         />
         {isLogin ? <div className={styles.buttons}>

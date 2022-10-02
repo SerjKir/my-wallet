@@ -19,8 +19,8 @@ const MainInfo = () => {
     <Paper className={styles.container}>
       <div className={styles.row}>
         <div className={styles.user}>
-          <Avatar alt={userData.name} src={baseUrl + userData.avatarUrl}/>
-          <span className={styles.username}>{userData.name}</span>
+          <Avatar alt={userData.username} src={baseUrl + userData.avatarUrl}/>
+          <span className={styles.username}>{userData.username}</span>
         </div>
         <Button onClick={logout}>Вийти</Button>
       </div>
