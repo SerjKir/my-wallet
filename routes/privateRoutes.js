@@ -5,7 +5,7 @@ const UserController = require("../controllers/UserController");
 const CardController = require('../controllers/CardController')
 
 const router = Router();
-router.get('/data', UserController.getUserData);
+router.get('/user', UserController.getUserData);
 router.patch('/user', UserController.setCardSkin);
 router.post('/cash', addCashValidator, handleValidationErrors, UserController.addCash);
 router.patch('/cash', updateCashValidator, handleValidationErrors, UserController.updateCash);

@@ -21,12 +21,8 @@ app.use('/api', auth, require('./routes/privateRoutes'));
 async function start() {
 
   try {
-    await connect(process.env.MONGODB_URI).then(() => {
-      console.log('DB ok');
-    });
-    app.listen(PORT, () => {
-      console.log('Server started on port ' + PORT);
-    })
+    await connect(process.env.MONGODB_URI).then(() => console.log('DB ok'));
+    app.listen(PORT, () => console.log('Server started on port ' + PORT));
   } catch (err) {
     console.log(err);
   }

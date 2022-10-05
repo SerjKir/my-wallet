@@ -1,11 +1,10 @@
 import React, {useContext} from 'react';
 import styles from './Cards.module.scss';
 import {Button, Checkbox, FormControlLabel} from '@mui/material';
-import CardItem from '../CardItem/CardItem';
-import EmptyDataText from '../EmptyDataText/EmptyDataText';
+import {EmptyDataText, CardItem} from '../';
 import {MainContext} from '../../context/MainContext';
 
-const Cards = ({setPage, setIsModal, removeCard, handleSetIsSkin}) => {
+export const Cards = ({setPage, setIsModal, removeCard, handleSetIsSkin}) => {
     const {userData, setNotification} = useContext(MainContext);
     const isCards = userData.cards.length !== 0;
 
@@ -30,5 +29,3 @@ const Cards = ({setPage, setIsModal, removeCard, handleSetIsSkin}) => {
         </>
     );
 };
-
-export default Cards;

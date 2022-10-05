@@ -4,7 +4,7 @@ import {Button} from '@mui/material';
 import {baseUrl} from '../../consts';
 import {toCardWithSpaces, toCardWithStars} from '../../helpers';
 
-const CardItem = ({card, removeCard, isSkin, setNotification}) => {
+export const CardItem = ({card, removeCard, isSkin, setNotification}) => {
   const [isNumberHidden, setIsNumberHidden] = useState(true);
   const handleCopy = () => {
     navigator.clipboard.writeText(card.number);
@@ -51,5 +51,3 @@ const CardItem = ({card, removeCard, isSkin, setNotification}) => {
     </div>
   );
 };
-
-export default CardItem;

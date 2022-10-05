@@ -3,11 +3,11 @@ import styles from './AddCard.module.scss';
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography} from '@mui/material';
 import {useForm} from 'react-hook-form';
 import {addCard} from '../../api/mainApi';
-import ExpireDatePicker from '../ExpireDatePicker/ExpireDatePicker';
+import {ExpireDatePicker} from '../';
 import {MainContext} from '../../context/MainContext';
-import {checkCard, numbersOnly} from '../../helpers';
+import {checkCard, toNumber, numbersOnly} from '../../helpers';
 
-const AddCard = ({setPage}) => {
+export const AddCard = ({setPage}) => {
   const formRef = useRef(null);
   const {
     getUserData,
@@ -24,6 +24,11 @@ const AddCard = ({setPage}) => {
   } = useForm({
     mode: 'onBlur',
   });
+
+  const onClose = () => {
+    handleSelectChange();
+    setPage('Cards');
+  }
 
   const onSubmit = async values => {
     await addCard({currency: currency.selectedCurrency, expDate: selectedDate, ...values})
@@ -82,10 +87,12 @@ const AddCard = ({setPage}) => {
         <TextField required={true} fullWidth type={'number'} label="Сума" variant="outlined"
                    error={!!errors.amount}
                    helperText={errors.amount?.message}
+                   onInput={event => toNumber(event)}
                    {...register('amount', {
                      required: 'Вкажіть суму',
                      min: {value: 0, message: 'Мінімальна сума 0'},
-                     max: {value: 1000000, message: 'Максимальна сума 1 000 000'}})}
+                     max: {value: 1000000, message: 'Максимальна сума 1 000 000'}
+                   })}
         />
         <FormControl fullWidth>
           <InputLabel>Валюта</InputLabel>
@@ -100,10 +107,8 @@ const AddCard = ({setPage}) => {
       </div>
       <div className={`${styles.row} ${styles.buttons}`}>
         <Button variant={'contained'} type={'submit'} color={'primary'} disabled={!isValid}>Додати</Button>
-        <Button variant={'contained'} color={'error'} onClick={() => setPage('Cards')}>Скасувати</Button>
+        <Button variant={'contained'} color={'error'} onClick={onClose}>Скасувати</Button>
       </div>
     </form>
   );
 };
-
-export default AddCard;

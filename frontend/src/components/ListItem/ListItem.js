@@ -3,7 +3,7 @@ import {Button} from '@mui/material';
 import styles from './ListItem.module.scss';
 import {MainContext} from '../../context/MainContext';
 
-const ListItem = ({card, isButton, isCash}) => {
+export const ListItem = ({card, isButton, isCash}) => {
   const {setChangeItemData, changeItemData} = useContext(MainContext);
   return (
     <div className={styles.item}>
@@ -23,5 +23,3 @@ const ListItem = ({card, isButton, isCash}) => {
     </div>
   );
 };
-
-export default ListItem;

@@ -1,7 +1,7 @@
 import axios from './axios';
 
 export const getData = async () => {
-  return await axios.get('/api/data');
+  return await axios.get('/api/user');
 };
 
 export const loginApi = async params => {

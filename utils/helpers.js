@@ -17,7 +17,14 @@ const balanceFunc = (user, type, currency, amount) => {
 
 const availableCurrency = ['UAH', 'USD', 'EUR'];
 
+const maxMoney = 1000000;
+const maxLength = 16;
+const minLength = 3;
+
 module.exports = {
   balanceFunc,
-  availableCurrency
+  availableCurrency,
+  maxMoney,
+  maxLength,
+  minLength
 };

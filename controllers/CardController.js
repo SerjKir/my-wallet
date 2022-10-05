@@ -1,6 +1,7 @@
 const Card = require("../models/Card");
 const User = require("../models/User");
-const {balanceFunc} = require("../utils/helpers");
+const {balanceFunc, maxLength} = require("../utils/helpers");
+const lookup = require('binlookup')();
 
 const addCard = async (req, res) => {
   try {
@@ -22,8 +23,8 @@ const addCard = async (req, res) => {
       number: formattedNumber,
       expDate: formatDate(expDate),
       cvv,
-      name: cardData.bank?.name?.slice(0, 16) || 'Картка',
-      holder: holder.trim().slice(0, 16),
+      name: cardData.bank?.name?.slice(0, maxLength) || 'Картка',
+      holder: holder.trim().slice(0, maxLength),
       scheme: cardData.scheme,
       type: cardData.type
     });

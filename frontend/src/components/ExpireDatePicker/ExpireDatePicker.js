@@ -4,7 +4,7 @@ import {DatePicker, LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import styles from './ExpireDatePicker.module.scss';
 
-const ExpireDatePicker = ({selectedDate, setSelectedDate}) => {
+export const ExpireDatePicker = ({selectedDate, setSelectedDate}) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
@@ -20,5 +20,3 @@ const ExpireDatePicker = ({selectedDate, setSelectedDate}) => {
     </LocalizationProvider>
   );
 };
-
-export default ExpireDatePicker;

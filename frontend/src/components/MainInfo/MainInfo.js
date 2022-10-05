@@ -1,13 +1,11 @@
 import React, {useContext} from 'react';
 import {Avatar, Button, Paper} from '@mui/material';
 import styles from './MainInfo.module.scss'
-import List from '../List/List';
 import {MainContext} from '../../context/MainContext';
-import ListItem from '../ListItem/ListItem';
 import {baseUrl} from '../../consts';
-import EmptyDataText from '../EmptyDataText/EmptyDataText';
+import {EmptyDataText, List, ListItem} from '../';
 
-const MainInfo = () => {
+export const MainInfo = () => {
   const {logout, userData} = useContext(MainContext);
   let cashSum = 0;
   for (let i = 0; i < userData.cash.length; i++) cashSum += +userData.cash[i].amount;
@@ -54,5 +52,3 @@ const MainInfo = () => {
     </Paper>
   );
 };
-
-export default MainInfo;

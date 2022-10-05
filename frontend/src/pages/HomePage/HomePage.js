@@ -1,11 +1,9 @@
 import React from 'react';
 import {Grid} from '@mui/material';
-import MainInfo from '../../components/MainInfo/MainInfo';
-import CardsInfo from '../../components/CardsInfo/CardsInfo';
+import {MainInfo, CardsInfo, ProgressMain} from '../../components';
 import styles from './HomePage.module.scss';
-import ProgressMain from '../../components/ProgressMain/ProgressMain';
 
-const HomePage = ({userData}) => {
+export const HomePage = ({userData}) => {
   if (!userData) return <ProgressMain/>;
 
   return (
@@ -19,5 +17,3 @@ const HomePage = ({userData}) => {
     </Grid>
   );
 };
-
-export default HomePage;

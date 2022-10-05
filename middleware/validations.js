@@ -1,28 +1,31 @@
 const {check} = require("express-validator");
+const {maxMoney, maxLength, minLength} = require("../utils/helpers");
 
 const authValidator = [
-  check('username', "Ім`я повинно містити від 3 до 16 символів без пробілів!").custom(value => !/\s/.test(value)).isLength({min: 3, max: 16}),
-  check('password', "Пароль повинен містити від 3 до 16 символів без пробілів!").custom(value => !/\s/.test(value)).isLength({min: 3, max: 16})
+  check('username', `Ім'я повинно містити від ${minLength} до ${maxLength} символів без пробілів!`)
+    .custom(value => !/\s/.test(value)).isLength({min: minLength, max: maxLength}),
+  check('password', `Пароль повинен містити від ${minLength} до ${maxLength} символів без пробілів!`)
+    .custom(value => !/\s/.test(value)).isLength({min: minLength, max: maxLength})
 ];
 
 const addCardValidator = [
-  check('number', "Номер картки повинен містити 16 цифр!").custom(value => value.replace(/\s/g, '').length === 16),
-  check('amount', 'Сума повинна бути від 0 до 1 000 000!').isInt({min: 0, max: 1000000}),
-  check('cvv', 'CVV код повинен скалдатися з 3 цифр!').isInt({min: 3, max: 3}),
-  check('holder', "Ім'я власника повинно бути від 3 до 16 символів!").trim().isLength({min: 3, max: 16}),
+  check('number', `Номер картки повинен містити ${maxLength} цифр!`).custom(value => value.replace(/\s/g, '').length === maxLength),
+  check('amount', `Сума повинна бути від 0 до ${maxMoney}!`).isInt({min: 0, max: maxMoney}),
+  check('cvv', 'CVV код повинен скалдатися з 3 цифр!').custom(value => parseInt(value) || value === '000').isLength({min: 3, max: 3}),
+  check('holder', `Ім'я власника повинно бути від ${minLength} до ${maxLength} символів!`).trim().isLength({min: minLength, max: maxLength}),
 ];
 
 const updateCardValidator = [
-  check('newAmount', 'Сума повинна бути від 0 до 1 000 000!').isInt({min: 0, max: 1000000}),
-  check('name', 'Назва повинна містити від 3 до 16 символів').trim().isLength({min: 3, max: 16})
+  check('newAmount', `Сума повинна бути від 0 до ${maxMoney}!`).isInt({min: 0, max: maxMoney}),
+  check('name', `Назва повинна містити від ${minLength} до ${maxLength} символів`).trim().isLength({min: minLength, max: maxLength})
 ];
 
 const addCashValidator = [
-  check('amount', 'Сума повинна бути від 1 до 1 000 000!').isInt({min: 1, max: 1000000})
+  check('amount', `Сума повинна бути від 1 до ${maxMoney}!`).isInt({min: 1, max: maxMoney})
 ];
 
 const updateCashValidator = [
-  check('newAmount', 'Сума повинна бути від 0 до 1 000 000!').isInt({min: 0, max: 1000000})
+  check('newAmount', `Сума повинна бути від 0 до ${maxMoney}!`).isInt({min: 0, max: maxMoney})
 ];
 
 module.exports = {

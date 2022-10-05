@@ -1,13 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {Paper} from '@mui/material';
 import styles from './CardsInfo.module.scss'
-import AddCard from '../AddCard/AddCard';
-import Cards from '../Cards/Cards';
-import AddModal from '../AddModal/AddModal';
+import {AddCard, AddModal, Cards} from '../';
 import {removeCard, setIsSkin} from '../../api/mainApi';
 import {MainContext} from '../../context/MainContext';
 
-const CardsInfo = () => {
+export const CardsInfo = () => {
   const {getUserData, changeItemData, catchHandler} = useContext(MainContext);
   const [page, setPage] = useState('Cards');
   const [isModal, setIsModal] = useState(false);
@@ -37,5 +35,3 @@ const CardsInfo = () => {
     </Paper>
   );
 };
-
-export default CardsInfo;

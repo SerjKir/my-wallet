@@ -4,9 +4,9 @@ import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui
 import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
 import {MainContext} from '../../context/MainContext';
-import {noScroll} from '../../helpers';
+import {toNumber, noScroll} from '../../helpers';
 
-const AddModal = ({isModal, setIsModal, isEdit}) => {
+export const AddModal = ({isModal, setIsModal, isEdit}) => {
   const {
     getUserData,
     currency,
@@ -80,6 +80,7 @@ const AddModal = ({isModal, setIsModal, isEdit}) => {
           <TextField required={true} type={'number'} fullWidth label="Сума" variant="outlined"
                      error={!!errors.amount}
                      helperText={errors.amount?.message}
+                     onInput={event => toNumber(event)}
                      {...register('amount', {
                        required: 'Вкажіть суму',
                        value: changeItemData?.amount,
@@ -121,5 +122,3 @@ const AddModal = ({isModal, setIsModal, isEdit}) => {
     </div>
   );
 };
-
-export default AddModal;

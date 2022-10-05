@@ -1,13 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Container} from '@mui/material';
-import HomePage from './pages/HomePage/HomePage';
-import AuthPage from './pages/AuthPage/AuthPage';
+import {AuthPage, HomePage} from './pages';
 import {Routes, Route, BrowserRouter, Navigate} from 'react-router-dom';
 import {useAuth} from './hooks/auth.hook';
 import {MainContext} from './context/MainContext';
 import {getData} from './api/mainApi';
-import Informer from './components/Informer/Informer';
-import ProgressMain from './components/ProgressMain/ProgressMain';
+import {Informer, ProgressMain} from './components';
 import {getToken} from './helpers';
 import './index.scss';
 

@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom';
 import {MainContext} from "../../context/MainContext";
 import {removeSpaces} from "../../helpers";
 
-const AuthPage = () => {
+export const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const {login, catchHandler} = useContext(MainContext);
@@ -31,7 +31,7 @@ const AuthPage = () => {
   };
 
   return (
-    <Paper classes={{root: styles.root}}>
+    <Paper className={styles.main}>
       <Typography variant="h5" classes={{root: styles.title}}>
         {isLogin ? 'Вхід до акаунта' : 'Реєстрація акаунта'}
       </Typography>
@@ -80,5 +80,3 @@ const AuthPage = () => {
     </Paper>
   );
 };
-
-export default AuthPage;
