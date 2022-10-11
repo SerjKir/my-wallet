@@ -21,9 +21,7 @@ export const Auth = () => {
     let token = null;
     await (isLogin ? loginApi : registerApi)(values).then(res => {
       token = res.data;
-    }).catch(error => {
-      catchHandler(error);
-    });
+    }).catch(error => catchHandler(error));
     if (token) {
       await login(token);
       navigate('/', {replace: true});

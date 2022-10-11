@@ -2,15 +2,15 @@ import React, {useContext} from 'react';
 import {Avatar, Button, Paper} from '@mui/material';
 import styles from './MainInfo.module.scss'
 import {MainContext} from '../../context/MainContext';
-import {baseUrl} from '../../consts';
+import {baseUrl} from '../../url';
 import {EmptyDataText, List, ListItem} from '../';
 
 export const MainInfo = () => {
-  const {logout, userData} = useContext(MainContext);
+  const {logout, walletData, userData} = useContext(MainContext);
   let cashSum = 0;
-  for (let i = 0; i < userData.cash.length; i++) cashSum += +userData.cash[i].amount;
-  const isCash = userData.cash.length !== 0 && cashSum !== 0;
-  const isCards = userData.cards.length !== 0;
+  for (let i = 0; i < walletData.cash.length; i++) cashSum += +walletData.cash[i].amount;
+  const isCash = walletData.cash.length !== 0 && cashSum !== 0;
+  const isCards = walletData.cards.length !== 0;
   const isBalance = isCash || isCards;
 
   return (
@@ -28,7 +28,7 @@ export const MainInfo = () => {
           <hr style={{marginTop: '10px'}}/>
           <div className={styles.block}>
             <p>Загальний баланс</p>
-            <List>{userData.balance.map((elem, index) => elem.amount > 0 &&
+            <List>{walletData.balance.map((elem, index) => elem.amount > 0 &&
               <ListItem key={index} card={elem}/>)}</List>
           </div>
         </>
@@ -38,7 +38,7 @@ export const MainInfo = () => {
         <div className={`${styles.block} ${styles.inner}`}>
           <p>Готівка</p>
           <List>
-            {userData.cash.map((elem, index) => elem.amount > 0 &&
+            {walletData.cash.map((elem, index) => elem.amount > 0 &&
               <ListItem isCash={true} key={index} isButton={true} card={elem}/>)}
           </List>
         </div>}
@@ -46,7 +46,7 @@ export const MainInfo = () => {
         <div className={`${styles.block} ${styles.inner}`}>
           <p>Мої картки</p>
           <List>
-            {userData.cards.map(elem => <ListItem key={elem._id} isButton={true} card={elem}/>)}
+            {walletData.cards.map(elem => <ListItem key={elem._id} isButton={true} card={elem}/>)}
           </List>
         </div>}
     </Paper>

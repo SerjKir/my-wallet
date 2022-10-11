@@ -1,7 +1,11 @@
 import axios from './axios';
 
-export const getData = async () => {
+export const getUser = async () => {
   return await axios.get('/api/user');
+};
+
+export const getWallet = async () => {
+  return await axios.get('/api/wallet');
 };
 
 export const loginApi = async params => {

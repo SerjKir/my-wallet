@@ -8,7 +8,7 @@ import {toNumber, noScroll} from '../../helpers';
 
 export const AddModal = ({isModal, setIsModal, isEdit}) => {
   const {
-    getUserData,
+    getWalletData,
     currency,
     handleSelectChange,
     catchHandler,
@@ -35,28 +35,22 @@ export const AddModal = ({isModal, setIsModal, isEdit}) => {
     if (isEdit) {
       if (changeItemData.isCash) {
         await updateCash(values.amount, changeItemData.currency).then(() => {
-          getUserData();
+          getWalletData();
           handleClose();
-        }).catch(error => {
-          catchHandler(error);
-        });
+        }).catch(error => catchHandler(error));
       } else {
         await updateCard(changeItemData.id, values.amount, values.name).then(() => {
-          getUserData();
+          getWalletData();
           handleClose();
-        }).catch(error => {
-          catchHandler(error);
-        });
+        }).catch(error => catchHandler(error));
       }
     } else {
       await addCash({currency: currency.selectedCurrency, amount: values.amount})
         .then(() => {
-          getUserData();
+          getWalletData();
           reset();
           handleClose();
-        }).catch(error => {
-          catchHandler(error);
-        });
+        }).catch(error => catchHandler(error));
     }
   };
 

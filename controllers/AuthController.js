@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Wallet = require("../models/Wallet");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -10,7 +11,10 @@ const resister = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
     const user = new User({username, passwordHash: hash});
+    const wallet = new Wallet({owner: user._id});
+    user.wallet = wallet;
     await user.save();
+    await wallet.save();
     const token = jwt.sign({
       _id: user._id,
     }, 'secretWord', {

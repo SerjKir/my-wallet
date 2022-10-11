@@ -1,10 +1,10 @@
 const User = require("../models/User");
-const {availableCurrency, balanceFunc} = require("../utils/helpers");
+const {availableCurrency} = require("../utils/helpers");
 
 const getUserData = async (req, res) => {
   try {
     const userId = req.decodedId;
-    const user = await User.findById(userId, '-passwordHash -updatedAt -__v -_id').populate('cards', '-__v');
+    const user = await User.findById(userId, '-passwordHash -wallet -createdAt -updatedAt -__v -_id');
     if (!user) return res.status(404).json({message: 'Користувач не знайден!'});
     res.json({user, availableCurrency});
   } catch (error) {
@@ -23,51 +23,7 @@ const setCardSkin = async (req, res) => {
   }
 };
 
-const addCash = async (req, res) => {
-  try {
-    const {amount, currency} = req.body;
-    const userId = req.decodedId;
-    const user = await User.findById(userId);
-    balanceFunc(user, 'cash', currency, amount);
-    balanceFunc(user, 'balance', currency, amount);
-    await user.save();
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({message: 'Не вдалося додати готівку!'});
-  }
-};
-
-const updateCash = async (req, res) => {
-  try {
-    const {newAmount, currency} = req.body;
-    const userId = req.decodedId;
-    const user = await User.findById(userId);
-    let prevCash = 0;
-    const newCash = user.cash.map(elem => {
-      if (elem.currency === currency) {
-        prevCash = elem.amount;
-        elem.amount = +newAmount;
-      }
-      return elem;
-    });
-    user.cash = [];
-    user.cash = newCash;
-    const newBalance = user.balance.map(elem => {
-      if (elem.currency === currency) elem.amount = +elem.amount - +prevCash + +newAmount;
-      return elem;
-    });
-    user.balance = [];
-    user.balance = newBalance;
-    await user.save();
-    res.json({message: 'Готівка успішно оновлена!'});
-  } catch (error) {
-    res.status(500).json({message: 'Не вдалося оновити готівку!'});
-  }
-};
-
 module.exports = {
   getUserData,
-  setCardSkin,
-  addCash,
-  updateCash
+  setCardSkin
 }

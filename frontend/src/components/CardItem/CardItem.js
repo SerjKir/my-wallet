@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styles from './CardItem.module.scss';
 import {Button} from '@mui/material';
-import {baseUrl} from '../../consts';
+import {baseUrl} from '../../url';
 import {toCardWithSpaces, toCardWithStars} from '../../helpers';
 
 export const CardItem = ({card, removeCard, isSkin, setNotification}) => {

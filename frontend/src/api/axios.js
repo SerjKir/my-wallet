@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {baseUrl} from '../consts';
+import {baseUrl} from '../url';
 import {getToken} from '../helpers';
 
 const instance = axios.create({

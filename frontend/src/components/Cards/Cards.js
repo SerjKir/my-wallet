@@ -5,8 +5,8 @@ import {EmptyDataText, CardItem} from '../';
 import {MainContext} from '../../context/MainContext';
 
 export const Cards = ({setPage, setIsModal, removeCard, handleSetIsSkin}) => {
-    const {userData, setNotification} = useContext(MainContext);
-    const isCards = userData.cards.length !== 0;
+    const {userData, walletData, setNotification} = useContext(MainContext);
+    const isCards = walletData.cards.length !== 0;
 
     return (
         <>
@@ -20,7 +20,7 @@ export const Cards = ({setPage, setIsModal, removeCard, handleSetIsSkin}) => {
                                       label="Патріотичний скін"
                                       onChange={() => handleSetIsSkin(!userData.isSkin)}/>
                     <div className={styles.column}>
-                        {userData.cards.map(card => <CardItem setNotification={setNotification} isSkin={userData.isSkin}
+                        {walletData.cards.map(card => <CardItem setNotification={setNotification} isSkin={userData.isSkin}
                                                               removeCard={removeCard} key={card._id} card={card}/>)}
                     </div>
                 </>

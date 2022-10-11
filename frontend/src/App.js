@@ -4,18 +4,20 @@ import {AuthPage, HomePage} from './pages';
 import {Routes, Route, BrowserRouter, Navigate} from 'react-router-dom';
 import {useAuth} from './hooks/auth.hook';
 import {MainContext} from './context/MainContext';
-import {getData} from './api/mainApi';
+import {getUser, getWallet} from './api/mainApi';
 import {Informer, ProgressMain} from './components';
 import {getToken} from './helpers';
 import './index.scss';
 
 const App = () => {
   const [userData, setUserData] = useState(null);
+  const [walletData, setWalletData] = useState(null);
   const [currency, setCurrency] = useState({availableCurrency: null, selectedCurrency: ''});
   const [changeItemData, setChangeItemData] = useState(null);
   const [notification, setNotification] = useState({});
   const {token, login, logout, ready} = useAuth(setUserData, setChangeItemData);
   const isAuthenticated = !!token && getToken();
+  const [dataReady, setDataReady] = useState(false);
 
   const catchHandler = useCallback(error => {
     error.response.status === 401 && logout();
@@ -30,22 +32,31 @@ const App = () => {
   }, []);
 
   const getUserData = useCallback(async () => {
-    await getData().then(res => {
+    await getUser().then(res => {
       setUserData(res.data.user);
       setCurrency({
         availableCurrency: res.data.availableCurrency,
         selectedCurrency: res.data.availableCurrency[0]
       });
-    }).catch(error => {
-      catchHandler(error);
-    });
+    }).catch(error => catchHandler(error));
   }, [catchHandler]);
 
-  useEffect(() => {
-    ready && isAuthenticated && getUserData();
-  }, [ready, isAuthenticated, getUserData]);
+  const getWalletData = useCallback(async () => {
+    await getWallet().then(res => setWalletData(res.data)).catch(error => catchHandler(error));
+  }, [catchHandler]);
 
-  if (!ready) return <ProgressMain/>;
+  const getAllData = useCallback( async () => {
+    setDataReady(false);
+    await getUserData();
+    await getWalletData();
+    setDataReady(true);
+  }, [getUserData, getWalletData])
+
+  useEffect(() => {
+    ready && isAuthenticated && getAllData();
+  }, [ready, isAuthenticated, getAllData]);
+
+  if (!ready || !dataReady) return <ProgressMain/>;
 
   return (
     <BrowserRouter>
@@ -54,6 +65,8 @@ const App = () => {
         logout,
         userData,
         getUserData,
+        walletData,
+        getWalletData,
         changeItemData,
         setChangeItemData,
         currency,

@@ -1,5 +1,6 @@
 const Card = require("../models/Card");
 const User = require("../models/User");
+const Wallet = require("../models/Wallet");
 const {balanceFunc, maxLength} = require("../utils/helpers");
 const lookup = require('binlookup')();
 
@@ -16,8 +17,9 @@ const addCard = async (req, res) => {
     if (!cardData) return res.status(400).json({message: 'Картка не пройшла валідацію!'});
     const isExist = await Card.findOne({number: formattedNumber});
     if (isExist) return res.status(400).json({message: 'Така картка вже додана!'});
+    const wallet = await Wallet.findOne({owner: userId});
     const card = new Card({
-      owner: userId,
+      wallet,
       amount,
       currency,
       number: formattedNumber,
@@ -29,11 +31,10 @@ const addCard = async (req, res) => {
       type: cardData.type
     });
     await card.save();
-    const user = await User.findById(userId);
-    user.cards.push(card);
-    balanceFunc(user, 'balance', currency, amount);
-    await user.save();
-    res.json(card);
+    wallet.cards.push(card);
+    balanceFunc(wallet, 'balance', currency, amount);
+    await wallet.save();
+    res.json({message: 'Картка успішно додана!'});
   } catch (error) {
     res.status(500).json({message: 'Не вдалося додати карту!'});
   }
@@ -47,15 +48,15 @@ const updateCard = async (req, res) => {
     card.amount = newAmount;
     card.name = name.trim();
     await card.save();
-    const user = await User.findById(card.owner);
-    const newBalance = user.balance.map(elem => {
+    const wallet = await Wallet.findById(card.wallet);
+    const newBalance = wallet.balance.map(elem => {
       if (elem.currency === card.currency) elem.amount = +elem.amount + difference;
       return elem;
     });
-    user.balance = [];
-    user.balance = newBalance;
-    await user.save();
-    res.json({message: 'Картка успішно оновлена'});
+    wallet.balance = [];
+    wallet.balance = newBalance;
+    await wallet.save();
+    res.json({message: 'Картка успішно оновлена!'});
   } catch (error) {
     res.status(500).json({message: 'Не вдалося оновити картку!'});
   }
@@ -65,18 +66,18 @@ const removeCard = async (req, res) => {
   try {
     const cardId = req.params.id;
     const card = await Card.findById(cardId);
-    const user = await User.findById(card.owner);
-    const newBalance = user.balance.map(elem => {
+    const wallet = await Wallet.findById(card.wallet);
+    const newBalance = wallet.balance.map(elem => {
       if (elem.currency === card.currency) elem.amount = +elem.amount - +card.amount;
       return elem;
     })
-    await User.updateOne({_id: card.owner}, {
+    await Wallet.updateOne({_id: card.wallet}, {
       $pullAll: {
         cards: [{_id: cardId}]
       }, balance: newBalance
     })
     await card.remove();
-    res.json({message: 'Картка успішно видалена'});
+    res.json({message: 'Картка успішно видалена!'});
   } catch (error) {
     res.status(500).json({message: 'Не вдалося видалити картку!'});
   }
