@@ -50,13 +50,13 @@ const App = () => {
     await getUserData();
     await getWalletData();
     setDataReady(true);
-  }, [getUserData, getWalletData])
+  }, [getUserData, getWalletData]);
 
   useEffect(() => {
     ready && isAuthenticated && getAllData();
   }, [ready, isAuthenticated, getAllData]);
 
-  if (!ready || !dataReady) return <ProgressMain/>;
+  if (!ready || (!dataReady && isAuthenticated)) return <ProgressMain/>;
 
   return (
     <BrowserRouter>
