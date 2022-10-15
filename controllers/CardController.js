@@ -34,7 +34,8 @@ const addCard = async (req, res) => {
     wallet.cards.push(card);
     balanceFunc(wallet, 'balance', currency, amount);
     await wallet.save();
-    res.json({message: 'Картка успішно додана!'});
+    const newWallet = await Wallet.findOne({owner: userId}, '-createdAt -updatedAt -__v -_id').populate('cards', '-__v');
+    res.json(newWallet);
   } catch (error) {
     res.status(500).json({message: 'Не вдалося додати карту!'});
   }
@@ -42,8 +43,9 @@ const addCard = async (req, res) => {
 
 const updateCard = async (req, res) => {
   try {
-    const {newAmount, name} = req.body;
-    const card = await Card.findById(req.params.id);
+    const userId = req.decodedId;
+    const {id, newAmount, name} = req.body;
+    const card = await Card.findById(id);
     const difference = +newAmount - +card.amount;
     card.amount = newAmount;
     card.name = name.trim();
@@ -56,7 +58,8 @@ const updateCard = async (req, res) => {
     wallet.balance = [];
     wallet.balance = newBalance;
     await wallet.save();
-    res.json({message: 'Картка успішно оновлена!'});
+    const newWallet = await Wallet.findOne({owner: userId}, '-createdAt -updatedAt -__v -_id').populate('cards', '-__v');
+    res.json(newWallet);
   } catch (error) {
     res.status(500).json({message: 'Не вдалося оновити картку!'});
   }
@@ -64,6 +67,7 @@ const updateCard = async (req, res) => {
 
 const removeCard = async (req, res) => {
   try {
+    const userId = req.decodedId;
     const cardId = req.params.id;
     const card = await Card.findById(cardId);
     const wallet = await Wallet.findById(card.wallet);
@@ -77,7 +81,8 @@ const removeCard = async (req, res) => {
       }, balance: newBalance
     })
     await card.remove();
-    res.json({message: 'Картка успішно видалена!'});
+    const newWallet = await Wallet.findOne({owner: userId}, '-createdAt -updatedAt -__v -_id').populate('cards', '-__v');
+    res.json(newWallet);
   } catch (error) {
     res.status(500).json({message: 'Не вдалося видалити картку!'});
   }

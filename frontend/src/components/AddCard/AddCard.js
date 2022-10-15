@@ -10,7 +10,7 @@ import {checkCard, toNumber, numbersOnly} from '../../helpers';
 export const AddCard = ({setPage}) => {
   const formRef = useRef(null);
   const {
-    getWalletData,
+    setWalletData,
     currency,
     handleSelectChange,
     catchHandler,
@@ -32,8 +32,8 @@ export const AddCard = ({setPage}) => {
 
   const onSubmit = async values => {
     await addCard({currency: currency.selectedCurrency, expDate: selectedDate, ...values})
-      .then(() => {
-        getWalletData();
+      .then(res => {
+        setWalletData(res.data);
         setPage('Cards');
       }).catch(error => catchHandler(error));
   };

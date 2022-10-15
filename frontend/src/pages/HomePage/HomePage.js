@@ -5,7 +5,6 @@ import styles from './HomePage.module.scss';
 
 export const HomePage = ({userData}) => {
   if (!userData) return <ProgressMain/>;
-
   return (
     <Grid container spacing={0}>
       <Grid item xs={12} md={6} className={styles.item}>

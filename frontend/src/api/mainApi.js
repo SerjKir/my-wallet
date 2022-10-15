@@ -1,11 +1,7 @@
 import axios from './axios';
 
-export const getUser = async () => {
-  return await axios.get('/api/user');
-};
-
-export const getWallet = async () => {
-  return await axios.get('/api/wallet');
+export const getData = async () => {
+  return await axios.get('/api/data');
 };
 
 export const loginApi = async params => {
@@ -20,8 +16,8 @@ export const addCard = async params => {
   return await axios.post('/api/card', params);
 };
 
-export const setIsSkin = async params => {
-  return await axios.patch('/api/user', params);
+export const setSkin = async params => {
+  return await axios.patch('/api/skin', params);
 };
 
 export const addCash = async params => {
@@ -33,7 +29,7 @@ export const removeCard = async id => {
 };
 
 export const updateCard = async (id, newAmount, name) => {
-  return await axios.patch(`/api/card/${id}`, {newAmount, name});
+  return await axios.patch(`/api/card`, {id, newAmount, name});
 };
 
 export const updateCash = async (newAmount, currency) => {
