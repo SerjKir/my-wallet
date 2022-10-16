@@ -38,8 +38,8 @@ const App = () => {
         selectedCurrency: res.data.availableCurrency[0]
       });
       setWalletData(res.data.wallet);
-    });
-  }, []);
+    }).catch(error => catchHandler(error));
+  }, [catchHandler]);
 
   useEffect(() => {
     ready && isAuthenticated && getAllData();
