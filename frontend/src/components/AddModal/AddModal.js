@@ -4,7 +4,7 @@ import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui
 import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
 import {MainContext} from '../../context/MainContext';
-import {toNumber, noScroll} from '../../helpers';
+import {toNumber, noScrollToggle} from '../../helpers';
 
 export const AddModal = ({isModal, setIsModal, isEdit}) => {
   const {
@@ -55,15 +55,15 @@ export const AddModal = ({isModal, setIsModal, isEdit}) => {
   };
 
   useEffect(() => {
-    noScroll();
+    noScrollToggle();
     return () => {
-      noScroll();
+      noScrollToggle();
     }
   }, []);
 
   return (
     <div onClick={handleClose} style={{display: isModal || changeItemData.isOpen ? 'flex' : 'none'}}
-         className={styles.background}>
+         className={styles.main}>
       <form onClick={e => e.stopPropagation()} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
         <h5 className={styles.title}>{
           isEdit

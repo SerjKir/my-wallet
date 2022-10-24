@@ -17,13 +17,7 @@ export const AddCard = ({setPage}) => {
   } = useContext(MainContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const {
-    register,
-    handleSubmit,
-    formState: {errors, isValid},
-  } = useForm({
-    mode: 'onBlur',
-  });
+  const {register, handleSubmit, formState: {errors, isValid},} = useForm({mode: 'onBlur',});
 
   const onClose = () => {
     handleSelectChange();
@@ -69,7 +63,8 @@ export const AddCard = ({setPage}) => {
                    helperText={errors.cvv?.message}
                    {...register('cvv', {
                      required: 'Вкажіть CVV',
-                     minLength: {value: 3, message: 'Вкажіть 3 цифри'}})}
+                     minLength: {value: 3, message: 'Вкажіть 3 цифри'}
+                   })}
         />
       </div>
       <div className={styles.row}>
@@ -78,7 +73,8 @@ export const AddCard = ({setPage}) => {
                    helperText={errors.holder?.message}
                    {...register('holder', {
                      minLength: {value: 3, message: 'Мінімум 3 символи'},
-                     maxLength: {value: 16, message: 'Максимум 16 символів'}})}
+                     maxLength: {value: 16, message: 'Максимум 16 символів'}
+                   })}
         />
       </div>
       <div className={styles.row}>

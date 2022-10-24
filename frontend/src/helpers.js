@@ -16,8 +16,8 @@ export const toCardWithStars = number => number.replace(/^(\d{4})\d+(\d{4})$/, '
 
 export const getToken = () => window.localStorage.getItem('token');
 
-export const noScroll = () => document.body.classList.toggle('no-scroll');
+export const noScrollToggle = () => document.body.classList.toggle('no-scroll');
 
 export const removeSpaces = event => event.target.value = event.target.value.replace(/\s/g, '');
 
-export const toNumber = event => event.target.value = Number(event.target.value)
+export const toNumber = event => event.target.value = Number(event.target.value);
