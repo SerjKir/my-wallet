@@ -6,8 +6,10 @@ import {loginApi, registerApi} from '../../api/mainApi';
 import {useNavigate} from 'react-router-dom';
 import {MainContext} from "../../context/MainContext";
 import {removeSpaces} from "../../helpers";
+import {useTranslation} from "react-i18next";
 
 export const Auth = () => {
+  const {t} = useTranslation();
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const {login, catchHandler} = useContext(MainContext);
@@ -31,11 +33,11 @@ export const Auth = () => {
   return (
     <Paper className={styles.main}>
       <Typography variant="h5" classes={{root: styles.title}}>
-        {isLogin ? 'Вхід до акаунта' : 'Реєстрація акаунта'}
+        {isLogin ? t("auth.loginToAccount") : t("auth.accountRegistration")}
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
-          label="Им'я"
+          label={t("auth.name")}
           fullWidth
           required={true}
           className={styles.field}
@@ -49,7 +51,7 @@ export const Auth = () => {
           })}
         />
         <TextField
-          label="Пароль"
+          label={t("auth.password")}
           type={"password"}
           fullWidth
           required={true}
@@ -65,14 +67,14 @@ export const Auth = () => {
         />
         {isLogin ? <div className={styles.buttons}>
           <Button type={'submit'} size="large" variant="contained" color={'primary'} disabled={!isValid}>
-            Вхід
+            {t("auth.login")}
           </Button>
-          <span onClick={() => setIsLogin(false)}>Немає облікового запису? Реєстрація</span>
+          <span onClick={() => setIsLogin(false)}>{t("auth.dontHaveAccountRegister")}</span>
         </div> : <div className={styles.buttons}>
           <Button type={'submit'} size="large" variant="contained" color={'primary'} disabled={!isValid}>
-            Реєстрація
+            {t("auth.register")}
           </Button>
-          <span onClick={() => setIsLogin(true)}>Є обліковий запис? Вхід</span>
+          <span onClick={() => setIsLogin(true)}>{t("auth.haveAccountLogin")}</span>
         </div>}
       </form>
     </Paper>

@@ -1,0 +1,23 @@
+{
+  "auth": {
+    "name": "Name",
+    "password": "Password",
+    "loginToAccount": "Login to the account",
+    "accountRegistration": "Account registration",
+    "login": "Login",
+    "register": "Register",
+    "dontHaveAccountRegister": "Don't have an account? Registration",
+    "haveAccountLogin": "Have an account? Exit"
+  },
+  "logout": "Logout",
+  "allBalance": "All balance",
+  "cash": "Cash",
+  "myCards": "My cards",
+  "edit": "Edit",
+  "addCard": "Add card",
+  "addCash": "Add cash",
+  "patrioticSkin": "Patriotic skin",
+  "delete": "Delete",
+  "copiedCard": "The card number has been copied!",
+  "confirmDeleteCard": "Are you sure you want to delete the card?"
+}

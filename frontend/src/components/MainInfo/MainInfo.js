@@ -4,8 +4,11 @@ import styles from './MainInfo.module.scss'
 import {MainContext} from '../../context/MainContext';
 import {baseUrl} from '../../url';
 import {EmptyDataText, List, ListItem} from '../';
+import {useTranslation} from "react-i18next";
+import {LanguageToggler} from "../LanguageToggler/LanguageToggler";
 
 export const MainInfo = () => {
+  const {t} = useTranslation();
   const {logout, walletData, userData} = useContext(MainContext);
   let cashSum = 0;
   for (let i = 0; i < walletData.cash.length; i++) cashSum += +walletData.cash[i].amount;
@@ -20,14 +23,17 @@ export const MainInfo = () => {
           <Avatar alt={userData.username} src={baseUrl + userData.avatarUrl}/>
           <span className={styles.username}>{userData.username}</span>
         </div>
-        <Button onClick={logout}>Вийти</Button>
+        <div style={{margin: "auto"}}>
+          <LanguageToggler/>
+        </div>
+        <Button style={{minWidth: 72}} onClick={logout}>{t("logout")}</Button>
       </div>
       {isBalance
         ?
         <>
           <hr style={{marginTop: '10px'}}/>
           <div className={styles.block}>
-            <p>Загальний баланс</p>
+            <p>{t("allBalance")}</p>
             <List>{walletData.balance.map((elem, index) => elem.amount > 0 &&
               <ListItem key={index} card={elem}/>)}</List>
           </div>
@@ -36,7 +42,7 @@ export const MainInfo = () => {
         <EmptyDataText name={'рахунками'}/>}
       {isCash &&
         <div className={`${styles.block} ${styles.inner}`}>
-          <p>Готівка</p>
+          <p>{t("cash")}</p>
           <List>
             {walletData.cash.map((elem, index) => elem.amount > 0 &&
               <ListItem isCash={true} key={index} isButton={true} card={elem}/>)}
@@ -44,7 +50,7 @@ export const MainInfo = () => {
         </div>}
       {isCards &&
         <div className={`${styles.block} ${styles.inner}`}>
-          <p>Мої картки</p>
+          <p>{t("myCards")}</p>
           <List>
             {walletData.cards.map(elem => <ListItem key={elem._id} isButton={true} card={elem}/>)}
           </List>

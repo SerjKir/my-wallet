@@ -3,15 +3,17 @@ import styles from './CardItem.module.scss';
 import {Button} from '@mui/material';
 import {baseUrl} from '../../url';
 import {toCardWithSpaces, toCardWithStars} from '../../helpers';
+import {useTranslation} from "react-i18next";
 
 export const CardItem = ({card, removeCard, isSkin, setNotification}) => {
+  const {t} = useTranslation();
   const [isNumberHidden, setIsNumberHidden] = useState(true);
   const handleCopy = () => {
     navigator.clipboard.writeText(card.number);
-    setNotification({open: true, message: 'Номер картки скопійовано!', style: 'success'});
+    setNotification({open: true, message: t("copiedCard"), style: 'success'});
   };
   const handleRemove = () => {
-    if (window.confirm('Ви точно хочете видалити картку?')) removeCard(card._id);
+    if (window.confirm(t("confirmDeleteCard"))) removeCard(card._id);
   }
   const system = card.scheme;
 
@@ -47,7 +49,7 @@ export const CardItem = ({card, removeCard, isSkin, setNotification}) => {
         </div>
       </div>
       <Button variant={'contained'} color={'error'} className={'small-btn'}
-              onClick={handleRemove}>Видалити</Button>
+              onClick={handleRemove}>{t("delete")}</Button>
     </div>
   );
 };

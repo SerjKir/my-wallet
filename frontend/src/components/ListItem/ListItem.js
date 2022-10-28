@@ -2,8 +2,10 @@ import React, {useContext} from 'react';
 import {Button} from '@mui/material';
 import styles from './ListItem.module.scss';
 import {MainContext} from '../../context/MainContext';
+import {useTranslation} from "react-i18next";
 
 export const ListItem = ({card, isButton, isCash}) => {
+  const {t} = useTranslation();
   const {setChangeItemData, changeItemData} = useContext(MainContext);
   return (
     <div className={styles.item}>
@@ -19,7 +21,7 @@ export const ListItem = ({card, isButton, isCash}) => {
         isCash: isCash,
         isOpen: true,
         isButtonsDisabled: true,
-      })} disabled={changeItemData?.isButtonsDisabled}>Редагувати</Button>}
+      })} disabled={changeItemData?.isButtonsDisabled}>{t("edit")}</Button>}
     </div>
   );
 };
