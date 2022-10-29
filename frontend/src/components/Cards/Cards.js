@@ -5,7 +5,7 @@ import {EmptyDataText, CardItem} from '../';
 import {MainContext} from '../../context/MainContext';
 import {useTranslation} from "react-i18next";
 
-export const Cards = ({setPage, setIsModal, removeCard, handleSetSkin}) => {
+const Cards = ({setPage, setIsModal, removeCard, handleSetSkin}) => {
   const {t} = useTranslation();
   const {userData, walletData, setNotification} = useContext(MainContext);
   const isCards = walletData.cards.length !== 0;
@@ -13,8 +13,10 @@ export const Cards = ({setPage, setIsModal, removeCard, handleSetSkin}) => {
   return (
     <>
       <div className={styles.row}>
-        <Button variant={'contained'} className={"big-btn"} onClick={() => setPage('AddCard')}>{t("addCard")}</Button>
-        <Button variant={'contained'} className={"big-btn"} color={'success'} onClick={() => setIsModal(true)}>{t("addCash")}</Button>
+        <Button variant={'contained'} className={"big-btn"}
+                onClick={() => setPage('AddCard')}>{t("addCard")}</Button>
+        <Button variant={'contained'} className={"big-btn"} color={'success'}
+                onClick={() => setIsModal(true)}>{t("addCash")}</Button>
       </div>
       {isCards
         ? <>
@@ -31,3 +33,5 @@ export const Cards = ({setPage, setIsModal, removeCard, handleSetSkin}) => {
     </>
   );
 };
+
+export default Cards;

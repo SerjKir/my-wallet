@@ -8,7 +8,7 @@ import {MainContext} from "../../context/MainContext";
 import {removeSpaces} from "../../helpers";
 import {useTranslation} from "react-i18next";
 
-export const Auth = () => {
+const Auth = () => {
   const {t} = useTranslation();
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
@@ -80,3 +80,5 @@ export const Auth = () => {
     </Paper>
   );
 };
+
+export default Auth;

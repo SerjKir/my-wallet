@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ToggleButton, ToggleButtonGroup} from "@mui/material";
 import {useTranslation} from "react-i18next";
 
-export const LanguageToggler = () => {
+const LanguageToggler = () => {
   const {i18n} = useTranslation();
   const [lang, setLang] = useState('ua');
   const handleChange = (event, newLang) => {
@@ -29,3 +29,5 @@ export const LanguageToggler = () => {
     </ToggleButtonGroup>
   );
 };
+
+export default LanguageToggler;

@@ -5,7 +5,7 @@ import {baseUrl} from '../../url';
 import {toCardWithSpaces, toCardWithStars} from '../../helpers';
 import {useTranslation} from "react-i18next";
 
-export const CardItem = ({card, removeCard, isSkin, setNotification}) => {
+const CardItem = ({card, removeCard, isSkin, setNotification}) => {
   const {t} = useTranslation();
   const [isNumberHidden, setIsNumberHidden] = useState(true);
   const handleCopy = () => {
@@ -53,3 +53,5 @@ export const CardItem = ({card, removeCard, isSkin, setNotification}) => {
     </div>
   );
 };
+
+export default CardItem;

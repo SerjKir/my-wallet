@@ -3,11 +3,10 @@ import {Avatar, Button, Paper} from '@mui/material';
 import styles from './MainInfo.module.scss'
 import {MainContext} from '../../context/MainContext';
 import {baseUrl} from '../../url';
-import {EmptyDataText, List, ListItem} from '../';
+import {EmptyDataText, LanguageToggler, List, ListItem} from '../';
 import {useTranslation} from "react-i18next";
-import {LanguageToggler} from "../LanguageToggler/LanguageToggler";
 
-export const MainInfo = () => {
+const MainInfo = () => {
   const {t} = useTranslation();
   const {logout, walletData, userData} = useContext(MainContext);
   let cashSum = 0;
@@ -23,9 +22,7 @@ export const MainInfo = () => {
           <Avatar alt={userData.username} src={baseUrl + userData.avatarUrl}/>
           <span className={styles.username}>{userData.username}</span>
         </div>
-        <div style={{margin: "auto"}}>
-          <LanguageToggler/>
-        </div>
+        <LanguageToggler/>
         <Button style={{minWidth: 72}} onClick={logout}>{t("logout")}</Button>
       </div>
       {isBalance
@@ -58,3 +55,5 @@ export const MainInfo = () => {
     </Paper>
   );
 };
+
+export default MainInfo;

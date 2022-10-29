@@ -19,5 +19,16 @@
   "patrioticSkin": "Patriotic skin",
   "delete": "Delete",
   "copiedCard": "The card number has been copied!",
-  "confirmDeleteCard": "Are you sure you want to delete the card?"
+  "confirmDeleteCard": "Are you sure you want to delete the card?",
+  "sum": "Sum",
+  "cardNumber": "Card number",
+  "expDate": "Expiration date",
+  "cardHolder": "Card holder",
+  "currency": "Currency",
+  "save": "Save",
+  "add": "Add",
+  "cancel": "Cancel",
+  "cardTitle": "Title",
+  "toCash": "cash",
+  "toCard": "card"
 }

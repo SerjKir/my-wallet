@@ -4,7 +4,7 @@ import styles from './ListItem.module.scss';
 import {MainContext} from '../../context/MainContext';
 import {useTranslation} from "react-i18next";
 
-export const ListItem = ({card, isButton, isCash}) => {
+const ListItem = ({card, isButton, isCash}) => {
   const {t} = useTranslation();
   const {setChangeItemData, changeItemData} = useContext(MainContext);
   return (
@@ -25,3 +25,5 @@ export const ListItem = ({card, isButton, isCash}) => {
     </div>
   );
 };
+
+export default ListItem;

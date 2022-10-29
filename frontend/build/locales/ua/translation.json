@@ -19,5 +19,16 @@
   "patrioticSkin": "Патріотичний скін",
   "delete": "Видалити",
   "copiedCard": "Номер картки скопійовано!",
-  "confirmDeleteCard": "Ви точно хочете видалити картку"
+  "confirmDeleteCard": "Ви точно хочете видалити картку?",
+  "sum": "Сума",
+  "cardNumber": "Номер картки",
+  "expDate": "Темрін дії",
+  "cardHolder": "Власник картки",
+  "currency": "Валюта",
+  "save": "Зберегти",
+  "add": "Додати",
+  "cancel": "Скасувати",
+  "cardTitle": "Назва",
+  "toCash": "готівку",
+  "toCard": "картку"
 }

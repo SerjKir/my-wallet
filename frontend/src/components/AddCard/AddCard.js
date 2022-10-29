@@ -6,8 +6,10 @@ import {addCard} from '../../api/mainApi';
 import {ExpireDatePicker} from '../';
 import {MainContext} from '../../context/MainContext';
 import {checkCard, toNumber, numbersOnly} from '../../helpers';
+import {useTranslation} from "react-i18next";
 
-export const AddCard = ({setPage}) => {
+const AddCard = ({setPage}) => {
+  const {t} = useTranslation();
   const formRef = useRef(null);
   const {
     setWalletData,
@@ -38,11 +40,9 @@ export const AddCard = ({setPage}) => {
 
   return (
     <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h5" className={styles.title}>
-        Додати картку
-      </Typography>
+      <Typography variant="h5" className={styles.title}>{t("addCard")}</Typography>
       <div className={styles.row}>
-        <TextField required={true} fullWidth type={'text'} label="Номер картки" variant="outlined"
+        <TextField required={true} fullWidth type={'text'} label={t("cardNumber")} variant="outlined"
                    onInput={event => numbersOnly(event)}
                    inputProps={{maxLength: 19}}
                    error={!!errors.number}
@@ -68,7 +68,7 @@ export const AddCard = ({setPage}) => {
         />
       </div>
       <div className={styles.row}>
-        <TextField fullWidth label="Власник картки" variant="outlined"
+        <TextField fullWidth label={t("cardHolder")} variant="outlined"
                    error={!!errors.holder}
                    helperText={errors.holder?.message}
                    {...register('holder', {
@@ -78,7 +78,7 @@ export const AddCard = ({setPage}) => {
         />
       </div>
       <div className={styles.row}>
-        <TextField required={true} fullWidth type={'number'} label="Сума" variant="outlined"
+        <TextField required={true} fullWidth type={'number'} label={t("sum")} variant="outlined"
                    error={!!errors.amount}
                    helperText={errors.amount?.message}
                    onInput={event => toNumber(event)}
@@ -89,9 +89,9 @@ export const AddCard = ({setPage}) => {
                    })}
         />
         <FormControl fullWidth>
-          <InputLabel>Валюта</InputLabel>
+          <InputLabel>{t("currency")}</InputLabel>
           <Select
-            label="Валюта"
+            label={t("currency")}
             value={currency.selectedCurrency}
             onChange={handleSelectChange}
           >
@@ -100,9 +100,12 @@ export const AddCard = ({setPage}) => {
         </FormControl>
       </div>
       <div className={`${styles.row} ${styles.buttons}`}>
-        <Button variant={'contained'} type={'submit'} color={'primary'} disabled={!isValid}>Додати</Button>
-        <Button variant={'contained'} color={'error'} onClick={onClose}>Скасувати</Button>
+        <Button className={"medium-btn"} variant={'contained'} type={'submit'} color={'primary'}
+                disabled={!isValid}>{t("add")}</Button>
+        <Button className={"medium-btn"} variant={'contained'} color={'error'} onClick={onClose}>{t("cancel")}</Button>
       </div>
     </form>
   );
 };
+
+export default AddCard;

@@ -31,14 +31,16 @@ const App = () => {
   }, []);
 
   const getAllData = useCallback(async () => {
-    await getData().then(res => {
-      setUserData(res.data.user);
-      setCurrency({
-        availableCurrency: res.data.availableCurrency,
-        selectedCurrency: res.data.availableCurrency[0]
-      });
-      setWalletData(res.data.wallet);
-    }).catch(error => catchHandler(error));
+    await getData()
+      .then(res => {
+        setUserData(res.data.user);
+        setCurrency({
+          availableCurrency: res.data.availableCurrency,
+          selectedCurrency: res.data.availableCurrency[0]
+        });
+        setWalletData(res.data.wallet)
+      })
+      .catch(error => catchHandler(error));
   }, [catchHandler]);
 
   useEffect(() => {

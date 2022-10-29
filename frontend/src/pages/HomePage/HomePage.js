@@ -3,7 +3,7 @@ import {Grid} from '@mui/material';
 import {MainInfo, CardsInfo, ProgressMain} from '../../components';
 import styles from './HomePage.module.scss';
 
-export const HomePage = ({userData}) => {
+const HomePage = ({userData}) => {
   if (!userData) return <ProgressMain/>;
   return (
     <Grid container spacing={0}>
@@ -16,3 +16,5 @@ export const HomePage = ({userData}) => {
     </Grid>
   );
 };
+
+export default HomePage;

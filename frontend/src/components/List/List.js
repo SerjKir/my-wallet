@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box} from '@mui/material';
 
-export const List = ({children}) => {
+const List = ({children}) => {
   return (
     <Box>
       {children}
@@ -9,3 +9,5 @@ export const List = ({children}) => {
     </Box>
   );
 };
+
+export default List

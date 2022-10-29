@@ -5,15 +5,13 @@ import {AddCard, AddModal, Cards} from '../';
 import {removeCard, setSkin} from '../../api/mainApi';
 import {MainContext} from '../../context/MainContext';
 
-export const CardsInfo = () => {
+const CardsInfo = () => {
   const {setWalletData, setUserData, changeItemData, catchHandler} = useContext(MainContext);
   const [page, setPage] = useState('Cards');
   const [isModal, setIsModal] = useState(false);
-
   const handleRemoveCard = async id => {
     await removeCard(id).then(res => setWalletData(res.data)).catch(error => catchHandler(error));
   };
-
   const handleSetSkin = async isSkin => {
     await setSkin({isSkin}).then(res => setUserData(res.data)).catch(error => catchHandler(error));
   };
@@ -29,3 +27,5 @@ export const CardsInfo = () => {
     </Paper>
   );
 };
+
+export default CardsInfo;

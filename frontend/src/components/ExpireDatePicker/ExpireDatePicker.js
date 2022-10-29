@@ -3,14 +3,17 @@ import {TextField} from '@mui/material';
 import {DatePicker, LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import styles from './ExpireDatePicker.module.scss';
+import {useTranslation} from "react-i18next";
 
-export const ExpireDatePicker = ({selectedDate, setSelectedDate}) => {
+const ExpireDatePicker = ({selectedDate, setSelectedDate}) => {
+  const {t} = useTranslation();
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         inputFormat="MM/yy"
         views={['year', 'month']}
-        label="Термін дії"
+        label={t("expDate")}
         minDate={new Date()}
         value={selectedDate}
         onChange={newValue => setSelectedDate(newValue)}
@@ -20,3 +23,5 @@ export const ExpireDatePicker = ({selectedDate, setSelectedDate}) => {
     </LocalizationProvider>
   );
 };
+
+export default ExpireDatePicker;

@@ -5,8 +5,10 @@ import {addCash, updateCard, updateCash} from '../../api/mainApi';
 import {useForm} from 'react-hook-form';
 import {MainContext} from '../../context/MainContext';
 import {toNumber, noScrollToggle} from '../../helpers';
+import {useTranslation} from "react-i18next";
 
-export const AddModal = ({isModal, setIsModal, isEdit}) => {
+const AddModal = ({isModal, setIsModal, isEdit}) => {
+  const {t} = useTranslation();
   const {
     setWalletData,
     currency,
@@ -67,11 +69,11 @@ export const AddModal = ({isModal, setIsModal, isEdit}) => {
       <form onClick={e => e.stopPropagation()} onSubmit={handleSubmit(onSubmit)} className={styles.inner}>
         <h5 className={styles.title}>{
           isEdit
-            ? `Редагувати ${changeItemData.isCash ? 'готівку' : 'картку'}`
-            : 'Додати готівку'}
+            ? `${t("edit")} ${t(changeItemData.isCash ? "toCash" : "toCard")}`
+            : t("addCash")}
         </h5>
         <div className={`${styles.row} ${styles.inputs}`}>
-          <TextField required={true} type={'number'} fullWidth label="Сума" variant="outlined"
+          <TextField required={true} type={'number'} fullWidth label={t("sum")} variant="outlined"
                      error={!!errors.amount}
                      helperText={errors.amount?.message}
                      onInput={event => toNumber(event)}
@@ -83,10 +85,10 @@ export const AddModal = ({isModal, setIsModal, isEdit}) => {
                      })}
           />
           <FormControl fullWidth>
-            <InputLabel>Currency</InputLabel>
+            <InputLabel>{t("currency")}</InputLabel>
             <Select
               disabled={isEdit}
-              label="Валюта"
+              label={t("currency")}
               value={isEdit ? changeItemData.currency : currency.selectedCurrency}
               onChange={handleSelectChange}
             >
@@ -96,7 +98,7 @@ export const AddModal = ({isModal, setIsModal, isEdit}) => {
         </div>
         {isEdit && !changeItemData.isCash &&
           <div className={styles.row}>
-            <TextField required={true} type={'text'} fullWidth label="Назва" variant="outlined"
+            <TextField required={true} type={'text'} fullWidth label={t("cardTitle")} variant="outlined"
                        error={!!errors.name}
                        helperText={errors.name?.message}
                        {...register('name', {
@@ -108,11 +110,14 @@ export const AddModal = ({isModal, setIsModal, isEdit}) => {
             />
           </div>}
         <div className={styles.row}>
-          <Button type={'submit'} variant={'contained'} color={'primary'}
-                  disabled={!isValid}>{isEdit ? 'Зберегти' : 'Додати'}</Button>
-          <Button variant={'contained'} color={'error'} onClick={handleClose}>Скасувати</Button>
+          <Button className={"medium-btn"} type={'submit'} variant={'contained'} color={'primary'}
+                  disabled={!isValid}>{t(isEdit ? "save" : "add")}</Button>
+          <Button className={"medium-btn"} variant={'contained'} color={'error'}
+                  onClick={handleClose}>{t("cancel")}</Button>
         </div>
       </form>
     </div>
   );
 };
+
+export default AddModal;
