@@ -20,7 +20,7 @@ const setCardSkin = async (req, res) => {
     const {isSkin} = req.body;
     const userId = req.decodedId;
     User.findByIdAndUpdate(userId, {isSkin: !!isSkin}, { returnDocument: 'after' }, (err, doc) => {
-      if (!err) res.json({username: doc.username,avatarUrl: doc.avatarUrl, isSkin: doc.isSkin});
+      if (!err) res.json(doc.isSkin);
     });
   } catch (error) {
     res.status(500).json({message: 'Не вдалося оновити дані!'});

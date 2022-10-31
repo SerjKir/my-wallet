@@ -5,10 +5,12 @@ import {MainContext} from '../../context/MainContext';
 import {baseUrl} from '../../url';
 import {EmptyDataText, LanguageToggler, List, ListItem} from '../';
 import {useTranslation} from "react-i18next";
+import {UserContext} from "../../context/UserContext";
 
 const MainInfo = () => {
   const {t} = useTranslation();
-  const {logout, walletData, userData} = useContext(MainContext);
+  const {walletData} = useContext(MainContext);
+  const {logout, userData} = useContext(UserContext);
   let cashSum = 0;
   for (let i = 0; i < walletData.cash.length; i++) cashSum += +walletData.cash[i].amount;
   const isCash = walletData.cash.length !== 0 && cashSum !== 0;
@@ -36,7 +38,7 @@ const MainInfo = () => {
           </div>
         </>
         :
-        <EmptyDataText name={'рахунками'}/>}
+        <EmptyDataText name={t("ofBills")}/>}
       {isCash &&
         <div className={`${styles.block} ${styles.inner}`}>
           <p>{t("cash")}</p>

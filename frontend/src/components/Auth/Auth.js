@@ -7,17 +7,22 @@ import {useNavigate} from 'react-router-dom';
 import {MainContext} from "../../context/MainContext";
 import {removeSpaces} from "../../helpers";
 import {useTranslation} from "react-i18next";
+import {LanguageToggler} from "../index";
+import {UserContext} from "../../context/UserContext";
 
 const Auth = () => {
   const {t} = useTranslation();
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
-  const {login, catchHandler} = useContext(MainContext);
+  const {catchHandler} = useContext(MainContext);
+  const {login} = useContext(UserContext);
   const {
     register, handleSubmit, formState: {errors, isValid},
   } = useForm({
     mode: 'onChange',
   });
+  const minSymbols = `${t("common.min")} 3 ${t("common.symbols_1")}`;
+  const maxSymbols = `${t("common.max")} 16 ${t("common.symbols_2")}`;
 
   const onSubmit = async values => {
     let token = null;
@@ -32,6 +37,9 @@ const Auth = () => {
 
   return (
     <Paper className={styles.main}>
+      <div className={styles.langToggler}>
+        <LanguageToggler/>
+      </div>
       <Typography variant="h5" classes={{root: styles.title}}>
         {isLogin ? t("auth.loginToAccount") : t("auth.accountRegistration")}
       </Typography>
@@ -45,9 +53,9 @@ const Auth = () => {
           error={!!errors.username}
           helperText={errors.username?.message}
           {...register('username', {
-            required: `Вкажіть ім'я`,
-            minLength: {value: 3, message: 'Мінімум 3 символи'},
-            maxLength: {value: 16, message: 'Максимум 16 символів'}
+            required: t("auth.enterName"),
+            minLength: {value: 3, message: minSymbols},
+            maxLength: {value: 16, message:maxSymbols}
           })}
         />
         <TextField
@@ -60,9 +68,9 @@ const Auth = () => {
           error={!!errors.password}
           helperText={errors.password?.message}
           {...register('password', {
-            required: 'Вкажіть пароль',
-            minLength: {value: 3, message: 'Мінімум 3 символи'},
-            maxLength: {value: 16, message: 'Максимум 16 символів'}
+            required: t("auth.enterPassword"),
+            minLength: {value: 3, message: minSymbols},
+            maxLength: {value: 16, message: maxSymbols}
           })}
         />
         {isLogin ? <div className={styles.buttons}>

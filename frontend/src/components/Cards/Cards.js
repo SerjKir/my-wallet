@@ -4,10 +4,12 @@ import {Button, Checkbox, FormControlLabel} from '@mui/material';
 import {EmptyDataText, CardItem} from '../';
 import {MainContext} from '../../context/MainContext';
 import {useTranslation} from "react-i18next";
+import {UserContext} from "../../context/UserContext";
 
 const Cards = ({setPage, setIsModal, removeCard, handleSetSkin}) => {
   const {t} = useTranslation();
-  const {userData, walletData, setNotification} = useContext(MainContext);
+  const {walletData, setNotification} = useContext(MainContext);
+  const {userData} = useContext(UserContext);
   const isCards = walletData.cards.length !== 0;
 
   return (
@@ -28,7 +30,7 @@ const Cards = ({setPage, setIsModal, removeCard, handleSetSkin}) => {
                                                     removeCard={removeCard} key={card._id} card={card}/>)}
           </div>
         </>
-        : <EmptyDataText name={'картками'}/>}
+        : <EmptyDataText name={t("ofCards")}/>}
 
     </>
   );

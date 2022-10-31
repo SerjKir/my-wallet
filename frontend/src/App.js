@@ -8,6 +8,7 @@ import {getData} from './api/mainApi';
 import {Informer, ProgressMain} from './components';
 import {getToken} from './helpers';
 import './index.scss';
+import {UserContext} from "./context/UserContext";
 
 const App = () => {
   const [userData, setUserData] = useState(null);
@@ -52,10 +53,6 @@ const App = () => {
   return (
     <BrowserRouter>
       <MainContext.Provider value={{
-        login,
-        logout,
-        userData,
-        setUserData,
         walletData,
         setWalletData,
         changeItemData,
@@ -65,15 +62,22 @@ const App = () => {
         catchHandler,
         setNotification,
       }}>
-        <Container maxWidth={'md'}>
-          <Routes>
-            {isAuthenticated
-              ? <Route path={'/'} element={<HomePage userData={!!userData}/>}/>
-              : <Route path={'/'} element={<AuthPage/>}/>}
-            <Route path={'*'} element={<Navigate to={'/'} replace/>}/>
-          </Routes>
-          <Informer snack={notification} setNotification={setNotification}/>
-        </Container>
+        <UserContext.Provider value={{
+          login,
+          logout,
+          userData,
+          setUserData,
+        }}>
+          <Container maxWidth={'md'}>
+            <Routes>
+              {isAuthenticated
+                ? <Route path={'/'} element={<HomePage userData={!!userData}/>}/>
+                : <Route path={'/'} element={<AuthPage/>}/>}
+              <Route path={'*'} element={<Navigate to={'/'} replace/>}/>
+            </Routes>
+            <Informer snack={notification} setNotification={setNotification}/>
+          </Container>
+        </UserContext.Provider>
       </MainContext.Provider>
     </BrowserRouter>
   );

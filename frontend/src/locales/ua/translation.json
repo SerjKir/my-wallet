@@ -7,7 +7,9 @@
     "login": "Вхід",
     "register": "Реєстрація",
     "dontHaveAccountRegister": "Немає облікового запису? Реєстрація",
-    "haveAccountLogin": "Є обліковий запис? Вхід"
+    "haveAccountLogin": "Є обліковий запис? Вхід",
+    "enterName": "Вкажіть ім'я",
+    "enterPassword": "Вкажіть пароль"
   },
   "logout": "Вийти",
   "allBalance": "Загальний баланс",
@@ -30,5 +32,14 @@
   "cancel": "Скасувати",
   "cardTitle": "Назва",
   "toCash": "готівку",
-  "toCard": "картку"
+  "toCard": "картку",
+  "infoAboutYour": "Тут буде информація за Вашими",
+  "ofCards": "картками",
+  "ofBills": "рахунками",
+  "common": {
+    "min": "Мінімум",
+    "max": "Максимум",
+    "symbols_1": "символи",
+    "symbols_2": "символів"
+  }
 }

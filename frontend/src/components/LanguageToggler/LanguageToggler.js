@@ -9,12 +9,14 @@ const LanguageToggler = () => {
     setLang(newLang);
     i18n.changeLanguage(newLang);
   };
+
   useEffect(() => {
     let lang = window.localStorage.getItem("i18nextLng");
     lang = lang === "en" ? "en" : "ua";
     window.localStorage.setItem("i18nextLng", lang)
     setLang(lang);
   }, []);
+
   return (
     <ToggleButtonGroup
       size="small"

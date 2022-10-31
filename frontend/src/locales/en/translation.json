@@ -7,7 +7,9 @@
     "login": "Login",
     "register": "Register",
     "dontHaveAccountRegister": "Don't have an account? Registration",
-    "haveAccountLogin": "Have an account? Exit"
+    "haveAccountLogin": "Have an account? Exit",
+    "enterName": "Enter name",
+    "enterPassword": "Enter password"
   },
   "logout": "Logout",
   "allBalance": "All balance",
@@ -30,5 +32,14 @@
   "cancel": "Cancel",
   "cardTitle": "Title",
   "toCash": "cash",
-  "toCard": "card"
+  "toCard": "card",
+  "infoAboutYour": "There will be information about your",
+  "ofCards": "cards",
+  "ofBills": "bills",
+  "common": {
+    "min": "Minimum",
+    "max": "Maximum",
+    "symbols_1": "symbols",
+    "symbols_2": "symbols"
+  }
 }
