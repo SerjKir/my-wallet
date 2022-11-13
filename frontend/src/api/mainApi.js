@@ -20,6 +20,10 @@ export const setSkin = async params => {
   return await axios.patch('/api/skin', params);
 };
 
+export const setUserLang = async params => {
+  return await axios.patch('/api/lang', params);
+};
+
 export const addCash = async params => {
   return await axios.post('/api/cash', params);
 };

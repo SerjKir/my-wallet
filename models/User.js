@@ -5,7 +5,8 @@ const schema = new Schema({
   passwordHash: {type: String, required: true},
   wallet: {type: Types.ObjectId, ref: 'Wallet'},
   avatarUrl: {type: String, default: '/uploads/default_user.jpg'},
-  isSkin: {type: Boolean, default: false}
+  isSkin: {type: Boolean, default: false},
+  lang: {type: String, default: 'uk'}
 }, {
   timestamps: true
 })

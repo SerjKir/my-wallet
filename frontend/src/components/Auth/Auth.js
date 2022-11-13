@@ -7,7 +7,6 @@ import {useNavigate} from 'react-router-dom';
 import {MainContext} from "../../context/MainContext";
 import {removeSpaces} from "../../helpers";
 import {useTranslation} from "react-i18next";
-import {LanguageToggler} from "../index";
 import {UserContext} from "../../context/UserContext";
 
 const Auth = () => {
@@ -37,9 +36,6 @@ const Auth = () => {
 
   return (
     <Paper className={styles.main}>
-      <div className={styles.langToggler}>
-        <LanguageToggler/>
-      </div>
       <Typography variant="h5" classes={{root: styles.title}}>
         {isLogin ? t("auth.loginToAccount") : t("auth.accountRegistration")}
       </Typography>

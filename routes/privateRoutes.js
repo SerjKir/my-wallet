@@ -8,6 +8,7 @@ const WalletController = require('../controllers/WalletController');
 const router = Router();
 router.get('/data', CommonController.getAllData);
 router.patch('/skin', CommonController.setCardSkin);
+router.patch('/lang', CommonController.setUserLang);
 router.post('/cash', addCashValidator, handleValidationErrors, WalletController.addCash);
 router.patch('/cash', updateCashValidator, handleValidationErrors, WalletController.updateCash);
 router.post('/card', addCardValidator, handleValidationErrors, CardController.addCard);

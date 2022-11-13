@@ -1,32 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {ToggleButton, ToggleButtonGroup} from "@mui/material";
 import {useTranslation} from "react-i18next";
+import {UserContext} from "../../context/UserContext";
+import {MainContext} from "../../context/MainContext";
+import {setUserLang} from "../../api/mainApi";
 
 const LanguageToggler = () => {
+  const {catchHandler} = useContext(MainContext);
+  const {userData, setUserData} = useContext(UserContext);
   const {i18n} = useTranslation();
-  const [lang, setLang] = useState('ua');
-  const handleChange = (event, newLang) => {
-    setLang(newLang);
-    i18n.changeLanguage(newLang);
+  const handleChange = async (event, newLang) => {
+    await setUserLang({lang: newLang}).then(res => {
+      setUserData(prev => ({...prev, lang: res.data}))
+    }).catch(error => catchHandler(error));
+    await i18n.changeLanguage(newLang);
   };
 
   useEffect(() => {
-    let lang = window.localStorage.getItem("i18nextLng");
-    lang = lang === "en" ? "en" : "ua";
-    window.localStorage.setItem("i18nextLng", lang)
-    setLang(lang);
-  }, []);
+    i18n.changeLanguage(userData.lang);
+  }, [userData.lang, i18n]);
 
   return (
     <ToggleButtonGroup
       size="small"
       color="primary"
-      value={lang}
+      value={userData.lang}
       exclusive
       onChange={handleChange}
       aria-label="Platform"
     >
-      <ToggleButton value="ua">UA</ToggleButton>
+      <ToggleButton value="uk">UK</ToggleButton>
       <ToggleButton value="en">EN</ToggleButton>
     </ToggleButtonGroup>
   );
