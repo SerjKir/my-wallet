@@ -25,12 +25,13 @@ const Auth = () => {
 
   const onSubmit = async values => {
     let token = null;
-    await (isLogin ? loginApi : registerApi)(values).then(res => {
+    const res = await (isLogin ? loginApi : registerApi)(values).catch(error => catchHandler(error));
+    if (res) {
       token = res.data;
-    }).catch(error => catchHandler(error));
-    if (token) {
-      await login(token);
-      navigate('/', {replace: true});
+      if (token) {
+        await login(token);
+        navigate('/', {replace: true});
+      }
     }
   };
 

@@ -10,10 +10,11 @@ const LanguageToggler = () => {
   const {userData, setUserData} = useContext(UserContext);
   const {i18n} = useTranslation();
   const handleChange = async (event, newLang) => {
-    await setUserLang({lang: newLang}).then(res => {
-      setUserData(prev => ({...prev, lang: res.data}))
-    }).catch(error => catchHandler(error));
-    await i18n.changeLanguage(newLang);
+    const res = await setUserLang({lang: newLang}).catch(error => catchHandler(error));
+    if (res) {
+      setUserData(prev => ({...prev, lang: res.data}));
+      await i18n.changeLanguage(newLang);
+    }
   };
 
   useEffect(() => {

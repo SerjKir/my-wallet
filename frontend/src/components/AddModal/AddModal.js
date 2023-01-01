@@ -36,23 +36,27 @@ const AddModal = ({isModal, setIsModal, isEdit}) => {
   const onSubmit = async values => {
     if (isEdit) {
       if (changeItemData.isCash) {
-        await updateCash(values.amount, changeItemData.currency).then(res => {
+        const res = await updateCash(values.amount, changeItemData.currency).catch(error => catchHandler(error));
+        if (res) {
           setWalletData(res.data);
           handleClose();
-        }).catch(error => catchHandler(error));
+        }
       } else {
-        await updateCard(changeItemData.id, values.amount, values.name).then(res => {
+        const res = await updateCard(changeItemData.id, values.amount, values.name)
+          .catch(error => catchHandler(error));
+        if (res) {
           setWalletData(res.data);
           handleClose();
-        }).catch(error => catchHandler(error));
+        }
       }
     } else {
-      await addCash({currency: currency.selectedCurrency, amount: values.amount})
-        .then(res => {
-          setWalletData(res.data);
-          reset();
-          handleClose();
-        }).catch(error => catchHandler(error));
+      const res = await addCash({currency: currency.selectedCurrency, amount: values.amount})
+        .catch(error => catchHandler(error));
+      if (res) {
+        setWalletData(res.data);
+        reset();
+        handleClose();
+      }
     }
   };
 

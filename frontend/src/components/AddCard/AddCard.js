@@ -27,11 +27,12 @@ const AddCard = ({setPage}) => {
   }
 
   const onSubmit = async values => {
-    await addCard({currency: currency.selectedCurrency, expDate: selectedDate, ...values})
-      .then(res => {
-        setWalletData(res.data);
-        setPage('Cards');
-      }).catch(error => catchHandler(error));
+    const res = await addCard({currency: currency.selectedCurrency, expDate: selectedDate, ...values})
+      .catch(error => catchHandler(error));
+    if (res) {
+      setWalletData(res.data);
+      setPage('Cards');
+    }
   };
 
   useEffect(() => {
